@@ -15,7 +15,10 @@ CREATE TABLE `USER` (
 	`user_birth`	DATE	NULL,
 	`user_address`	VARCHAR(200)	NULL,
 	`user_nickname`	VARCHAR(30)	NOT NULL unique,
-	`user_gender`	VARCHAR(2)	NOT NULL
+	`user_gender`	VARCHAR(2)	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `VIDEO`;
@@ -27,7 +30,10 @@ CREATE TABLE `VIDEO` (
 	`video_channel_name`	VARCHAR(30)	NOT NULL,
 	`video_duration`	TIME	NOT NULL,
 	`video_view_cnt`	INT	NOT NULL	DEFAULT 0,
-	`video_cal`	INT	NOT NULL
+	`video_cal`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `COACH`;
@@ -41,7 +47,10 @@ CREATE TABLE `COACH` (
 	`coach_birth`	DATE	NULL,
 	`coach_address`	VARCHAR(200)	NULL,
 	`coach_nickname`	VARCHAR(30)	NOT NULL unique, 
-	`coach_gender`	VARCHAR(2)	NOT NULL
+	`coach_gender`	VARCHAR(2)	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `WISH`;
@@ -49,7 +58,10 @@ DROP TABLE IF EXISTS `WISH`;
 CREATE TABLE `WISH` (
 	`mylist_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`user_seq`	INT	NOT NULL
+	`user_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `USER_DIET`;
@@ -60,7 +72,10 @@ CREATE TABLE `USER_DIET` (
 	`diet_name`	VARCHAR(50)	NULL,
 	`diet_img_url`	VARCHAR(100)	NULL,
 	`diet_cal`	INT	NOT NULL	DEFAULT 0,
-	`user_seq`	INT	NOT NULL
+	`user_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHATROOM`;
@@ -68,7 +83,10 @@ DROP TABLE IF EXISTS `CHATROOM`;
 CREATE TABLE `CHATROOM` (
 	`chatroom_seq`	INT	NOT NULL auto_increment primary key,
 	`chatroom_title`	VARCHAR(50)	NOT NULL,
-	`mach_seq`	INT	NOT NULL
+	`mach_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `COMMENT`;
@@ -78,7 +96,10 @@ CREATE TABLE `COMMENT` (
 	`comment_content`	VARCHAR(500)	NOT NULL,
 	`video_seq`	INT	NOT NULL,
 	`coach_seq`	INT	NULL,
-	`user_seq`	INT	NULL
+	`user_seq`	INT	NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHAT_MESSAGE`;
@@ -88,7 +109,10 @@ CREATE TABLE `CHAT_MESSAGE` (
 	`message_content`	VARCHAR(255)	NOT NULL,
 	`user_seq`	INT	NULL,
 	`coach_seq`	INT	NULL,
-	`chatroom_seq`	INT	NOT NULL
+	`chatroom_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `USER_WORKOUT`;
@@ -97,7 +121,10 @@ CREATE TABLE `USER_WORKOUT` (
 	`user_workout_seq`	INT	NOT NULL auto_increment primary key,
 	`user_seq`	INT	NOT NULL,
 	`video_seq`	INT	NOT NULL,
-	`video_cal`	INT	NOT NULL
+	`video_cal`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHALLENGE`;
@@ -106,7 +133,10 @@ CREATE TABLE `CHALLENGE` (
 	`challenge_seq`	INT	NOT NULL auto_increment primary key,
 	`user_seq`	INT	NOT NULL,
 	`is_public`	BOOLEAN	NOT NULL	DEFAULT FALSE,
-	`duration`	DATE	NOT NULL
+	`duration`	DATE	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHALLENGE_VIDEO`;
@@ -114,7 +144,10 @@ DROP TABLE IF EXISTS `CHALLENGE_VIDEO`;
 CREATE TABLE `CHALLENGE_VIDEO` (
 	`challenge_video_seq`	INT	NOT NULL auto_increment primary key,
 	`challenge_seq`	INT	NOT NULL,
-	`video_seq`	INT	NOT NULL
+	`video_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `USER_ACTIVITY`;
@@ -124,11 +157,14 @@ CREATE TABLE `USER_ACTIVITY` (
 	`user_nickname`	VARCHAR(30)	NOT NULL,
 	`user_height`	DECIMAL(5,2)	NOT NULL,
 	`total_attendance`	INT	NOT NULL	DEFAULT 0,
-	`montyly_attendance`	INT	NOT NULL	DEFAULT 0,
+	`monthly_attendance`	INT	NOT NULL	DEFAULT 0,
 	`total_reply`	INT	NOT NULL	DEFAULT 0,
 	`monthly_reply`	INT	NOT NULL	DEFAULT 0,
 	`total_exp`	INT	NOT NULL	DEFAULT 0,
-	`monthly_exp`	INT	NOT NULL	DEFAULT 0
+	`monthly_exp`	INT	NOT NULL	DEFAULT 0,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHALLENGE_JOIN`;
@@ -137,7 +173,10 @@ CREATE TABLE `CHALLENGE_JOIN` (
 	`challenge_join_seq`	INT	NOT NULL auto_increment primary key,
 	`challenge_seq`	INT	NOT NULL,
 	`user_seq`	INT	NOT NULL,
-	`total_join`	INT	NOT NULL	DEFAULT 0
+	`total_join`	INT	NOT NULL	DEFAULT 0,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHALLENGE_JOIN_DAILY`;
@@ -145,14 +184,20 @@ DROP TABLE IF EXISTS `CHALLENGE_JOIN_DAILY`;
 CREATE TABLE `CHALLENGE_JOIN_DAILY` (
 	`challenge_join_daily_seq`	INT	NOT NULL auto_increment primary key,
 	`challenge_join_seq`	INT	NOT NULL,
-	`challenge_join_date`	DATE	NULL
+	`challenge_join_date`	DATE	NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `workout_super_type`;
 
 CREATE TABLE `workout_super_type` (
 	`workout_super_class_seq`	INT	NOT NULL,
-	`workout_super_class_type`	varchar(30)	NOT NULL
+	`workout_super_class_type`	varchar(30)	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `COACH_SUPER_TYPE`;
@@ -160,14 +205,20 @@ DROP TABLE IF EXISTS `COACH_SUPER_TYPE`;
 CREATE TABLE `COACH_SUPER_TYPE` (
 	`coach_super_class_seq`	INT	NOT NULL auto_increment primary key,
 	`coach_seq`	INT	NOT NULL,
-	`workout_super_class_seq`	INT	NOT NULL
+	`workout_super_class_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `workout_sub_type`;
 
 CREATE TABLE `workout_sub_type` (
-	`workout_sub_type_seq`	INT	NOT NULL,
-	`workout_sub_type_type`	varchar(30)	NOT NULL
+	`workout_sub_class_seq`	INT	NOT NULL,
+	`workout_sub_class_type`	varchar(30)	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `video_super_type`;
@@ -175,7 +226,10 @@ DROP TABLE IF EXISTS `video_super_type`;
 CREATE TABLE `video_super_type` (
 	`video_super_type_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`workout_super_class_seq`	INT	NOT NULL
+	`workout_super_class_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `video_sub_type`;
@@ -183,7 +237,10 @@ DROP TABLE IF EXISTS `video_sub_type`;
 CREATE TABLE `video_sub_type` (
 	`video_sub_type_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`workout_sub_class_seq`	INT	NOT NULL
+	`workout_sub_class_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `MATCH`;
@@ -191,7 +248,10 @@ DROP TABLE IF EXISTS `MATCH`;
 CREATE TABLE `MATCH` (
 	`match_seq`	INT	NOT NULL auto_increment primary key,
 	`coach_seq`	INT	NOT NULL,
-	`user_seq`	INT	NOT NULL
+	`user_seq`	INT	NOT NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `USER_BMI`;
@@ -199,7 +259,10 @@ DROP TABLE IF EXISTS `USER_BMI`;
 CREATE TABLE `USER_BMI` (
 	`user_seq`	INT	NOT NULL,
 	`user_weight`	DECIMAL(5,2)	NOT NULL	DEFAULT 0.00,
-	`user_bmi`	DECIMAL(5,2)	NULL
+	`user_bmi`	DECIMAL(5,2)	NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 ALTER TABLE `USER_ACTIVITY` ADD CONSTRAINT `PK_USER_ACTIVITY` PRIMARY KEY (
@@ -211,7 +274,7 @@ ALTER TABLE `workout_super_type` ADD CONSTRAINT `PK_WORKOUT_SUPER_TYPE` PRIMARY 
 );
 
 ALTER TABLE `workout_sub_type` ADD CONSTRAINT `PK_WORKOUT_SUB_TYPE` PRIMARY KEY (
-	`workout_sub_type_seq`
+	`workout_sub_class_seq`
 );
 
 ALTER TABLE `USER_BMI` ADD CONSTRAINT `PK_USER_BMI` PRIMARY KEY (
@@ -390,7 +453,7 @@ ALTER TABLE `video_sub_type` ADD CONSTRAINT `FK_workout_sub_type_TO_video_sub_ty
 	`workout_sub_class_seq`
 )
 REFERENCES `workout_sub_type` (
-	`workout_sub_type_seq`
+	`workout_sub_class_seq`
 );
 
 ALTER TABLE `MATCH` ADD CONSTRAINT `FK_COACH_TO_MATCH_1` FOREIGN KEY (
