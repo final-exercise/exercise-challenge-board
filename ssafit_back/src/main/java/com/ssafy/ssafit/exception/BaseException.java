@@ -13,10 +13,4 @@ public class BaseException extends Exception {
     private int code;
     private String message;
     
-    public BaseException(boolean b, int i, String string) {
-		this.isSuccess=b;
-		this.code=i;
-		this.message=string;
-	}
-	
 }

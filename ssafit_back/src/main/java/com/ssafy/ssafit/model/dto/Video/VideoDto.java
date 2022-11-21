@@ -1,4 +1,4 @@
-package com.ssafy.ssafit.model.dto;
+package com.ssafy.ssafit.model.dto.Video;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Video {
+public class VideoDto {
 	private int videoSeq;
 	private String videoId;
 	private String videoTitle;
@@ -17,4 +17,8 @@ public class Video {
 	private String videoDuration;
 	private int videoViewCnt;
 	private int videoCal;
+	private String videoCreatedAt;
+	private String videoUpdatedAt;
+	private int videoCommentCnt; // 영상의 댓글 수 
+	private int videoWishCnt; // 영상의 찜 수
 }

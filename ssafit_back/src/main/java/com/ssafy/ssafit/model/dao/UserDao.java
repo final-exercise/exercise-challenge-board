@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
-import com.ssafy.ssafit.model.dto.SearchCondition;
-import com.ssafy.ssafit.model.dto.Video;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
 import com.ssafy.ssafit.model.dto.User.UserDto;
 import com.ssafy.ssafit.model.dto.User.UserWorkoutDto;
+import com.ssafy.ssafit.model.dto.Video.SearchCondition;
+import com.ssafy.ssafit.model.dto.Video.VideoDto;
 
 public interface UserDao {
 	public int insertUser(UserDto userDto);
@@ -39,7 +39,7 @@ public interface UserDao {
 
 	public int insertUserDiet(UserDietDto userDietDto);
 
-	public Page<Video> selectWishVideo(int userSeq);
+	public Page<VideoDto> selectWishVideo (int userSeq);
 
 	public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition);
 

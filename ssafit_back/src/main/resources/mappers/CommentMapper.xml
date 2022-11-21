@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.CommentDao">
+	<resultMap type="CommentDto" id="CommentDtoMap">
+		<result column="comment_seq" property="commentSeq"/>
+		<result column="comment_content" property="commentContent"/>
+		<result column="video_seq" property="videoSeq"/>
+		<result column="coach_seq" property="coachSeq"/>
+		<result column="user_seq" property="userSeq"/>
+		<result column="comment_depth" property="commentDepth"/>
+		<result column="bundle_id" property="bundleId"/>
+		<result column="created_at" property="commentCreatedAt"/>
+		<result column="updated_at" property="commentUpdatedAt"/>
+	</resultMap>
+
+	<!-- public Page<CommentDto> getComments(int videoSeq); -->
+	<select id="getComments" resultMap="CommentDtoMap" parameterType="int">
+		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq, comment_depth, bundle_id, created_at, updated_at
+		FROM COMMENT
+		WHERE video_seq = #{videoSeq} AND is_valid = 1
+	</select>
+	
+	<!-- 이거 비디오 슬렉트하면서 조인 -->
+	<!-- public int selectCommentCnt(int videoSeq); -->
+	<select id="selectCommentCnt" resultType="int" parameterType="int">
+		SELECT COUNT(*)
+		FROM COMMENT
+		WEHRE video_seq = #{videoSeq} and is_valid = 1
+	</select>
+		
+	<!-- public int insertComment(CommentDto commentDto); -->
+	<insert id="insertComment" parameterType="CommentDto">
+		INSERT INTO COMMENT (comment_content, video_seq, 
+		<choose>
+			<when test="isCoach == 1">
+				coach_seq,
+			</when>
+			<otherwise>
+				user_seq,
+			</otherwise>
+		</choose>
+		comment_depth, bundle_id)
+		VALUES (#{commentContent}, #{videoSeq},
+		<choose>
+			<when test="isCoach == 1">
+				#{coachSeq},
+			</when>
+			<otherwise>
+				#{userSeq},
+			</otherwise>
+		</choose>
+		#{commentDepth}, #{bundleId})
+	</insert>
+	
+	<!-- public int updateComment(CommentDto commentDto); -->
+	<update id="updateComment" parameterType="CommentDto">
+		UPDATE COMMENT
+		SET comment_content = #{commentContent}
+		WHERE comment_seq = #{commentSeq}
+	</update>
+	
+	<!-- public int deleteComment(int commentSeq); -->
+	<update id="deleteComment" parameterType="int">
+		UPDATE COMMENT
+		SET is_valid = false;
+		WHERE comment_seq = #{commentSeq}
+	</update>
+	
+	<!-- public String selectNickname(Map<String, String> map); // <"Table", "Column", "SeqColumn", "Seq"> -->
+	<select id="selectNickname" resultType="String" parameterType="Map">
+		SELECT ${Column}
+		FROM ${Table}
+		WHERE ${SeqColumn} = #{Seq}
+	</select>
+
+</mapper>

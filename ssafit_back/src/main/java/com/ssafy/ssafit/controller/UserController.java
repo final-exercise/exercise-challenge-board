@@ -23,14 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.ssafit.exception.BaseException;
-
-import com.ssafy.ssafit.model.dto.SearchCondition;
-import com.ssafy.ssafit.model.dto.Video;
+import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
-import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserDto;
 import com.ssafy.ssafit.model.dto.User.UserWorkoutDto;
+import com.ssafy.ssafit.model.dto.Video.SearchCondition;
+import com.ssafy.ssafit.model.dto.Video.VideoDto;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.model.service.UserServiceImpl;
 import com.ssafy.ssafit.util.JwtUtil;
@@ -354,7 +353,7 @@ public class UserController {
 
 			PageHelper.startPage(page, 3);
 //			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
-			Page<Video> res = us.getWish(userSeq);
+			Page<VideoDto> res = us.getWish(userSeq);
 			
 			result.put("message", "get userWish success");
 			result.put("res", res);

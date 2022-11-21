@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="diet_cal" property="dietCal" />
 	</resultMap>
 	
-	<resultMap type="Video" id="userWishVideoMap">
+	<resultMap type="VideoDto" id="userWishVideoMap">
 		<result column="video_seq" property="videoSeq" />
 		<result column="video_id" property="videoId" />
 		<result column="video_title" property="videoTitle" />
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 	<!-- public int insertUser(UserDto userDto); -->
-	<insert id="insertUser" parameterType="userDto">
+	<insert id="insertUser" parameterType="UserDto">
 		insert into user (user_id, user_password, user_name, user_email, user_birth, user_address, user_nickname, user_gender) 
 		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userAddress}, #{userNickname}, #{userGender}); 
 	</insert>
@@ -116,14 +116,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- public List<UserBmiDto> selectUserBmi(int userSeq); -->
-	<select id="selectUserBmi" parameterType="int" resultMap="userBmiDtoMap">
+	<select id="selectUserBmi" parameterType="int" resultMap="UserBmiDtoMap">
 		select user_weight, user_bmi, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
 		from user_bmi
 		where user_seq=#{userSeq};
 	</select>
 	
 	<!-- public List<UserWorkoutDto> selectUserWorkout(Map<String, Integer> map); -->
-	<select id="selectUserWorkout" parameterType="hashmap" resultMap="userWorkoutDto">
+	<select id="selectUserWorkout" parameterType="hashmap" resultMap="UserWorkoutDto">
 		select user_workout_seq, user_seq, w.video_seq, date_format(w.created_at, '%Y-%m-%d %H:%i:%s') as created_at, v.video_title as video_title, v.video_cal as video_cal
 		from user_workout w
 		join video v on v.video_seq = w.video_seq
@@ -137,7 +137,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- public List<UserDietDto> selectUserDiet(Map<String, Integer> map); -->
-	<select id="selectUserDiet" parameterType="hashmap" resultMap="userDietDtoMap">
+	<select id="selectUserDiet" parameterType="hashmap" resultMap="UserDietDtoMap">
 		select *, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
 		from user_diet
 		where user_seq=#{userSeq} AND year(created_at)=#{year} AND month(created_at)=#{month};	
@@ -150,7 +150,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- public Page<Video> selectWishVideo(int userSeq); -->
-	<select id="selectWishVideo" parameterType="int" resultMap="userWishVideoMap">
+	<select id="selectWishVideo" parameterType="int" resultMap="UserWishVideoMap">
 		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal
 		from video v
 		join wish w on w.video_seq = v.video_seq
@@ -158,7 +158,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->
-	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="userActivityDtoMap">
+	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="UserActivityDtoMap">
 		select user_seq, user_nickname, ${sort} as "value", #{sort} as "key"
 		from user_activity
 		order by ${sort} DESC

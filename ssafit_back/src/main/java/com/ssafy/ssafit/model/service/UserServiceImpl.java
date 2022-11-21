@@ -11,13 +11,13 @@ import com.github.pagehelper.Page;
 import com.ssafy.ssafit.config.secret.Secret;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dao.UserDao;
-import com.ssafy.ssafit.model.dto.SearchCondition;
-import com.ssafy.ssafit.model.dto.Video;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
 import com.ssafy.ssafit.model.dto.User.UserDto;
 import com.ssafy.ssafit.model.dto.User.UserWorkoutDto;
+import com.ssafy.ssafit.model.dto.Video.SearchCondition;
+import com.ssafy.ssafit.model.dto.Video.VideoDto;
 import com.ssafy.ssafit.util.AES128;
 
 @Service
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Page<Video> getWish(int userSeq) throws BaseException {
+	public Page<VideoDto> getWish(int userSeq) throws BaseException {
 		try {
 			return ud.selectWishVideo(userSeq);
 		} catch(Exception e) {
