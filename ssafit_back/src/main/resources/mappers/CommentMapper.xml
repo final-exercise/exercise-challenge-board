@@ -21,14 +21,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM COMMENT
 		WHERE video_seq = #{videoSeq} AND is_valid = 1
 	</select>
-	
-	<!-- 이거 비디오 슬렉트하면서 조인 -->
-	<!-- public int selectCommentCnt(int videoSeq); -->
-	<select id="selectCommentCnt" resultType="int" parameterType="int">
-		SELECT COUNT(*)
-		FROM COMMENT
-		WEHRE video_seq = #{videoSeq} and is_valid = 1
-	</select>
 		
 	<!-- public int insertComment(CommentDto commentDto); -->
 	<insert id="insertComment" parameterType="CommentDto">

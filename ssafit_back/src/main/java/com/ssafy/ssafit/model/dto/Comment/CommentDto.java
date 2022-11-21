@@ -21,4 +21,11 @@ public class CommentDto {
 	private String commentUpdatedAt;
 	private String nickname; // resultMap collection
 	private boolean isCoach;
+	
+	public boolean isCoach() {
+		return isCoach;
+	}
+	public void setCoach(boolean isCoach) {
+		this.isCoach = isCoach;
+	}
 }
