@@ -43,6 +43,7 @@ export default {
 .container-my-challenge{
   display:flex;
   flex-direction: column;
+  justify-content: center;
   margin: 10px 10px 10px 20px;
 }
 
@@ -64,5 +65,9 @@ export default {
 .div-my-challenge-list{
   display: flex;
   flex-wrap: nowrap;
+}
+
+a{
+  color: white;
 }
 </style>

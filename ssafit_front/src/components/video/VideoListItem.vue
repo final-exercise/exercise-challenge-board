@@ -39,6 +39,8 @@ export default {
 .hr {
   margin: 10px 0px;
   width: 200px; 
+  height: 1px;
+  background-color:rgba(128, 128, 128, 0.268);
 }
 
 .container-list-item {

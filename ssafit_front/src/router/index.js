@@ -6,7 +6,9 @@ import UserLogin from "../components/user/UserLogin.vue"
 import CoachLogin from "../components/coach/CoachLogin.vue"
 import VideoView from "../views/VideoView"
 import ChallengeView from "../views/ChallengeView"
-import ChallengeCreate from "../components/challenge/ChallengeCreate"
+import ChallengeCreate from "../components/challenge/ChallengeCreate.vue"
+import ChallengeIndex from "../components/challenge/ChallengeIndex.vue"
+import UserSignup from "../components/user/UserSignup.vue"
 
 Vue.use(VueRouter)
 
@@ -28,6 +30,10 @@ const routes = [
     path: "/login",
     name: "login",
     component: UserLogin
+  },{
+    path: "/signup",
+    name: "signup",
+    component: UserSignup
   },
   {
     path: "/login/coach",
@@ -43,7 +49,13 @@ const routes = [
     component: ChallengeView,
     children:[
       {
+        path:"/",
+        name: "challenge-index",
+        component: ChallengeIndex
+      },
+      {
         path: "create",
+        name: 'challenge-create',
         component: ChallengeCreate
       }
     ]

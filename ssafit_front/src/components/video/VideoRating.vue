@@ -7,17 +7,17 @@
       <button>최고 좋아요</button>
       <button>최고 조회수</button>
     </div>
-    <video-rating-list></video-rating-list>
+    <video-list></video-list>
 
   </div>
 </template>
 
 <script>
-import VideoRatingList from "./VideoRatingList.vue"
+import VideoList from "./VideoList.vue"
 
 export default {
   components:{
-    VideoRatingList,
+    VideoList,
   }
 }
 </script>
