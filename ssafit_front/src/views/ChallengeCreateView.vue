@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import ChallengeMy from "../components/challenge/ChallengeMy.vue"
-import ChallengeTotal from "../components/challenge/ChallengeTotal.vue"
+// import ChallengeMy from "../components/challenge/ChallengeMy.vue"
+// import ChallengeTotal from "../components/challenge/ChallengeTotal.vue"
 
 export default {
   components:{
-    ChallengeMy,
-    ChallengeTotal
+    // ChallengeMy,
+    // ChallengeTotal
   }
 }
 </script>

@@ -9,6 +9,7 @@ import ChallengeView from "../views/ChallengeView"
 import ChallengeCreate from "../components/challenge/ChallengeCreate.vue"
 import ChallengeIndex from "../components/challenge/ChallengeIndex.vue"
 import UserSignup from "../components/user/UserSignup.vue"
+import UserMyPageCalendar from "../components/user/UserMyPageCalendar"
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,10 @@ const routes = [
   {
     path: "/video",
     component: VideoView
+  },
+  {
+    path: "/mypage",
+    component: UserMyPageCalendar
   },
   {
     path: "/challenge",

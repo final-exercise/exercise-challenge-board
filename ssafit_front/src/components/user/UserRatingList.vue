@@ -5,7 +5,7 @@
     </div>
     <div class="div-decorate">&nbsp;</div>
     <div class="container-user-rating-list-item">
-      <ul>
+      <ul style="padding-left:0px; padding-right: 5px;">
         <li>
           <div class="div-user-item">
             <span class="medal">🥇</span>
