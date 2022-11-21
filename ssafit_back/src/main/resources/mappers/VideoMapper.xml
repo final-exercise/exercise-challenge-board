@@ -13,17 +13,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="video_cal" property="videoCal"/>
 		<result column="created_at" property="videoCreatedAt"/>
 		<result column="updated_at" property="videoUpdatedAt"/>
-		<result column="" property="videoCommentCnt"/>
-		<result column="" property="videoWishCnt"/>
+		<result column="video_comment_cnt" property="videoCommentCnt"/>
+		<result column="video_wish_cnt" property="videoWishCnt"/>
 	</resultMap>
 	
 	<!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
 	<select id="selectVideos" resultMap="VideoDtoMap" parameterType="SeachCondition">
 		<!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
-		SELECT video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
-		FROM VIDEO
+		select video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
+			, (select count(*) from wish w where w.video_seq = v.video_seq and w.is_valid = 1) as video_wish_cnt
+			, (select count(*) from comment c where c.video_seq = v.video_seq and c.is_valid = 1) as video_comment_cnt
+		from video v
+		where v.is_valid = 1
 		<if test="key != 'none'">
-			WHERE ${key} like concat('%', #{word}, '%') AND is_valid = 1
+			and ${key} like concat('%', #{word}, '%')
 		</if>
 		<if test="sort != 'none'">
 			ORDER BY ${sortDir} 
@@ -32,9 +35,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public VideoDto selectVideo(int videoSeq); -->
 	<select id="selectVideo" resultMap="VideoDtoMap" parameterType="int">
-		SELECT video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
-		FROM VIDEO AND is_valid = 1
-		WHERE video_seq = #{videoSeq}
+		select video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
+			, (select count(*) from wish w where w.video_seq = v.video_seq and w.is_valid = 1) as video_wish_cnt
+			, (select count(*) from comment c where c.video_seq = v.video_seq and c.is_valid = 1) as video_comment_cnt
+		FROM VIDEO v 
+		WHERE video_seq = #{videoSeq} AND is_valid = 1
 	</select>
 	
 	
@@ -50,14 +55,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET video_view_cnt = video_view_cnt + 1
 		WHERE video_seq = #{videoSeq}
 	</update>
-	
-	<!-- 이거 그냥 뽑아오면서 조인 -->
-	<!-- public int selectWishCnt(int videoSeq); -->
-	<select id="selectWishCnt" resultType="int" parameterType="int">
-		SELECT COUNT(*)
-		FROM WISH
-		WHERE video_seq = #{videoSeq} AND is_valid = 1;
-	</select>
 	
 	<!-- public int selectUserWish(Map<String, Integer> map); -->
 	<select id="selectUserWish" parameterType="map">

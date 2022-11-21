@@ -14,6 +14,7 @@ import com.ssafy.ssafit.model.dto.Comment.CommentDto;
 import com.ssafy.ssafit.model.dto.Video.SearchCondition;
 import com.ssafy.ssafit.model.dto.Video.VideoDetailDto;
 import com.ssafy.ssafit.model.dto.Video.VideoDto;
+import com.ssafy.ssafit.util.JwtUtil;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -25,7 +26,7 @@ public class VideoServiceImpl implements VideoService {
 	private VideoDao vd;
 	@Autowired
 	private CommentDao cd;
-	
+
 	@Override
 	public Page<VideoDto> getVideos(SearchCondition sc) throws BaseException {
 		try {
@@ -36,10 +37,19 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public VideoDetailDto getVideo(int videoSeq) throws BaseException {
+	public VideoDetailDto getVideo(int videoSeq, int userSeq) throws BaseException {
 		//비디오 하나 가져오기 + 댓글 목록 가져오기 + 뷰카운트 하나 올려줌 + 찜개수가져옴 + 댓글개수 가져옴 + 회원이 찜한 비디온지 가져옴
 		try {
-			return vd.selectVideo(videoSeq);
+			VideoDetailDto vdd = new VideoDetailDto();
+			vdd.setVideodto(vd.selectVideo(videoSeq));
+			vdd.setComments(cd.getComments(videoSeq));
+			Map<String, Integer> map = new HashMap<>();
+			map.put("videoSeq", videoSeq);
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			map.put("userSeq", Integer.parseInt(tokenMap.get("userSeq")));
+			map.put("userSeq", userSeq);
+			vdd.setVideoIsWish(vd.selectUserWish(map));
+			return vdd;
 		} catch(Exception e) {
 			throw new BaseException(FAIL, 500, "database error");
 		}
@@ -82,6 +92,21 @@ public class VideoServiceImpl implements VideoService {
 	public int registComment(CommentDto commentDto) throws BaseException {
 		//리뷰 등록 + 닉네임 가져오기
 		try {
+			Map<String, String> map = new HashMap<>();
+			if(commentDto.getCoachSeq() == 0) {
+				commentDto.setCoach(false);
+				map.put("Table", "user");
+				map.put("Column", "user_nickname");
+				map.put("SeqColumn", "user_seq");
+				map.put("Seq", String.valueOf(commentDto.getUserSeq()));
+			}else {
+				commentDto.setCoach(true);
+				map.put("Table", "coach");
+				map.put("Column", "coach_nickname");
+				map.put("SeqColumn", "coach_seq");
+				map.put("Seq", String.valueOf(commentDto.getCoachSeq()));
+			}
+			commentDto.setNickname(cd.selectNickname(map));
 			return cd.insertComment(commentDto);
 		} catch(Exception e) {
 			throw new BaseException(FAIL, 500, "database error");
