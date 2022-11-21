@@ -1,3 +1,4 @@
+use ssafit;
 select * from user;
 insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_address, user_nickname, user_gender) values (0, 'ssafy', '1234', '싸피', 'ssafy@ssafy.com', '1992-07-06', '서울시 강남구', '싸피', 'F'); 
 insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_address, user_nickname, user_gender) values (0, 'yang', '1234', '양명균', 'yang@ssafy.com', '1995-12-02', '서울시 서초구', '양띵균', 'M'); 
@@ -50,13 +51,13 @@ insert into user_bmi (user_seq, user_weight, user_bmi) values (4, 45, 16.93);
 insert into user_bmi (user_seq, user_weight, user_bmi) values (5, 63, 21.29);
 insert into user_bmi (user_seq, user_weight, user_bmi) values (6, 68, 21.95);
 
-select * from `match`;
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 1, 1);
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 3, 2);
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 2, 3);
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 1, 4);
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 2, 5);
-insert into `match` (match_seq, coach_seq, user_seq) values (0, 3, 6);
+select * from `coach_user`;
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 1, 1);
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 3, 2);
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 2, 3);
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 1, 4);
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 2, 5);
+insert into `coach_user` (coach_user_seq, coach_seq, user_seq) values (0, 3, 6);
 
 select * from video;
 select * from video_super_type;

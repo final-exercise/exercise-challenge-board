@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.UserDao">
+
+	<resultMap type="UserDto" id="userDtoMap">
+		<result column="user_seq" property="userSeq" />
+		<result column="user_id" property="userId" />
+		<result column="user_password" property="userPassword" />
+		<result column="user_name" property="userName" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_birth" property="userBirth" />
+		<result column="user_address" property="userAddress" />
+		<result column="user_nickname" property="userNickname" />
+		<result column="user_gender" property="userGender" />
+		<result column="created_at" property="userCreatedAt" />
+		<result column="updated_at" property="userUpdatedAt" />
+	</resultMap>
+	
+	<resultMap type="UserBmiDto" id="userBmiDtoMap">
+		<result column="user_weight" property="userWeight"/>
+		<result column="user_bmi" property="userBmi"/>
+		<result column="created_at" property="createdAt"/>
+	</resultMap>
+	
+	<resultMap type="UserWorkoutDto" id="userWorkoutDto">
+		<result column="user_workout_seq" property="userWorkoutSeq" />
+		<result column="video_seq" property="videoSeq" />
+		<result column="video_title" property="videoTitle" />
+		<result column="video_cal" property="videoCal" />
+		<result column="created_at" property="createdAt" />
+	</resultMap>
+	
+	<resultMap type="UserDietDto" id="userDietDtoMap">
+		<result column="user_seq" property="userSeq" />
+		<result column="created_at" property="createdAt" />
+		<result column="user_diet_seq" property="userDietSeq" />
+		<result column="diet_seq" property="dietSeq" />
+		<result column="diet_name" property="dietName" />
+		<result column="diet_img_url" property="dietImgUrl" />
+		<result column="diet_cal" property="dietCal" />
+	</resultMap>
+	
+	<resultMap type="Video" id="userWishVideoMap">
+		<result column="video_seq" property="videoSeq" />
+		<result column="video_id" property="videoId" />
+		<result column="video_title" property="videoTitle" />
+		<result column="video_channel_name" property="videoChannelName" />
+		<result column="video_duration" property="videoDuration" />
+		<result column="video_view_cnt" property="videoViewCnt" />
+		<result column="video_cal" property="videoCal" />
+	</resultMap>	
+
+	<resultMap type="UserActivityDto" id="userActivityDtoMap">
+		<result column="user_seq" property="userSeq" />
+		<result column="user_nickname" property="userNickname" />
+		<result column="value" property="value" />
+		<result column="key" property="key" />
+	</resultMap>	
+
+
+
+	<!-- public int insertUser(UserDto userDto); -->
+	<insert id="insertUser" parameterType="userDto">
+		insert into user (user_id, user_password, user_name, user_email, user_birth, user_address, user_nickname, user_gender) 
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userAddress}, #{userNickname}, #{userGender}); 
+	</insert>
+	
+	<!-- public UserDto getUserByUserId(String userId); -->
+	<select id="selectUserByUserId" parameterType="String" resultMap="userDtoMap">
+		select * 
+		from user
+		where user_id=#{userId} AND is_valid != 0
+	</select>
+
+	<!-- public UserDto getUser(int userSeq); -->
+	<select id="selectUser" parameterType="int" resultMap="userDtoMap">
+		select * 
+		from user
+		where user_seq=#{userSeq};
+	</select>
+	
+	<!-- public int deleteUser(int userSeq); -->
+	<update id="deleteUser" parameterType="int">
+		update user
+		set is_valid=0
+		where user_seq=#{userSeq}
+	</update>
+	
+	<!-- public int updateUser(UserDto userDto); -->
+	<update id="updateUser" parameterType="UserDto">
+		update user
+		set user_birth=#{userBirth}, user_email=#{userEmail}, user_gender=#{userGender}, user_Nickname=#{userNickname}
+		where user_seq=#{userSeq}
+	</update>
+	
+	<!-- public int selectCntByUserNickname(String nickname); -->
+	<select id="selectCntByUserNickname" parameterType="String" resultType="int">
+		select count(*)
+		from user
+		where user_nickname=#{userNickname}
+	</select>
+	
+	<!-- public int selectCntByUserId(String userId); -->
+	<select id="selectCntByUserId" parameterType="String" resultType="int">
+		select count(*)
+		from user
+		where user_id=#{userId}
+	</select>
+	
+	<!-- public int insertUserBmi(Map<String,Integer> map); -->
+	<insert id="insertUserBmi" parameterType="hashmap">
+		insert into user_bmi(user_seq, user_weight, user_bmi)
+		values(#{user_seq}, #{user_weight}, ROUND(#{user_weight}/POW((SELECT user_height FROM user_activity WHERE user_seq = #{user_seq})/100,2),2));
+	</insert>
+	
+	<!-- public List<UserBmiDto> selectUserBmi(int userSeq); -->
+	<select id="selectUserBmi" parameterType="int" resultMap="userBmiDtoMap">
+		select user_weight, user_bmi, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
+		from user_bmi
+		where user_seq=#{userSeq};
+	</select>
+	
+	<!-- public List<UserWorkoutDto> selectUserWorkout(Map<String, Integer> map); -->
+	<select id="selectUserWorkout" parameterType="hashmap" resultMap="userWorkoutDto">
+		select user_workout_seq, user_seq, w.video_seq, date_format(w.created_at, '%Y-%m-%d %H:%i:%s') as created_at, v.video_title as video_title, v.video_cal as video_cal
+		from user_workout w
+		join video v on v.video_seq = w.video_seq
+		where user_seq=#{userSeq} AND year(w.created_at)=#{year} AND month(w.created_at)=#{month};	
+	</select>
+	
+	<!-- public int insertUserWorkout(PostUserWorkoutReqDto userWorkoutReqDto); -->
+	<insert id="insertUserWorkout" parameterType="UserWorkoutDto">
+		insert into user_workout(user_seq, video_seq)
+		values (#{userSeq}, #{videoSeq});
+	</insert>
+	
+	<!-- public List<UserDietDto> selectUserDiet(Map<String, Integer> map); -->
+	<select id="selectUserDiet" parameterType="hashmap" resultMap="userDietDtoMap">
+		select *, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
+		from user_diet
+		where user_seq=#{userSeq} AND year(created_at)=#{year} AND month(created_at)=#{month};	
+	</select>
+	
+	<!-- public int insertUserDiet(UserDietDto userDietDto); -->
+	<insert id="insertUserDiet" parameterType="UserDietDto">
+		insert into user_diet(diet_seq, diet_name, diet_img_url, diet_cal, user_seq)
+		values (#{dietSeq}, #{dietName}, #{dietImgUrl}, #{dietCal}, #{userSeq});
+	</insert>
+	
+	<!-- public Page<Video> selectWishVideo(int userSeq); -->
+	<select id="selectWishVideo" parameterType="int" resultMap="userWishVideoMap">
+		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal
+		from video v
+		join wish w on w.video_seq = v.video_seq
+		where w.user_seq = #{userSeq} AND w.is_valid=1
+	</select>
+	
+	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->
+	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="userActivityDtoMap">
+		select user_seq, user_nickname, ${sort} as "value", #{sort} as "key"
+		from user_activity
+		order by ${sort} DESC
+	</select>
+	
+	<!-- public int updateUserActivity(Map<String, Object> map); -->
+	<update id="updateUserActivity" parameterType="hashmap">
+		update user_activity
+		set ${key1} = ${key1} + #{value}, ${key2} = ${key2} + #{value}
+		where user_seq=#{userSeq}
+	</update>
+	
+</mapper>

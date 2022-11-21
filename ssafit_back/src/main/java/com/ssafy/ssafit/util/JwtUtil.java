@@ -2,6 +2,8 @@ package com.ssafy.ssafit.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +17,7 @@ import com.ssafy.ssafit.exception.BaseException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -31,15 +34,21 @@ public class JwtUtil {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public String createToken(String claimId, String data) throws UnsupportedEncodingException {
-		return Jwts.builder()
+	public String createToken(Map<String, String> map) throws UnsupportedEncodingException {
+		JwtBuilder jb = Jwts.builder()
 				.setHeaderParam("alg", "HS256")
-				.setHeaderParam("typ", "JWT")
-				.claim(claimId, data)
-				.setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis()+(1000*60*60*24)))
-				.signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
-				.compact();
+				.setHeaderParam("typ", "JWT");
+		
+		Iterator<String> it = map.keySet().iterator();
+		while(it.hasNext()) {
+			String key = it.next();
+			jb.claim(key, map.get(key));
+		}
+		
+		return jb.setIssuedAt(new Date())
+					.setExpiration(new Date(System.currentTimeMillis()+(1000*60*60*24)))
+					.signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+					.compact();
 	}
 
 	/**
@@ -65,12 +74,12 @@ public class JwtUtil {
 	}
 
 	/**
-	 * JWT에서 특정 int 값 추출하기
+	 * JWT에서 특정 value 값 추출하기
 	 * @param key: 추출할 key
 	 * @return
 	 * @throws BaseException
 	 */
-    public int getIntValueFromJwt(String key) throws BaseException{
+    public Object getValueFromJwt(String key) throws BaseException{
         String accessToken = getJwt();
         if(accessToken == null || accessToken.length() == 0){
             throw new BaseException(false, 500, "Can't read Jwt");
@@ -85,7 +94,7 @@ public class JwtUtil {
             throw new BaseException(false, 500, "Jwt is NOT Valid");
         }
 
-        return claims.getBody().get(key,Integer.class);
+        return claims.getBody().get(key);
     }
 
 }
