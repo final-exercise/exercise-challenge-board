@@ -14,11 +14,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="coach_address" property="coachAddress" />
 		<result column="coach_nickname" property="coachNickname" />
 		<result column="coach_gender" property="coachGender" />
-		<result column="coach_profile_img_url" property="coachProfileImgUrl" />
+		<result column="coach_profile_img_url"
+			property="coachProfileImgUrl" />
 		<result column="created_at" property="coachCreatedAt" />
 		<result column="updated_at" property="coachUpdatedAt" />
 	</resultMap>
-	
+
 	<resultMap type="UserDto" id="userDtoMap">
 		<result column="user_seq" property="userSeq" />
 		<result column="user_id" property="userId" />
@@ -32,47 +33,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="created_at" property="userCreatedAt" />
 		<result column="updated_at" property="userUpdatedAt" />
 	</resultMap>
-	
+
 	<!-- public int insertCoach(CoachDto coachDto); -->
 	<insert id="insertCoach" parameterType="coachDto">
-		insert into coach(coach_id, coach_password, coach_name, coach_email, coach_birth, coach_address, coach_nickname, coach_gender, coach_profile_img_url)
-		values (#{coachId}, #{coachPassword, }, #{coachName}, #{coachEmail}, #{coachBirth}, #{coachAddress}, #{coachNickname}, #{coachGender}, #{coachProfileImgUrl})
+		insert into
+		coach(coach_id, coach_password, coach_name, coach_email, coach_birth,
+		coach_address, coach_nickname, coach_gender, coach_profile_img_url)
+		values (#{coachId}, #{coachPassword, }, #{coachName}, #{coachEmail},
+		#{coachBirth}, #{coachAddress}, #{coachNickname}, #{coachGender},
+		#{coachProfileImgUrl})
 	</insert>
-	
+
 	<!-- public CoachDto selectCoachByCoachId(String id); -->
-	<select id="selectCoachByCoachId" parameterType="String" resultMap="coachDtoMap">
+	<select id="selectCoachByCoachId" parameterType="String"
+		resultMap="coachDtoMap">
 		select *
 		from coach
-		where coach_id=#{coachId} AND is_valid != 0
+		where coach_id=#{coachId} AND is_valid !=
+		0
 	</select>
-	
+
 	<!-- public CoachDto selectCoach(int coachSeq); -->
-	<select id="selectCoach" parameterType="int" resultMap="coachDtoMap">
-		select * 
+	<select id="selectCoach" parameterType="int"
+		resultMap="coachDtoMap">
+		select *
 		from coach
 		where coach_seq=#{coachSeq};
 	</select>
-	
+
 	<!-- public int deleteCoach(int coachSeq); -->
 	<update id="deleteCoach" parameterType="int">
 		update coach
-		set is_valid=0
+		set
+		is_valid=0
 		where coach_seq=#{coachSeq}
 	</update>
-	
+
 	<!-- public int updateCoach(CoachDto coachDto); -->
-	<upcate id="updateCoach" parameterType="CoachDto">
+	<update id="updateCoach" parameterType="CoachDto">
 		update coach
-		set coach_name=#{coachName}, coach_email=#{coachEmail}, coach_birth=#{coachBirth}, coach_address=#{coachAddress},
-		coach_nickname=#{coachNickname}, coach_gender=#{coachGender}, coach_profile_img_url=#{coachProfileImgUrl}
-	</upcate>
-	
+		set
+		coach_name=#{coachName}, coach_email=#{coachEmail},
+		coach_birth=#{coachBirth}, coach_address=#{coachAddress},
+		coach_nickname=#{coachNickname}, coach_gender=#{coachGender},
+		coach_profile_img_url=#{coachProfileImgUrl}
+	</update>
+
 	<!-- public Page<UserDto> selectManageUser(int coachSeq); -->
 	<select id="selectManageUser" parameterType="int" resultMap="userDtoMap">
-		select *
+		elect *
 		from user u
-		join match m on 
+		join coach_user cu on cu.user_seq = u.user_seq
+		where cu.coach_seq=1;
 	</select>
-	
-}
+
+
 </mapper>
