@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import IndexView from '../views/IndexView.vue'
+
+import UserLogin from "../components/user/UserLogin.vue"
+import CoachLogin from "../components/coach/CoachLogin.vue"
+import VideoView from "../views/VideoView"
+import ChallengeView from "../views/ChallengeView"
+import ChallengeCreate from "../components/challenge/ChallengeCreate"
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'index',
+    component: IndexView
   },
   {
     path: '/about',
@@ -17,6 +23,30 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: UserLogin
+  },
+  {
+    path: "/login/coach",
+    name: "login/coach",
+    component: CoachLogin
+  },
+  {
+    path: "/video",
+    component: VideoView
+  },
+  {
+    path: "/challenge",
+    component: ChallengeView,
+    children:[
+      {
+        path: "create",
+        component: ChallengeCreate
+      }
+    ]
   }
 ]
 
