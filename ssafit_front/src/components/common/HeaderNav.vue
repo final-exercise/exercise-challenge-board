@@ -58,10 +58,12 @@
     </div>
       <!-- login/signup 버튼 -->
       <div class="container-header-button">
-        <button>
+        <button class="button-login">
           <router-link to="/login">로그인</router-link>
         </button>
-        <button class="button-signup">회원가입</button>
+        <button class="button-signup">
+          <router-link to="/signup">회원가입</router-link>
+        </button>
       </div>
     </header>
   </div>
@@ -215,6 +217,9 @@ header {
 .button-signup {
   background-color: #87A2FB;
   border-color: #87A2FB;
+}
+
+.button-signup a{
   color: white;
 }
 /*
@@ -353,6 +358,13 @@ header {
   align-items: flex-start;
   flex-direction: column;
   display: flex;
+}
+
+.button-login a:visited,
+.button-login a:active,
+.button-login a:link{
+  color: grey;
+  text-decoration: none;
 }
 
 

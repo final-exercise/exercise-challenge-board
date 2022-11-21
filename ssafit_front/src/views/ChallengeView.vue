@@ -1,28 +1,26 @@
 <template>
   <div class="container-challenge-view">
-    <challenge-my></challenge-my>
+    <router-view/>
+    <!-- <challenge-my></challenge-my>
     <div class="div-decorate" stype="width: 100%"></div>
-    <challenge-total></challenge-total>
+    <challenge-total></challenge-total> -->
   </div>
 </template>
 
 <script>
-import ChallengeMy from "../components/challenge/ChallengeMy.vue"
-import ChallengeTotal from "../components/challenge/ChallengeTotal.vue"
+// import ChallengeMy from "../components/challenge/ChallengeMy.vue"
+// import ChallengeTotal from "../components/challenge/ChallengeTotal.vue"
+// import ChallengeIndex from "../components/challenge/ChallengeIndex.vue";
 
 export default {
   components:{
-    ChallengeMy,
-    ChallengeTotal
+    // ChallengeIndex,
+    // ChallengeMy,
+    // ChallengeTotal
   }
 }
 </script>
 
 <style scoped>
-.container-challenge-view{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+
 </style>
