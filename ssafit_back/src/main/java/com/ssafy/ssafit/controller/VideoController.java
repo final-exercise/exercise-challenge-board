@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
@@ -46,12 +47,11 @@ public class VideoController {
 		this.vs = vs;
 	}
 	
-	// 1) [GET] /video/page={page}&super={super}&sub={sub}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
+	// 1) [GET] /video?page={page}&super={super}&sub={sub}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
 		try {
 			int page = sc.getPage();
 			if(page == 0)
@@ -95,7 +95,7 @@ public class VideoController {
 		}
 	}
 	
-	// 3) [POST] /video/{videoSeq}
+	// 3) [POST] /video/{videoSeq}?commentSeq={commentSeq}
 	@PostMapping("/{videoSeq}")
 	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
@@ -103,6 +103,7 @@ public class VideoController {
 		
 		try {
 			//댓글 depth 설정해줘야함
+//			commentDto.setBundleId(commentDto.getCommentSeq());
 			int res = vs.registComment(commentDto);
 			
 			if (res != 1) {
@@ -148,8 +149,8 @@ public class VideoController {
 		}
 	}
 	
-	// 5) [POST] /video/{commentSeq}
-	@PostMapping("/{commentSeq}")
+	// 5) [POST] /video/comment/{commentSeq}
+	@PostMapping("/comment/{commentSeq}")
 	public ResponseEntity<Map<String, Object>> updateComment(@PathVariable("commentSeq") int commentSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
