@@ -4,7 +4,7 @@
       <h4>💖 {{userNickname}}님 환영합니다!</h4>
     </div>
     <button class="button-login">
-      <router-link to="/mypage">마이페이지</router-link>
+      <router-link to="mypage-info">마이페이지</router-link>
     </button>
     <button class="button-login">
       <router-link to="/login">나의 기록</router-link>

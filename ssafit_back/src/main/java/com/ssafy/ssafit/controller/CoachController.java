@@ -35,6 +35,7 @@ import io.swagger.annotations.Api;
 @RequestMapping("/coach")
 @RestController
 @Api("Coach")
+//깃올리기~~~~
 public class CoachController {
 
 	private JwtUtil jwtUtil;

@@ -165,7 +165,7 @@ public class VideoController {
 	}
 	
 	// 5) [POST] /video/comment/{commentSeq}
-	@PostMapping("/comment/{commentSeq}")
+	@PostMapping("comment/{commentSeq}")
 	public ResponseEntity<Map<String, Object>> updateComment(@PathVariable("commentSeq") int commentSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;

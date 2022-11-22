@@ -11,20 +11,10 @@
       </div>
       <!-- navigation -->
       <nav class="container-header-nav">
-        <!--<div class="dropdown">
-          <span class="dropbtn">운동 영상</span>
-          <div class="dropdown-content">
-            <a href="#">스트레칭</a>
-            <a href="#">근력강화</a>
-            <a href="#">체중감량</a>
-            <a href="#">교정</a>
-            <a href="#">스포츠</a>
-          </div>
-        </div>-->
         <div class="dropdown">
-          <button class="dropbtn">
+          <button class="dropbtn" @click="dropdown">
             <a class="a-menu dropbtn_content">운동 영상</a>
-            <span class="dropbtn_click" @click="dropdown">&nbsp; ▼</span>
+            <span class="dropbtn_click" >&nbsp; ▼</span>
           </button>
           <div class="dropdown-content">
             <div class="supertype">
@@ -60,9 +50,6 @@
       <login-nav v-if="!userNickname"></login-nav>
       <after-login-nav v-if="userNickname" :userNickname="userNickname"></after-login-nav>
     </header>
-
-    
-
   </div>
 </template>
 
@@ -165,41 +152,11 @@ header {
   border-right: 2px solid #EEEEEE;
 }
 
-/*
-.dropdown-label {
-  font-size: 12px;
-  margin: 10px;
-  font-weight: bold;
-  color: rgb(50, 50, 50);
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropbtn_icon {
-  font-family: 'Material Icons';
-}
-*/
 
 .dropbtn {
   background-color: white;
   font-weight: 700;
   color: #393E46;
-  /* display: block;
-  border: 2px solid rgb(94, 94, 94);
-  border-radius: 4px;
-  background-color: #fcfcfc;
-  font-weight: 400;
-  color: rgb(124, 124, 124);
-  padding: 12px;
-  width: 240px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 12px;
-  z-index: 1;
-  position: relative; */
 
   
 }
@@ -212,6 +169,7 @@ header {
 }
 
 .dropdown-content {
+  padding: 0px 0px;
   cursor: pointer;
   display: none;
   position: absolute;
@@ -226,17 +184,6 @@ header {
   box-shadow: 2px 2px 7px -5px rgba(0,0,0,0.36);
 }
 
-/*
-.dropdown-content::-webkit-scrollbar {
-  width: 5px;
-  height: 10px;
-}
-
-.dropdown-content::-webkit-scrollbar-thumb {
-  border-radius: 2px;
-  background-color: rgb(194, 194, 194)
-}
-*/
 .dropdown-content .supertype,
 .dropdown-content .subtype {
   display: block;
@@ -245,12 +192,7 @@ header {
   font-size: 0.95rem;
   padding: 5px 20px;
 }
-/*
-.dropdown-content div:hover {
-  background-color: rgb(226, 226, 226);
-}
-*/
-/* .dropdown-content { */
+
 .dropdown-content.show {
   justify-content: center;
   align-items: flex-start;

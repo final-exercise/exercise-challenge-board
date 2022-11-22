@@ -1,11 +1,11 @@
 <template>
   <div class="container-user-mypage">
     <div class="div-mypage-menu">
-      <router-link :to="{name:'mypage-info'}">
-        <div class="div-menu-item active" @click="makeActive">나의 정보</div>
+      <router-link :to="{name:'myrecord-bmi'}">
+        <div class="div-menu-item active" @click="makeActive">나의 bmi</div>
       </router-link>
-      <router-link :to="{name:'mypage-wish'}">
-        <div class="div-menu-item" @click="makeActive">내가 찜한 동영상</div>
+      <router-link :to="{name:'myrecord-calendar'}">
+        <div class="div-menu-item" @click="makeActive">나의 한달은?</div>
       </router-link>
     </div>
     <div class="div-router-view">

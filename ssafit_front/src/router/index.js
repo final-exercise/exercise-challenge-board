@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import IndexView from '../views/IndexView.vue'
-
+import CoachManageView from "../views/CoachManageView.vue"
 import UserLogin from "../components/user/UserLogin.vue"
 import CoachLogin from "../components/coach/CoachLogin.vue"
 import VideoView from "../views/VideoView"
@@ -9,9 +9,13 @@ import ChallengeView from "../views/ChallengeView"
 import ChallengeCreate from "../components/challenge/ChallengeCreate.vue"
 import ChallengeIndex from "../components/challenge/ChallengeIndex.vue"
 import UserSignupEmail from "../components/user/signup/UserSignupEmail.vue"
-import UserMyPage from "../views/UserMyPageView.vue"
+import UserMyPageView from "../views/UserMyPageView.vue"
 import UserSignupView from "../views/UserSignupView.vue"
-
+import UserMyPageInfo from "../components/user/UserMyPageInfo.vue"
+import VideoWishList from "../components/video/VideoWishList.vue"
+import UserMyRecordView from "../views/UserMyRecordView.vue"
+import UserMyRecordBmi from "../components/user/myrecord/UserMyRecordBmi.vue";
+import UserMyRecordCalendar from "../components/user/myrecord/UserMyRecordCalendar.vue"
 
 Vue.use(VueRouter)
 
@@ -32,8 +36,18 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: UserLogin
-  },{
+    children:[
+      {
+        path: "",
+        component: UserLogin
+      },
+      {
+        path: "coach",
+        component: CoachLogin
+      }
+    ]
+  },
+  {
     path: "/signup",
     component: UserSignupView,
     children:[
@@ -41,15 +55,7 @@ const routes = [
       path: "email",
       component: UserSignupEmail
       }
-      
-    
     ]
-     
-  },
-  {
-    path: "/login/coach",
-    name: "login/coach",
-    component: CoachLogin
   },
   {
     path: "/video",
@@ -57,7 +63,19 @@ const routes = [
   },
   {
     path: "/mypage",
-    component: UserMyPage
+    component: UserMyPageView,
+    children:[
+      {
+        path:"info",
+        name:"mypage-info",
+        component: UserMyPageInfo
+      },
+      {
+        path:"wish",
+        name:"mypage-wish",
+        component: VideoWishList
+      }
+    ]
   },
   {
     path: "/challenge",
@@ -72,6 +90,26 @@ const routes = [
         path: "create",
         name: 'challenge-create',
         component: ChallengeCreate
+      }
+    ]
+  },
+  {
+    path: "/manage",
+    component: CoachManageView
+  },
+  {
+    path: "/myrecord",
+    component: UserMyRecordView,
+    children:[
+      {
+        path:"",
+        name: "myrecord-bmi",
+        component: UserMyRecordBmi
+      },
+      {
+        path: "calendar",
+        name: 'myrecord-calendar',
+        component: UserMyRecordCalendar
       }
     ]
   }

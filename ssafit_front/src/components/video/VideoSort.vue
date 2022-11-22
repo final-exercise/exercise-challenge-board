@@ -7,6 +7,12 @@
         <video-list-item :video="video"></video-list-item>
       </div>
     </div>
+    <v-pagination
+      v-model="page"
+      :length="10"
+      :color="`#81C784`"
+      @input="inputPage"
+    ></v-pagination>
   </div>
 </template>
 
@@ -22,6 +28,7 @@ export default {
     return{
       super:"",
       sub:"",
+      page:1,
       videos:[
       {
         videoSeq: 1,
@@ -57,10 +64,16 @@ export default {
     ]
     }
   },
+  methods: {
+    inputPage(pageNum){
+      console.log(pageNum);
+    }
+  },
   created(){
     const params = new URL(document.location).searchParams;
     this.super=params.get("super");
     this.sub=params.get("sub");
+    this.$store.dispatch('getVideoList',{super: this.super,sub: this.sub});
   }
 }
 </script>

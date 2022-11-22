@@ -11,10 +11,12 @@
         <challenge-my-item></challenge-my-item>
         <challenge-my-item></challenge-my-item>
     </div>
-    <div class="div-my-challenge-page">
-      <!--pagehelper에 page 가져와야함 -->
-      <div style="margin: 20px;">◀ 1 2 3 4 5 ▶</div>
-    </div>
+    <v-pagination
+      v-model="page"
+      :length="10"
+      :color="`#87A2FB`"
+      @input="inputPage"
+    ></v-pagination>
   </div>
 </template>
 
@@ -26,16 +28,14 @@ export default {
   },
   data(){
     return{
-      pages: 6,
-      pageNum: 1,
+      page: 1,
+    }
+  },
+  methods:{
+    inputPage(pageNum){
+      console.log(pageNum);
     }
   }
-  // ,
-  // beforeMount(){
-  //   if (this.pages<=1) return; 
-  //   var pageGroup = Math.ceil(this.pages/5);
-  //   var last = pageGroup * 5;
-  // }
 }
 </script>
 

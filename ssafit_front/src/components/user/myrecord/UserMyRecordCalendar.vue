@@ -1,7 +1,11 @@
 <template>
-  <div id="inspire">
-    <button @click="$refs.calendar.updateTimes()">갱신</button>
-    <div>
+  <div class="container-myrecord-calendar">
+    <div class="div-myrecord-calendar-title">
+      <h1>나의 한달은?</h1>
+      <div class="div-decorate" style="margin-left:0px; margin-bottom: 10px; width: 20%"></div>
+    </div>
+    <div class="div-myrecord-calendar-main">
+      <div class="div-myrecord-calendar">
         <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
@@ -22,6 +26,10 @@
           @click:day="tmpEvent"
         ></v-calendar>
       </v-sheet>
+      </div>
+      <div class="div-myrecord-write">
+        <div class="fieldset-write">&nbsp;</div>
+      </div>
     </div>
 
   </div>
@@ -85,6 +93,44 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container-myrecord-calendar{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  margin: 20px;
+  padding-right: 20px;
+}
 
+.div-myrecord-calendar-title{
+  min-height: 15%;
+  margin-top: 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.div-myrecord-calendar-main{
+  display: flex;
+  width: 100%;
+}
+
+.div-myrecord-calendar{
+  min-width: 60%;
+}
+
+.div-myrecord-write{
+  margin-top: 30px;
+  margin-left: 20px;
+  min-width: 40%;
+}
+.fieldset-write{
+  background-color:black;
+  min-width: 60%;
+  min-height: 70%;
+  border-radius: 30px;
+}
 </style>
