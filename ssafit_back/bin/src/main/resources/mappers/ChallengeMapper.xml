@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.ChallengeDao">
+
+	<resultMap type="ChallengeDto" id="ChallengeDtoMap">
+		<result column="challenge_seq" property="challengeSeq"/>
+		<result column="user_seq" property="createUserSeq"/>
+		<result column="is_public" property="isPublic"/>
+		<result column="duration" property="duration"/>
+		<result column="created_at" property="challengeCreatedAt"/>
+		<result column="updated_at" property="challengeUpdatedAt"/>
+	</resultMap>
+	
+	<resultMap type="VideoDto" id="VideoDtoMap">
+		<result column="video_seq" property="videoSeq"/>
+		<result column="video_id" property="videoId"/>
+		<result column="video_title" property="videoTitle"/>
+		<result column="video_channel_name" property="videoChannelName"/>
+		<result column="video_duration" property="videoDuration"/>
+		<result column="video_view_cnt" property="videoViewCnt"/>
+		<result column="video_cal" property="videoCal"/>
+		<result column="created_at" property="videoCreatedAt"/>
+		<result column="updated_at" property="videoUpdatedAt"/>
+		<result column="video_comment_cnt" property="videoCommentCnt"/>
+		<result column="video_wish_cnt" property="videoWishCnt"/>
+	</resultMap>
+	
+	<resultMap type="UserDto" id="UserDtoMap">
+		<result column="user_seq" property="userSeq" />
+		<result column="user_id" property="userId" />
+		<result column="user_password" property="userPassword" />
+		<result column="user_name" property="userName" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_birth" property="userBirth" />
+		<result column="user_nickname" property="userNickname" />
+		<result column="user_gender" property="userGender" />
+		<result column="created_at" property="userCreatedAt" />
+		<result column="updated_at" property="userUpdatedAt" />
+	</resultMap>
+	
+	<!-- public int insertChallenge(ChallengeDto challengeDto); -->
+	<!-- is_public 어케받닝 ? searchcondition처럼 받나? -->
+	<insert id="insertChallenge" parameterType="ChallengeDto">
+		INSERT INTO CHALLENGE (user_seq, is_public, duration)
+		VALUES (#{userSeq}, #{isPublic}, #{duration})
+	</insert>
+	
+	<!-- public Page<ChallengeDto> selectJoinedChallenges(int userSeq); -->
+	<select id="selectJoinedChallenges" resultMap="ChallengeDtoMap" parameterType="int">
+		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		FROM CHALLENGE c
+		JOIN CHALLENGE_JOIN j ON c.challenge_seq = j.challenge_seq
+		WHERE j.user_seq = #{userSeq} and c.is_valid = 1
+	</select>
+	
+	<!-- public ChallengeDto selectMyChallenge(int userSeq); -->
+	<select id="selectMyChallenge" resultType="ChallengeDto" parameterType="int">
+		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		FROM CHALLENGE
+		WHERE user_seq = #{userSeq} and is_valid = 1
+	</select>
+	
+	<select id="selectValidChallenge" resultMap="ChallengeDtoMap">
+		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		FROM CHALLENGE
+		WHERE is_valid = 1
+	</select>
+	
+	<!-- public ChallengeDto selectChallenge(int challengeSeq); -->
+	<select id="selectChallenge" resultType="ChallengeDto" parameterType="int">
+		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		FROM CHALLENGE
+		WHERE challenge_seq = #{challenge_seq} and is_valid = 1
+	</select>
+	
+	<!-- public List<VideoDto> selectChallengeVideos(int challengeSeq); -->
+	<select id="selectChallengeVideos" resultMap="VideoDtoMap" parameterType="int">
+		select video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
+			, (select count(*) from wish w where w.video_seq = v.video_seq and w.is_valid = 1) as video_wish_cnt
+			, (select count(*) from comment c where c.video_seq = v.video_seq and c.is_valid = 1) as video_comment_cnt
+		from video v
+        right outer join challenge_video cv on v.video_seq = cv.video_seq
+		where v.is_valid = 1 and cv.video_seq = #{videoSeq} 
+	</select>
+	
+	<!-- public List<UserDto> selectJoinedUsers(int challengeSeq); -->
+	<select id="selectJoinedUsers" resultMap="UserDtoMap" parameterType="int">
+		SELECT user_seq, user_id, user_name, user_email, user_birth, user_nickname, user_gender, created_at, updated_at
+		FROM USER u
+		WHERE u.user_seq = (SELECT user_seq
+							FROM CHALLENGE_JOIN c
+							WHERE c.challenge_seq = #{challengeSeq})
+	</select>
+	
+	<!-- public int insertChallengeJoin(Map<String, Integer> map); -->
+	<insert id="insertChallengeJoin" parameterType="Map">
+		INSERT INTO CHALLENGE_JOIN (challenge_seq, user_seq)
+		VALUES (#{challengeSeq}, #{userSeq})
+	</insert>
+	
+	<!-- public int insertChallengeJoinDaily(int challengeJoinSeq); -->
+	<insert id="insertChallengeJoinDaily" parameterType="int">
+		INSERT INTO CHALLENGE_JOIN_DAILY (challenge_seq)
+		VALUES (#{challengeSeq})
+	</insert>
+	
+	<!-- public int selectChallengeJoinSeq(Map<String, Integer> map); -->
+	<select id="selectChallengeJoinSeq" resultType="int" parameterType="Map">
+		SELECT challenge_join_seq
+		FROM CHALLENGE_JOIN
+		WHERE challenge_seq = #{challengeSeq} and user_seq = #{userSeq}
+	</select>
+	
+	<!-- public int selectUserJoinChallenge(Map<String, Integer> map); -->
+	<select id="selectUserJoinChallenge" resultType="int" parameterType="Map">
+		SELECT COUNT(*)
+		FROM CHALLENGE_JOIN
+		WHERE challenge_seq = #{challengeSeq} and user_seq = #{userSeq}
+	</select>
+	
+</mapper>

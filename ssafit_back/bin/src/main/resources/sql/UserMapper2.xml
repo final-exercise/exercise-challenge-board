@@ -1,0 +1,170 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.UserDao">
+
+
+	<resultMap type="Video" id="videoMap">
+		<result column="video_seq" property="videoSeq" />
+		<result column="video_id" property="videoId" />
+		<result column="part" property="part" />
+		<result column="view_cnt" property="videoViewCnt" />
+		<result column="channel_name" property="channelName" />
+		<result column="url" property="url" />
+		<result column="video_created_at" property="createdAt" />
+		<result column="video_updated_at" property="updatedAt" />
+	</resultMap>
+
+	<resultMap type="Review" id="reviewMap">
+		<result column="review_seq" property="reviewSeq" />
+		<result column="view_cnt" property="reviewViewCnt" />
+		<result column="review_title" property="reviewTitle" />
+		<result column="review_content" property="reviewContent" />
+		<result column="video_seq" property="videoSeq" />
+		<result column="user_seq" property="userSeq" />
+		<result column="review_created_at" property="reviewCreatedAt" />
+		<result column="review_updated_at" property="reviewUpdatedAt" />
+	</resultMap>
+
+	<resultMap type="User" id="userMap">
+		<result column="user_seq" property="userSeq" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="nickname" property="nickname" />
+		<result column="birth" property="birth" />
+		<result column="address" property="address" />
+		<result column="user_created_at" property="userCreatedAt" />
+		<result column="user_updated_at" property="userUpdatedAt" />
+	</resultMap>
+
+	<!-- public Page<Video> getVideos(SearchCondition sc); -->
+	<select id="getVideos" resultMap="videoMap"
+		parameterType="SearchCondition">
+		SELECT video_seq, video_id, part, view_cnt, channel_name, url,
+		video_created_at, video_updated_at
+		FROM VIDEO
+		<if test="key != 'none'">
+			WHERE ${key} like concat('%', #{word}, '%')
+		</if>
+		<if test="orderBy != 'none'">
+			order by ${orderBy} ${orderByDir}
+		</if>
+	</select>
+
+	<!-- public Video getVideo(int videoSeq); -->
+	<select id="getVideo" resultMap="videoMap" parameterType="int">
+		SELECT
+		video_seq, video_id, part, view_cnt, channel_name, url,
+		video_created_at, video_updated_at
+		FROM VIDEO
+		where video_seq =
+		#{videoSeq}
+	</select>
+
+	<!-- public void addViewCnt(String key, int seq); -->
+	<update id="addViewCnt" parameterType="Map">
+		UPDATE ${key}
+		SET view_cnt
+		= view_cnt + 1
+		WHERE ${column} = #{seq}
+	</update>
+
+	<!-- public Page<Review> getReviews(int videoSeq); -->
+	<select id="getReviews" resultMap="reviewMap" parameterType="int">
+		SELECT review_seq, view_cnt, review_title, review_content, video_seq,
+		user_seq, review_created_at, review_updated_at
+		FROM REVIEW
+	</select>
+
+	<!-- public Review getReview(int reviewSeq); -->
+	<select id="getReview" resultMap="reviewMap" parameterType="int">
+		SELECT
+		review_seq, view_cnt, review_title, review_content, video_seq,
+		user_seq, review_created_at, review_updated_at
+		FROM REVIEW
+		WHERE review_seq = #{reviewSeq}
+	</select>
+
+	<!-- public void createReview(Review review); -->
+	<insert id="createReview" parameterType="Review">
+		INSERT INTO REVIEW
+		(review_title, review_content, video_seq, user_seq)
+		VALUES
+		(#{reviewTitle}, #{reviewContent}, #{viedoSeq}, #{userSeq})
+	</insert>
+
+	<!-- public void deleteReview(int reviewSeq); -->
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM REVIEW
+		WHERE
+		review_seq = #{reviewSeq}
+	</delete>
+
+	<!-- public void updateReview(Review review); -->
+	<update id="updateReview" parameterType="Review">
+		UPDATE REVIEW
+		SET
+		review_title = #{reviewTitle}, review_content = #{reviewContent}
+		WHERE
+		review_seq = #{reviewSeq}
+	</update>
+
+	<!-- public User getUser(String id); -->
+	<select id="getUser" resultMap="userMap" parameterType="String">
+		SELECT
+		user_id, user_name, email, password, nickname, birth, address,
+		user_created_at, user_updated_at
+		FROM USER
+		WHERE user_id = #{id}
+	</select>
+
+	<!-- public void createUser(User user); -->
+	<insert id="createUser" parameterType="User">
+		INSERT INTO USER (user_id, user_name, email, password, nickname,
+		<if test="birth != null">birth, </if>
+		address)
+		VALUES (#{userId}, #{userName}, #{email}, #{password},
+		#{nickname},
+		<if test="birth != null"> #{birth}, </if>
+		#{address})
+	</insert>
+
+	<!-- public void createMyList(int videSeq, int userSeq); -->
+	<insert id="createMyList" parameterType="Map">
+		INSERT INTO My_List
+		(video_seq, user_seq)
+		VALUES (#{videoSeq}, #{userSeq})
+	</insert>
+
+	<!-- public void deleteMyList(int videSeq, int userSeq); -->
+	<delete id="deleteMyList" parameterType="Map">
+		DELETE FROM My_List
+		WHERE video_seq = #{videoSeq} and user_seq = #{userSeq}
+	</delete>
+
+	<!-- public Page<Video> getMyList(int userSeq); -->
+	<select id="getMyList" resultMap="videoMap" parameterType="int">
+		SELECT video_seq, video_id, part, view_cnt, channel_name, url, video_created_at, video_updated_at
+		FROM VIDEO
+		WHERE video_seq IN (SELECT video_seq
+		FROM My_List
+		WHERE user_seq = #{userSeq})
+	</select>
+
+	<!-- public int getMyListCnt(int videoSeq); 영상별 찜 수 -->
+	<select id="getMyListCnt" resultType="int" parameterType="int">
+		SELECT COUNT(*) FROM My_List
+		WHERE video_seq = #{videoSeq}
+	</select>
+
+	<!-- public int getMyVideo(int videoSeq, int userSeq); 해당 영상에 유저가 좋아요 했는지 -->
+	<select id="getMyVideo" resultType="int" parameterType="Map">
+		SELECT
+		COUNT(*) FROM My_List
+		WHERE video_seq = #{videoSeq} AND user_seq = #{userSeq}
+	</select>
+</mapper>
