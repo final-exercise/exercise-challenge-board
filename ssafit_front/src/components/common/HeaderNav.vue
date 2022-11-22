@@ -59,6 +59,9 @@
       <!-- login/signup 버튼 -->
       <login-nav></login-nav>
     </header>
+
+    
+
   </div>
 </template>
 
@@ -116,7 +119,8 @@ export default {
   data(){
     return{
       super:"",
-      sub:""
+      sub:"",
+
     }
   }, 
   methods: {
@@ -214,7 +218,6 @@ header {
   font-family: 'Material Icons';
 }
 */
-
 
 .dropbtn {
   background-color: white;
@@ -334,6 +337,7 @@ header {
   flex-direction: column;
   display: flex;
 }
+
 
 
 
