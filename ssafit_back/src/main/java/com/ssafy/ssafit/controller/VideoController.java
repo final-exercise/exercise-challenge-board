@@ -78,8 +78,9 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			result.put("res", vs.getVideo(videoSeq, userSeq));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
 			result.put("message", "get video success");
@@ -101,6 +102,7 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
+			//댓글 depth 설정해줘야함
 			int res = vs.registComment(commentDto);
 			
 			if (res != 1) {
@@ -179,9 +181,10 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
-			
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+
 			int res = vs.registUserWish(videoSeq, userSeq);
 			
 			if (res != 1) {
@@ -208,9 +211,10 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
-			
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+
 			int res = vs.deleteUserWish(videoSeq, userSeq);
 			
 			if (res != 1) {
