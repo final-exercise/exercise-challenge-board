@@ -6,7 +6,7 @@
       <h2>아이디와 비밀번호를 입력해주세요!</h2>
       <fieldset>
         <div class="div-id">
-          <input type="text" class="input-id" placeholder="아이디 입력" />
+          <input type="text" class="input-id" v-model="id" placeholder="아이디 입력" @click="checkDuplicatedUserId"/>
           <button class="button-check">✓</button>
         </div>
         <input type="password" placeholder="비밀번호 입력" />
@@ -56,6 +56,7 @@
 export default {
   data(){
     return{
+      id:"",
       isCompletedLevel1: true,
       isCompletedLevel2: true,
     }
@@ -66,6 +67,9 @@ export default {
     },
     completedLevel2(){
       this.isCompletedLevel2 = false;
+    },
+    checkDuplicatedUserId(){
+      
     }
   }
 }
