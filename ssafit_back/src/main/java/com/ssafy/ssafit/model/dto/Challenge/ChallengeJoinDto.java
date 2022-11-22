@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//이거안씀
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

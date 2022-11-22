@@ -11,7 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_name" property="userName" />
 		<result column="user_email" property="userEmail" />
 		<result column="user_birth" property="userBirth" />
-		<result column="user_address" property="userAddress" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="user_gender" property="userGender" />
 		<result column="created_at" property="userCreatedAt" />
@@ -63,8 +62,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- public int insertUser(UserDto userDto); -->
 	<insert id="insertUser" parameterType="UserDto">
-		insert into user (user_id, user_password, user_name, user_email, user_birth, user_address, user_nickname, user_gender) 
-		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userAddress}, #{userNickname}, #{userGender}); 
+		insert into user (user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) 
+		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userNickname}, #{userGender}); 
 	</insert>
 	
 	<!-- public UserDto getUserByUserId(String userId); -->

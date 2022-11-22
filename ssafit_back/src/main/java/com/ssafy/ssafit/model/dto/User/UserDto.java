@@ -16,7 +16,6 @@ public class UserDto {
 	private String userName;
 	private String userEmail;
 	private String userBirth;
-	private String userAddress;
 	private String userNickname;
 	private String userGender;
 	private String userCreatedAt;
