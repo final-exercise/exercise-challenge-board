@@ -47,6 +47,12 @@ export default {
   margin: 10px 10px 10px 20px;
 }
 
+a:link,
+a:active,
+a:hover,
+a:visited{
+  color: white;
+}
 .div-my-challenge-menu{
   margin: 20px 30px 0px 30px;
   display:flex;

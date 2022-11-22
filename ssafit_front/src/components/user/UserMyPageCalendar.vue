@@ -1,21 +1,12 @@
 <template>
   <div id="inspire">
+    <button @click="$refs.calendar.updateTimes()">갱신</button>
     <div>
-      
-        <v-btn
-          icon
-          class="ma-2"
-          @click="$refs.calendar.prev()"
-        >
+        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
-        
-        <v-spacer></v-spacer>
-        <v-btn
-          icon
-          class="ma-2"
-          @click="$refs.calendar.next()"
-        >
+
+        <v-btn icon class="ma-2" @click="$refs.calendar.next()">
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
 
@@ -26,14 +17,13 @@
           :weekdays="weekday"
           :type="type"
           :events="events"
-          :event-overlap-mode="mode"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
-          @change="getEvents"
           @click:day="tmpEvent"
         ></v-calendar>
       </v-sheet>
     </div>
+
   </div>
 </template>
 
@@ -44,7 +34,15 @@ export default {
     mode: 'stack',
     weekday: [0, 1, 2, 3, 4, 5, 6],
     value: '',
-    events: [],
+    events: [
+      {
+        "name":"스쿼트영상...(-400kcal)",
+        "start": "2022-11-18",
+        "end": "2022-11-18",
+        "color":"red",
+        "timed": true
+      },
+    ],
     colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
     names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
   }),
