@@ -50,6 +50,7 @@ button{
 
 fieldset{
   margin-top: 10px;
+  margin: 20px;
   padding: 30px;
   border: 1px solid rgba(125, 125, 125, 0.115);
   border-radius: 10px;
