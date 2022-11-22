@@ -3,9 +3,9 @@
     <div class="form-user-login">
       <h1>회원 로그인</h1>
       <fieldset>
-      <input class="input-id" type="text" placeholder="아이디 입력"/> <br>
-      <input class="input-password" type="password" placeholder="비밀번호 입력" />
-      <button>로그인</button>
+      <input class="input-id" type="text" placeholder="아이디 입력" v-model="user.userId" required/> <br>
+      <input class="input-password" type="password" placeholder="비밀번호 입력" v-model="user.userPassword" required/>
+      <button @click="userLogin">로그인</button>
       </fieldset>
     </div>
   </div>
@@ -13,7 +13,19 @@
 
 <script>
 export default {
-
+  data(){
+    return{
+      user:{
+        userId:"",
+        userPassword:"",
+      }
+    }
+  },
+  methods:{
+    userLogin(){
+      this.$store.dispatch('userLogin', this.user);
+    }
+  }
 }
 </script>
 

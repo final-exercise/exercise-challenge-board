@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
-	<select id="selectVideos" resultMap="VideoDtoMap" parameterType="SeachCondition">
+	<select id="selectVideos" resultMap="VideoDtoMap" parameterType="SearchCondition">
 		<!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
 		select video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
 			, (select count(*) from wish w where w.video_seq = v.video_seq and w.is_valid = 1) as video_wish_cnt

@@ -115,14 +115,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- public List<UserBmiDto> selectUserBmi(int userSeq); -->
-	<select id="selectUserBmi" parameterType="int" resultMap="UserBmiDtoMap">
+	<select id="selectUserBmi" parameterType="int" resultMap="userBmiDtoMap">
 		select user_weight, user_bmi, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
 		from user_bmi
 		where user_seq=#{userSeq};
 	</select>
 	
 	<!-- public List<UserWorkoutDto> selectUserWorkout(Map<String, Integer> map); -->
-	<select id="selectUserWorkout" parameterType="hashmap" resultMap="UserWorkoutDto">
+	<select id="selectUserWorkout" parameterType="hashmap" resultMap="userWorkoutDto">
 		select user_workout_seq, user_seq, w.video_seq, date_format(w.created_at, '%Y-%m-%d %H:%i:%s') as created_at, v.video_title as video_title, v.video_cal as video_cal
 		from user_workout w
 		join video v on v.video_seq = w.video_seq
@@ -130,13 +130,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- public int insertUserWorkout(PostUserWorkoutReqDto userWorkoutReqDto); -->
-	<insert id="insertUserWorkout" parameterType="UserWorkoutDto">
+	<insert id="insertUserWorkout" parameterType="userWorkoutDto">
 		insert into user_workout(user_seq, video_seq)
 		values (#{userSeq}, #{videoSeq});
 	</insert>
 	
 	<!-- public List<UserDietDto> selectUserDiet(Map<String, Integer> map); -->
-	<select id="selectUserDiet" parameterType="hashmap" resultMap="UserDietDtoMap">
+	<select id="selectUserDiet" parameterType="hashmap" resultMap="userDietDtoMap">
 		select *, date_format(created_at, '%Y-%m-%d %H:%i:%s') as created_at
 		from user_diet
 		where user_seq=#{userSeq} AND year(created_at)=#{year} AND month(created_at)=#{month};	
@@ -149,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- public Page<Video> selectWishVideo(int userSeq); -->
-	<select id="selectWishVideo" parameterType="int" resultMap="UserWishVideoMap">
+	<select id="selectWishVideo" parameterType="int" resultMap="userWishVideoMap">
 		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal
 		from video v
 		join wish w on w.video_seq = v.video_seq
@@ -157,7 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->
-	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="UserActivityDtoMap">
+	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="userActivityDtoMap">
 		select user_seq, user_nickname, ${sort} as "value", #{sort} as "key"
 		from user_activity
 		order by ${sort} DESC

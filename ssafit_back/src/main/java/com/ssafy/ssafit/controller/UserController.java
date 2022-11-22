@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,7 +90,15 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(UserDto userDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
+		
+		try {
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			System.out.println(userSeq);
+		} catch (NumberFormatException | BaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		try {
 			UserDto resUser = us.login(userDto);
 
@@ -471,7 +481,6 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> isDuplicatedUserId(@RequestParam String value) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
 		try {
 
 			int res = 1;

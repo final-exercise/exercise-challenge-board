@@ -57,7 +57,8 @@
       </nav>
     </div>
       <!-- login/signup 버튼 -->
-      <login-nav></login-nav>
+      <login-nav v-if="!userNickname"></login-nav>
+      <after-login-nav v-if="userNickname" :userNickname="userNickname"></after-login-nav>
     </header>
 
     
@@ -66,63 +67,26 @@
 </template>
 
 <script>
-// window.onload = () => {
-//   document.querySelector('.dropbtn_click').onclick = () => {
-//     dropdown();
-//   }
-//   document.getElementsByClassName('fastfood').onclick = () => {
-//     showMenu(value);
-//   };
-//   dropdown = () => {
-//     var v = document.querySelector('.dropdown-content');
-//     var dropbtn = document.querySelector('.dropbtn')
-//     v.classList.toggle('show');
-//     dropbtn.style.borderColor = 'rgb(94, 94, 94)';
-//   }
-
-//   showMenu = (value) => {
-//     var dropbtn_icon = document.querySelector('.dropbtn_icon');
-//     var dropbtn_content = document.querySelector('.dropbtn_content');
-//     var dropbtn_click = document.querySelector('.dropbtn_click');
-//     var dropbtn = document.querySelector('.dropbtn');
-
-//     dropbtn_icon.innerText = '';
-//     dropbtn_content.innerText = value;
-//     dropbtn_content.style.color = '#252525';
-//     dropbtn.style.borderColor = '#3992a8';
-//   }
-// }
-// window.onclick = (e) => {
-//   if (!e.target.matches('.dropbtn_click')) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-
-//     var dropbtn_icon = document.querySelector('.dropbtn_icon');
-//     var dropbtn_content = document.querySelector('.dropbtn_content');
-//     var dropbtn_click = document.querySelector('.dropbtn_click');
-//     var dropbtn = document.querySelector('.dropbtn');
-
-//     var i;
-//     for (i = 0; i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       if (openDropdown.classList.contains('show')) {
-//         openDropdown.classList.remove('show');
-//       }
-//     }
-//   }
-// }
+import AfterLoginNav from "./AfterLoginNav.vue"
 import LoginNav from "./LoginNav.vue"
 
 export default {
   components:{
     LoginNav,
+    AfterLoginNav
   },
   data(){
     return{
       super:"",
       sub:"",
-
+      userNickname:"",
     }
   }, 
+  computed: {
+  },
+  created(){
+    this.userNickname=sessionStorage.getItem("userNickname");
+  },
   methods: {
     dropdown(){
       var v = document.querySelector('.dropdown-content');

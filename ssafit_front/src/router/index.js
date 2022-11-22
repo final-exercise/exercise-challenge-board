@@ -9,7 +9,7 @@ import ChallengeView from "../views/ChallengeView"
 import ChallengeCreate from "../components/challenge/ChallengeCreate.vue"
 import ChallengeIndex from "../components/challenge/ChallengeIndex.vue"
 import UserSignupEmail from "../components/user/signup/UserSignupEmail.vue"
-import UserMyPageCalendar from "../components/user/UserMyPageCalendar"
+import UserMyPage from "../views/UserMyPageView.vue"
 import UserSignupView from "../views/UserSignupView.vue"
 
 
@@ -57,7 +57,7 @@ const routes = [
   },
   {
     path: "/mypage",
-    component: UserMyPageCalendar
+    component: UserMyPage
   },
   {
     path: "/challenge",

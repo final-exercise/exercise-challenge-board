@@ -6,11 +6,11 @@
       <h2>아이디와 비밀번호를 입력해주세요!</h2>
       <fieldset>
         <div class="div-id">
-          <input type="text" class="input-id" v-model="id" placeholder="아이디 입력" @click="checkDuplicatedUserId"/>
-          <button class="button-check">✓</button>
+          <input type="text" class="input-id" v-model="user.userId" placeholder="아이디 입력" ref="inputId" required/>
+          <button class="button-check"  @click="checkDuplicatedUserId">✓</button>
         </div>
-        <input type="password" placeholder="비밀번호 입력" />
-        <input type="password" placeholder="비밀번호 확인" />
+        <input type="password" placeholder="비밀번호 입력" ref="inputPassword" v-model="user.userPassword" required/>
+        <input type="password" placeholder="비밀번호 확인" v-model="user.userPasswordCheck" ref="inputPasswordCheck" required/>
         <button @click="completedLevel1">다음 단계로</button>
       </fieldset>
     </div>
@@ -18,20 +18,18 @@
     <div class="div-signup-level2" :class="{isVisible:isCompletedLevel1}">
       <h2>상세 정보를 입력해주세요!</h2>
       <fieldset>
-        <input type="text" placeholder="이름 입력" />
-        <input type="email" placeholder="이메일 입력" />
-        <input type="date" placeholder="생년월일 입력" style=" color: grey;"/>
-        <div class="div-id">
-          <input type="text" class="input-id" placeholder="닉네임 입력" />
-          <button class="button-check">✓</button>
+        <input type="text" placeholder="이름 입력" v-model="user.userName" ref="inputName" required/>
+        <input type="email" placeholder="이메일 입력" v-model="user.userEmail" ref="inputEmail" required/>
+        <input type="date" placeholder="생년월일 입력" style=" color: grey;" v-model="user.userBirth" ref="inputBirth" required/>
+        <div class="div-id" >
+          <input type="text" class="input-id" placeholder="닉네임 입력" v-model="user.userNickname" ref="inputNickname" required/>
+          <button class="button-check" @click="checkDuplicatedUserNickname">✓</button>
         </div>
-        <select>
+        <select ref="inputGender" required>
           <option>남성</option>
           <option>여성</option>
           <option>선택하지 않음</option>
         </select>
-        
-        <input type="text" placeholder="아이디 입력" />
         <button @click="completedLevel2">다음 단계로</button>
       </fieldset>
     </div>
@@ -41,35 +39,123 @@
       <h2 style="margin-bottom: 5px;">운동 목적을 선택해주세요!</h2>
       <span>코치를 매칭해드려요</span>
       <fieldset style="margin-top: 20px">
-        <button class="button-super">스트레칭</button>
-        <button class="button-super">근력강화</button>
-        <button class="button-super">체중감량</button>
-        <button class="button-super">교정</button>
-        <button class="button-super">스포츠</button>
-        <button>완료하기</button>
+        <button class="button-super" @click="selectType">스트레칭</button>
+        <button class="button-super" @click="selectType">근력강화</button>
+        <button class="button-super" @click="selectType">체중감량</button>
+        <button class="button-super" @click="selectType">교정</button>
+        <button class="button-super" @click="selectType">스포츠</button>
+        <button @click="signup">완료하기</button>
       </fieldset>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data(){
     return{
-      id:"",
       isCompletedLevel1: true,
       isCompletedLevel2: true,
+      isDuplicatedUserId: true,
+      isDuplicatedUserNickname: true,
+      user:{
+        userId:"",
+        userPassword:"",
+        userPasswordCheck:"",
+        userName:"",
+        userEmail:"",
+        userBirth:"",
+        userNickname:"",
+        userGender:"",
+        userType:""
+      }
     }
   },
   methods:{
     completedLevel1(){
+      if(this.user.userPassword!=this.user.userPasswordCheck){
+        window.alert("비밀번호가 다릅니다.");
+        this.$refs.inputPasswordCheck.focus();
+        return;
+      }
+
+      if(this.isDuplicatedUserId){
+        window.alert("아이디 중복 확인을 수행해주세요.");
+        this.$refs.inputId.focus();
+        return;
+      }
+
       this.isCompletedLevel1 = false;
     },
     completedLevel2(){
+      if(this.isDuplicatedUserNickname){
+        window.alert("닉네임 중복 확인을 수행해주세요.");
+        this.$refs.inputNickname.focus();
+        return;
+      }
       this.isCompletedLevel2 = false;
     },
     checkDuplicatedUserId(){
-      
+        let params = {
+          value:this.user.userId
+        }
+        axios({
+          url: `http://localhost:331/user/userId`,
+          method: 'GET',
+          params: params
+        })
+        .then((res) => {
+          if(res.data.res){
+            window.alert("중복된 아이디입니다.");
+            this.isDuplicatedUserId = true;
+            this.$refs.inputId.focus();
+          }else{
+            window.alert("사용 가능한 아이디입니다.");
+            this.isDuplicatedUserId = false;
+            this.$refs.inputPassword.focus();
+          }
+          
+        }).catch((err)=>{
+          console.log(err)
+        })
+    },
+    checkDuplicatedUserNickname(){
+        let params = {
+          value:this.user.userNickname
+        }
+        axios({
+          url: `http://localhost:331/user/nickname`,
+          method: 'GET',
+          params: params
+        })
+        .then((res) => {
+          if(res.data.res){
+            window.alert("중복된 닉네임입니다.");
+            this.isDuplicatedUserNickname = true;
+            this.$refs.inputNickname.focus();
+          }else{
+            window.alert("사용 가능한 닉네임입니다.");
+            this.isDuplicatedUserNickname = false;
+            this.$refs.inputGender.focus();
+          }
+          
+        }).catch((err)=>{
+          console.log(err)
+        })
+    },
+    selectType(event){
+      if(this.user.userType!=""){
+        let v = document.querySelector('.button-active');
+        v.classList.remove('button-active');
+      } 
+      this.user.userType = event.target.innerHTML;
+      event.target.classList.add('button-active');
+    },
+    signup(){
+      this.$store.dispatch('userSignup',this.user);
+      location.href=("/");
     }
   }
 }
@@ -165,5 +251,10 @@ input {
   height: 40px;
   display: flex;
   justify-content: flex-end;
+}
+
+.button-super.button-active{
+  background-color:rgb(255, 210, 210);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px inset;
 }
 </style>

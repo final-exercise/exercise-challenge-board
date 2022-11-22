@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @AllArgsConstructor
 public class UserDto {
 	private int userSeq;
@@ -20,4 +22,5 @@ public class UserDto {
 	private String userGender;
 	private String userCreatedAt;
 	private String userUpdatedAt;
+	private String userType;
 }

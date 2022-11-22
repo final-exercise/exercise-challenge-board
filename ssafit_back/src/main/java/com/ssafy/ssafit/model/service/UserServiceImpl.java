@@ -200,6 +200,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			return ud.selectCntByUserId(userId);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}

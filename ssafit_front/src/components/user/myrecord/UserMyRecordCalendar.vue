@@ -37,8 +37,7 @@ export default {
     events: [
       {
         "name":"스쿼트영상...(-400kcal)",
-        "start": "2022-11-18",
-        "end": "2022-11-18",
+        "start": "2022-11-10",
         "color":"red",
         "timed": true
       },
