@@ -24,6 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	<!-- public int insertComment(CommentDto commentDto); -->
 	<insert id="insertComment" parameterType="CommentDto">
+		<!--<selectKey keyProperty="param.idx" resultType="int" order="BEFORE">
+			select max(comment_seq)+1 from comment
+		</selectKey>  -->
+		
 		INSERT INTO COMMENT (comment_content, video_seq, 
 		<choose>
 			<when test="isCoach == 1">
@@ -44,12 +48,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</otherwise>
 		</choose>
 		#{commentDepth}, #{bundleId})
+		
+		<selectKey keyProperty="commentSeq" resultType="Integer">
+			select comment_seq from comment order by created_at desc limit 1;
+		</selectKey>
 	</insert>
 	
 	<!-- public int updateComment(CommentDto commentDto); -->
 	<update id="updateComment" parameterType="CommentDto">
 		UPDATE COMMENT
-		SET comment_content = #{commentContent}
+		SET comment_content = #{commentContent}, bundle_id = #{bundleId}, comment_depth = #{commentDepth}
 		WHERE comment_seq = #{commentSeq}
 	</update>
 	

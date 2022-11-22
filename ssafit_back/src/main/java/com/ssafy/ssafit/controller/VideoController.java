@@ -95,17 +95,32 @@ public class VideoController {
 		}
 	}
 	
-	// 3) [POST] /video/{videoSeq}?commentSeq={commentSeq}
+	// 3) [POST] /video/{videoSeq}?bundleId={bundleId}
 	@PostMapping("/{videoSeq}")
-	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, CommentDto commentDto) {
+	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, String bundleId, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		
 		try {
-			//댓글 depth 설정해줘야함
-//			commentDto.setBundleId(commentDto.getCommentSeq());
-			int res = vs.registComment(commentDto);
+			int res = ((Integer) vs.registComment(commentDto)).intValue();
 			
+			if (res != 1) {
+				throw new BaseException(FAIL, 500, "insert comment fail");
+			}
+			
+			System.out.println(bundleId);
+			//댓글 depth 설정해줘야함
+			if(bundleId == null) {
+				commentDto.setBundleId(commentDto.getCommentSeq());
+				commentDto.setCommentDepth(0);
+			}
+			else {
+				commentDto.setBundleId(Integer.parseInt(bundleId));
+				commentDto.setCommentDepth(1);
+			}
+
+			//depth설정해준거 반영
+			res = vs.updateComment(commentDto);
 			if (res != 1) {
 				throw new BaseException(FAIL, 500, "insert comment fail");
 			}
@@ -132,7 +147,7 @@ public class VideoController {
 		try {
 			int res = vs.deleteComment(commentSeq);
 			
-			if (res != 1) {
+			if (res == 0) {
 				throw new BaseException(FAIL, 500, "delete comment fail");
 			}
 			
@@ -158,7 +173,7 @@ public class VideoController {
 		try {
 			int res = vs.updateComment(commentDto);
 			
-			if (res != 1) {
+			if (res == 0) {
 				throw new BaseException(FAIL, 500, "update comment fail");
 			}
 			
@@ -218,7 +233,7 @@ public class VideoController {
 
 			int res = vs.deleteUserWish(videoSeq, userSeq);
 			
-			if (res != 1) {
+			if (res == 0) {
 				throw new BaseException(FAIL, 500, "delete mylist fail");
 			}
 			

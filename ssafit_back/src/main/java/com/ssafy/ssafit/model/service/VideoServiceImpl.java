@@ -109,6 +109,7 @@ public class VideoServiceImpl implements VideoService {
 			commentDto.setNickname(cd.selectNickname(map));
 			return cd.insertComment(commentDto);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
