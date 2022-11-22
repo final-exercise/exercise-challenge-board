@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.ChallengeDao">
+	<resultMap type="ChallengeDto" id="ChallengeDtoMap">
+		<result column="challenge_seq" property="challengeSeq"/>
+		<result column="user_seq" property="createUserSeq"/>
+		<result column="is_public" property="isPublic"/>
+		<result column="duration" property="duration"/>
+		<result column="created_at" property="challengeCreatedAt"/>
+		<result column="updated_at" property="challengeUpdatedAt"/>
+	</resultMap>
+	
+	<resultMap type="VideoDto" id="VideoDtoMap">
+		<result column="video_seq" property="videoSeq"/>
+		<result column="video_id" property="videoId"/>
+		<result column="video_title" property="videoTitle"/>
+		<result column="video_channel_name" property="videoChannelName"/>
+		<result column="video_duration" property="videoDuration"/>
+		<result column="video_view_cnt" property="videoViewCnt"/>
+		<result column="video_cal" property="videoCal"/>
+		<result column="created_at" property="videoCreatedAt"/>
+		<result column="updated_at" property="videoUpdatedAt"/>
+		<result column="video_comment_cnt" property="videoCommentCnt"/>
+		<result column="video_wish_cnt" property="videoWishCnt"/>
+	</resultMap>
+	
+	//챌린지 생성
+	<!-- public int insertChallenge(ChallengeDto challengeDto); -->
+	<!-- is_public 어케받닝 ? searchcondition처럼 받나? -->
+	<insert id="insertChallenge" parameterType="ChallengeDto">
+		INSERT INTO CHALLENGE (user_seq, is_public, duration)
+		VALUES (#{userSeq}, #{isPublic}, #{duration})
+	</insert>
+	
+	//내가 참여중인 챌린지 가져오기
+	<!-- public Page<ChallengeDto> selectJoinChallenge(int userSeq); -->
+	<select id="selectJoinChallenge" resultMap="ChallengeDtoMap" parameterType="int">
+	
+	</select>
+	
+	//내가 만든 챌린지 가져오기
+	<!-- public ChallengeDto selectMyChallenge(int userSeq); -->
+	<select id="selectMyChallenge" resultType="ChallengeDto" parameterType="int">
+	
+	</select>
+	
+	//현재 진행중인 챌린지 가져오기 -> isvalid=1 인거 가져오면되나?
+	<!-- public Page<ChallengeDto> selectValidChallenge(); -->
+	<select id="selectValidChallenge" resultMap="ChallengeDtoMap">
+		   
+	</select>
+	
+	//챌린지seq의 영상 목록 가져오기
+	<!-- public Page<VideoDto> selectChallengeVideos(int challengeSeq); -->
+	<select id="selectChallengeVideos" resultMap="VideoDtoMap" parameterType="int">
+	
+	</select>
+	
+	//챌린지 join하기  <"challengeSeq", "userSeq">
+	<!-- public int insertChallengeJoin(Map<String, Integer> map); -->
+	<insert id="insertChallengeJoin" parameterType="Map">
+	
+	</insert>
+	
+	//챌린지 join한 상태에서 그날 참여진행(운동함)
+	<!-- public int insertChallengeJoinDaily(int challengeJoinSeq); -->
+	<insert id="insertChallengeJoinDaily" parameterType="int">
+	
+	</insert>
+	
+	//회원seq가 해당 챌린지seq의 joinSeq 가져오기 <"challengeSeq", "userSeq">
+	//public ChallengeJoinDto selectChallengeJoinDto(Map<String, Integer> map); 어떤거 해야하지
+	<!-- public int selectChallengeJoinSeq(Map<String, Integer> map); -->
+	<select id="selectChallengeJoinSeq" resultType="int" parameterType="Map">
+	
+	</select>
+	
+	//회원seq가 해당 챌린지seq에 참여중인지 아닌지 <"challengeSeq", "userSeq">
+	<!-- public int selectUserJoinChallenge(Map<String, Integer> map); -->
+	<select id="selectUserJoinChallenge" resultType="int" parameterType="Map">
+	
+	</select>
+	
+</mapper>
