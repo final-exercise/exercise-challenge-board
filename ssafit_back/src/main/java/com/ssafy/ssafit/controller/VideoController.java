@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
@@ -46,12 +47,11 @@ public class VideoController {
 		this.vs = vs;
 	}
 	
-	// 1) [GET] /video/page={page}&super={super}&sub={sub}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
+	// 1) [GET] /video?page={page}&super={super}&sub={sub}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
 		try {
 			int page = sc.getPage();
 			if(page == 0)
@@ -78,8 +78,9 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			result.put("res", vs.getVideo(videoSeq, userSeq));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
 			result.put("message", "get video success");
@@ -94,13 +95,15 @@ public class VideoController {
 		}
 	}
 	
-	// 3) [POST] /video/{videoSeq}
+	// 3) [POST] /video/{videoSeq}?commentSeq={commentSeq}
 	@PostMapping("/{videoSeq}")
 	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		
 		try {
+			//댓글 depth 설정해줘야함
+//			commentDto.setBundleId(commentDto.getCommentSeq());
 			int res = vs.registComment(commentDto);
 			
 			if (res != 1) {
@@ -146,8 +149,8 @@ public class VideoController {
 		}
 	}
 	
-	// 5) [POST] /video/{commentSeq}
-	@PostMapping("/{commentSeq}")
+	// 5) [POST] /video/comment/{commentSeq}
+	@PostMapping("/comment/{commentSeq}")
 	public ResponseEntity<Map<String, Object>> updateComment(@PathVariable("commentSeq") int commentSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
@@ -179,9 +182,10 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
-			
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+
 			int res = vs.registUserWish(videoSeq, userSeq);
 			
 			if (res != 1) {
@@ -208,9 +212,10 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
-			
+//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
+//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+
 			int res = vs.deleteUserWish(videoSeq, userSeq);
 			
 			if (res != 1) {

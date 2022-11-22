@@ -143,7 +143,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- public int insertUserDiet(UserDietDto userDietDto); -->
-	<insert id="insertUserDiet" parameterType="UserDietDto">
+	<insert id="insertUserDiet" parameterType="userDietDto">
 		insert into user_diet(diet_seq, diet_name, diet_img_url, diet_cal, user_seq)
 		values (#{dietSeq}, #{dietName}, #{dietImgUrl}, #{dietCal}, #{userSeq});
 	</insert>
