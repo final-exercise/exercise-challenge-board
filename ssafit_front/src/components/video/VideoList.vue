@@ -3,7 +3,7 @@
     <div v-for="(video, index) in videos" :key="index">
         <video-list-item :video="video"></video-list-item>
     </div>
-  
+    
   </div>
 
 </template>
@@ -16,40 +16,19 @@ export default {
   },
   data(){
     return{
-    videos:[
-      {
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      }, {
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      }
-    ]
-  }
+      videos:[{
+        videoSeq:1,
+        videoTitle:"dudtkd1",
+        videoId: "6j5CB0yeemg",
+        videoPart: "total",
+        channelName:"hi"
+      }]
+    }
+  },
+  methods: {
+    inputPage(pageNum){
+      console.log(pageNum);
+    }
   }
 }
 </script>

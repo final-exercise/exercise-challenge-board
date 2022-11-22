@@ -6,10 +6,10 @@
       </div>
       <div class="div-challenge-video-list">
         <div class="div-challenge-video">
-          <h3>안녕하세요??</h3>
+          <h4>안녕하세요??</h4>
         </div>
         <div class="div-challenge-video">
-          <h3>두번째영상??</h3>
+          <h4>두번째영상??</h4>
         </div>
       </div>
       <div class="div-challenge-make-button">
@@ -17,18 +17,21 @@
       </div>
     </div>
     <div class="div-wish-video-list">
-      <h1>내가 찜한 영상</h1>
-      <div class="div-decorate"></div>
-      <video-list></video-list>
+      <!-- <h1>내가 찜한 영상</h1> -->
+      <!-- <div class="div-decorate"></div> -->
+      <!-- <video-list></video-list> -->
+      <video-wish-list></video-wish-list>
     </div>
   </div>
 </template>
 
 <script>
-import VideoList from "@/components/video/VideoList.vue"
+// import VideoList from "@/components/video/VideoList.vue"
+import VideoWishList from "@/components/video/VideoWishList.vue";
+
 export default {
   components:{
-    VideoList
+    VideoWishList
   }
 }
 </script>
@@ -41,6 +44,7 @@ export default {
 .div-challenge-make{
   background-color: rgb(219, 219, 219);
   /* flex-shrink:; */
+  height: 100vh;
   min-width: 30%;
 }
 
@@ -57,6 +61,7 @@ export default {
 }
 
 .div-wish-video-list{
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 25px;

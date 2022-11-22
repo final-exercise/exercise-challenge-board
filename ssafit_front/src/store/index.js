@@ -10,12 +10,23 @@ const REST_API = `http://localhost:331/`;
 export default new Vuex.Store({
   state: {
     user:"",
+    videoList:[{
+      videoSeq:1,
+      videoTitle:"dudtkd1",
+      videoId: "6j5CB0yeemg",
+      part: "bottom",
+      channelName:"hi"
+    },],
+    selectedVideoList:[],
   },
   getters: {
   },
   mutations: {
     GET_USER(state, data){
       state.user = data;
+    },
+    GET_WISH_VIDEO(state,data){
+      // state.videoList = data;
     }
   },
   actions: {
@@ -86,6 +97,16 @@ export default new Vuex.Store({
       sessionStorage.removeItem("access-token");
       sessionStorage.removeItem("userNickname");
       window.location.href = "/";
+    },
+    getVideoTypeList({commit}, obj){
+      //추가 필요 ->  super, sub 가지고 영상 가져오기
+      //페이지 잡아서
+      console.log(obj.super);
+      console.log(obj.sub);
+    },
+    getWishVideoList({commit}){
+      //추가 필요-> 헤더에서 userseq 추출하고 wish 비디오 다 가져오기
+      //페이지 잡아서
     },
   },
   modules: {

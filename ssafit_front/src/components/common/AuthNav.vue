@@ -6,14 +6,15 @@
         <button ><a @click="modalStatusChange">코치</a></button>
     </nav>
 
-    <div @click="modalStatusChange" class="modal-coach-login" :class="{modalVisib:isModal}">
+    <div class="modal-coach-login" :class="{modalVisib:isModal}">
+      
       <div class="form-coach-login">
         <h1>코치 로그인</h1>
        
         <input class="input-id" type="text" placeholder="아이디 입력"/> <br>
         <input class="input-password" type="password" placeholder="비밀번호 입력" />
         <button class="button-modal">로그인</button>
-
+        <button class="button-close" @click="modalStatusChange" >X</button>
         </div>
     </div> 
   
@@ -135,6 +136,14 @@ a{
   background-color: #ff8b95;
   color: white;
   font-weight: 500;
+}
+
+.button-close{
+  margin-top: 20px;
+  background-color: rgb(242, 242, 242);
+  border: 2px solid rgb(219, 219, 219);
+  border-radius:30px;
+  width:37px;
 }
 
 </style>
