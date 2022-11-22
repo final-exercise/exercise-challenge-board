@@ -25,10 +25,11 @@
           <input type="text" class="input-id" placeholder="닉네임 입력" v-model="user.userNickname" ref="inputNickname" required/>
           <button class="button-check" @click="checkDuplicatedUserNickname">✓</button>
         </div>
-        <select ref="inputGender" required>
-          <option>남성</option>
-          <option>여성</option>
-          <option>선택하지 않음</option>
+        <select ref="inputGender" v-model="user" required>
+          <option value="" selected disabled hidden >성별 선택</option>
+          <option :value="{userGender: 'M'}" default>남성</option>
+          <option :value="{userGender: 'F'}">여성</option>
+          <option :value="{userGender: 'N'}">선택하지 않음</option>
         </select>
         <button @click="completedLevel2">다음 단계로</button>
       </fieldset>
@@ -245,6 +246,7 @@ fieldset {
 }
 
 input {
+  border-radius: 8px;
   margin-top: 20px;
   background-color: #EEEEEE;
   width: 250px;

@@ -9,10 +9,14 @@ const REST_API = `http://localhost:331/`;
 
 export default new Vuex.Store({
   state: {
+    user:"",
   },
   getters: {
   },
   mutations: {
+    GET_USER(state, data){
+      state.user = data;
+    }
   },
   actions: {
     userSignup({commit}, payload){
@@ -26,7 +30,6 @@ export default new Vuex.Store({
           userGender: payload.userGender,
           userType: payload.userType
       }
-      
       const API_URL = `${REST_API}/user/signup`
       axios({
         url: API_URL,
@@ -51,9 +54,6 @@ export default new Vuex.Store({
         url: API_URL,
         method: 'POST',
         params: userDto,
-        // headers: {
-        //   "access-token": sessionStorage.getItem("access-token")
-        // }
       })
       .then((res) => {
         if(!res.data.isSuccess){
@@ -61,12 +61,32 @@ export default new Vuex.Store({
         } else{
           sessionStorage.setItem("access-token", res.data["access-token"])
           sessionStorage.setItem("userNickname", res.data.res.userNickname);
-          router.push({name: 'index'})
+          window.location.href = "/";
         }
       }).catch((err)=>{
         console.log(err)
       })
-    }
+    },
+    getUser({commit}){
+      const API_URL = `${REST_API}/user`
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        }
+      })
+      .then((res) => {
+        commit('GET_USER', res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
+    logout({commit}){
+      sessionStorage.removeItem("access-token");
+      sessionStorage.removeItem("userNickname");
+      window.location.href = "/";
+    },
   },
   modules: {
   }

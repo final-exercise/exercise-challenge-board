@@ -9,7 +9,7 @@
     <button class="button-login">
       <router-link to="/login">나의 기록</router-link>
     </button>
-    <button class="button-logout">
+    <button class="button-logout" @click="logout">
       <a>로그아웃</a>
     </button>
   </div>
@@ -17,7 +17,12 @@
 
 <script>
 export default {
-  props:['userNickname']
+  props:['userNickname'],
+  methods:{
+    logout(){
+      this.$store.dispatch('logout');
+    }
+  }
 }
 </script>
 

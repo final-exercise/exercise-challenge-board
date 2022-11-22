@@ -13,7 +13,6 @@ CREATE TABLE `USER` (
 	`user_name`	VARCHAR(30)	NOT NULL,
 	`user_email`	VARCHAR(100)	NOT NULL,
 	`user_birth`	DATE	NULL,
-	`user_address`	VARCHAR(200)	NULL,
 	`user_nickname`	VARCHAR(30)	NOT NULL unique,
 	`user_gender`	VARCHAR(2)	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -45,7 +44,6 @@ CREATE TABLE `COACH` (
 	`coach_name`	VARCHAR(30)	NOT NULL,
 	`coach_email`	VARCHAR(100)	NOT NULL,
 	`coach_birth`	DATE	NULL,
-	`coach_address`	VARCHAR(200)	NULL,
 	`coach_nickname`	VARCHAR(30)	NOT NULL unique, 
 	`coach_gender`	VARCHAR(2)	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -90,7 +88,7 @@ CREATE TABLE `CHATROOM` (
 );
 
 DROP TABLE IF EXISTS `COMMENT`;
-
+  
 CREATE TABLE `COMMENT` (
 	`comment_seq`	INT	NOT NULL auto_increment primary key,
 	`comment_content`	VARCHAR(500)	NOT NULL,
@@ -98,6 +96,21 @@ CREATE TABLE `COMMENT` (
 	`coach_seq`	INT	NULL,
 	`user_seq`	INT	NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
+);
+
+DROP TABLE IF EXISTS `COMMENT`;
+
+CREATE TABLE `COMMENT` (
+	`comment_seq`	INT	NOT NULL auto_increment primary key,
+	`comment_content`	VARCHAR(500)	NOT NULL,
+	`video_seq`	INT	NOT NULL,
+	`coach_seq`	INT	NULL,
+	`user_seq`	INT	NULL,
+	`comment_depth`	INT	NULL,
+	`bundle_id`	INT	NULL,
+     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
@@ -183,7 +196,6 @@ DROP TABLE IF EXISTS `CHALLENGE_JOIN_DAILY`;
 CREATE TABLE `CHALLENGE_JOIN_DAILY` (
 	`challenge_join_daily_seq`	INT	NOT NULL auto_increment primary key,
 	`challenge_join_seq`	INT	NOT NULL,
-	`challenge_join_date`	DATE	NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -192,8 +204,8 @@ CREATE TABLE `CHALLENGE_JOIN_DAILY` (
 DROP TABLE IF EXISTS `workout_super_type`;
 
 CREATE TABLE `workout_super_type` (
-	`workout_super_class_seq`	INT	NOT NULL,
-	`workout_super_class_type`	varchar(30)	NOT NULL,
+	`workout_super_type_seq`	INT	NOT NULL,
+	`workout_super_type_type`	varchar(30)	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -202,9 +214,9 @@ CREATE TABLE `workout_super_type` (
 DROP TABLE IF EXISTS `COACH_SUPER_TYPE`;
 
 CREATE TABLE `COACH_SUPER_TYPE` (
-	`coach_super_class_seq`	INT	NOT NULL auto_increment primary key,
+	`coach_super_type_seq`	INT	NOT NULL auto_increment primary key,
 	`coach_seq`	INT	NOT NULL,
-	`workout_super_class_seq`	INT	NOT NULL,
+	`workout_super_type_seq`	INT	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -213,8 +225,8 @@ CREATE TABLE `COACH_SUPER_TYPE` (
 DROP TABLE IF EXISTS `workout_sub_type`;
 
 CREATE TABLE `workout_sub_type` (
-	`workout_sub_class_seq`	INT	NOT NULL,
-	`workout_sub_class_type`	varchar(30)	NOT NULL,
+	`workout_sub_type_seq`	INT	NOT NULL,
+	`workout_sub_type_type`	varchar(30)	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -225,7 +237,7 @@ DROP TABLE IF EXISTS `video_super_type`;
 CREATE TABLE `video_super_type` (
 	`video_super_type_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`workout_super_class_seq`	INT	NOT NULL,
+	`workout_super_type_seq`	INT	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -236,7 +248,7 @@ DROP TABLE IF EXISTS `video_sub_type`;
 CREATE TABLE `video_sub_type` (
 	`video_sub_type_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`workout_sub_class_seq`	INT	NOT NULL,
+	`workout_sub_type_seq`	INT	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -270,11 +282,11 @@ ALTER TABLE `USER_ACTIVITY` ADD CONSTRAINT `PK_USER_ACTIVITY` PRIMARY KEY (
 );
 
 ALTER TABLE `workout_super_type` ADD CONSTRAINT `PK_WORKOUT_SUPER_TYPE` PRIMARY KEY (
-	`workout_super_class_seq`
+	`workout_super_type_seq`
 );
 
 ALTER TABLE `workout_sub_type` ADD CONSTRAINT `PK_WORKOUT_SUB_TYPE` PRIMARY KEY (
-	`workout_sub_class_seq`
+	`workout_sub_type_seq`
 );
 
 -- ALTER TABLE `USER_BMI` ADD CONSTRAINT `PK_USER_BMI` PRIMARY KEY (
@@ -422,10 +434,10 @@ REFERENCES `COACH` (
 );
 
 ALTER TABLE `COACH_SUPER_TYPE` ADD CONSTRAINT `FK_workout_super_type_TO_COACH_SUPER_TYPE_1` FOREIGN KEY (
-	`workout_super_class_seq`
+	`workout_super_type_seq`
 )
 REFERENCES `workout_super_type` (
-	`workout_super_class_seq`
+	`workout_super_type_seq`
 );
 
 ALTER TABLE `video_super_type` ADD CONSTRAINT `FK_VIDEO_TO_video_super_type_1` FOREIGN KEY (
@@ -436,10 +448,10 @@ REFERENCES `VIDEO` (
 );
 
 ALTER TABLE `video_super_type` ADD CONSTRAINT `FK_workout_super_type_TO_video_super_type_1` FOREIGN KEY (
-	`workout_super_class_seq`
+	`workout_super_type_seq`
 )
 REFERENCES `workout_super_type` (
-	`workout_super_class_seq`
+	`workout_super_type_seq`
 );
 
 ALTER TABLE `video_sub_type` ADD CONSTRAINT `FK_VIDEO_TO_video_sub_type_1` FOREIGN KEY (
@@ -450,10 +462,10 @@ REFERENCES `VIDEO` (
 );
 
 ALTER TABLE `video_sub_type` ADD CONSTRAINT `FK_workout_sub_type_TO_video_sub_type_1` FOREIGN KEY (
-	`workout_sub_class_seq`
+	`workout_sub_type_seq`
 )
 REFERENCES `workout_sub_type` (
-	`workout_sub_class_seq`
+	`workout_sub_type_seq`
 );
 
 ALTER TABLE `COACH_USER` ADD CONSTRAINT `FK_COACH_TO_COACH_USER_1` FOREIGN KEY (

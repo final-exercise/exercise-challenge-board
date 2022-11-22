@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ import io.swagger.annotations.Api;
 @RequestMapping("/user")
 @RestController
 @Api("User")
+@CrossOrigin(origins = "*")
 public class UserController {
 
 	private JwtUtil jwtUtil;
@@ -86,18 +88,10 @@ public class UserController {
 	}
 
 	// 2) [POST] /user/login
-	@PostMapping("/login")
+	@PostMapping("login")
 	public ResponseEntity<Map<String, Object>> login(UserDto userDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
-		try {
-			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
-			System.out.println(userSeq);
-		} catch (NumberFormatException | BaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		try {
 			UserDto resUser = us.login(userDto);
@@ -130,14 +124,16 @@ public class UserController {
 
 	// 3) [GET] /user
 	// jwt 추가 필요
-	@GetMapping("/")
-	public ResponseEntity<Map<String, Object>> getUser(int userSeq) {
-//		int userSeq;
+	@GetMapping("")
+	public ResponseEntity<Map<String, Object>> getUser() {
+		int userSeq;
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
+		System.out.println(1);
 		try {
-//			userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			System.out.println(1);
+			userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			System.out.println(userSeq);
 			UserDto resUser = us.getUser(userSeq);
 
 			result.put("message", "get user success");
@@ -156,7 +152,7 @@ public class UserController {
 
 	// 4) [DELETE] /user
 	// jwt 추가 필요
-	@DeleteMapping("/")
+	@DeleteMapping("")
 	public ResponseEntity<Map<String, Object>> deleteUser(int userSeq) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
@@ -183,7 +179,7 @@ public class UserController {
 	}
 
 	// 5) [POST] /user
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<Map<String, Object>> postUser(UserDto userDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
