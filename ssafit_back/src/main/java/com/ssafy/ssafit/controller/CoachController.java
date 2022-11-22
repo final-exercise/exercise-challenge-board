@@ -314,4 +314,7 @@ public class CoachController {
 			return new ResponseEntity<Map<String, Object>>(result, status);
 		}
 	}
+	
+	//**1122추가 
+
 }

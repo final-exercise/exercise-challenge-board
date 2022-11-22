@@ -68,6 +68,9 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
+			
+			String userType = userDto.getUserType();
+			
 			int res = us.signup(userDto);
 
 			if (res != 1) {
