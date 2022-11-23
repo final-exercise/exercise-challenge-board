@@ -32,6 +32,7 @@ public class VideoServiceImpl implements VideoService {
 		try {
 			return vd.selectVideos(sc);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
@@ -58,7 +59,27 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public int registVideo(VideoDto videoDto) throws BaseException {
 		try {
-			return vd.insertVideo(videoDto);
+			// 비디오 dto넣고
+			int res;
+			try {
+				res = vd.insertVideo(videoDto);
+			} catch(Exception e) {
+				throw new BaseException(FAIL, 500, "database error");
+			}
+			// 비디오 type 넣기
+			Map<String, String> map = new HashMap<>();
+			map.put("videoSeq", String.valueOf(videoDto.getVideoSeq()));
+			// 비디오 superTypeSeq
+			map.put("superTypeSeq", vd.selectVideoSuperTypeSeq(videoDto.getSuperType()));
+			// 비디오 subTypeSeq
+			map.put("subTypeSeq", vd.selectVideoSubTypeSeq(videoDto.getSuperType()));
+			try {
+				res = vd.insertSuperType(map);
+				res = vd.insertSubType(map);
+			} catch(Exception e) {
+				throw new BaseException(FAIL, 500, "database error");
+			}
+			return res;
 		} catch(Exception e) {
 			throw new BaseException(FAIL, 500, "database error");
 		}

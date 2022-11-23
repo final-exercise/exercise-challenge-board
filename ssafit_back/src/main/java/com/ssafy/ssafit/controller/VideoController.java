@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dto.Comment.CommentDto;
 import com.ssafy.ssafit.model.dto.Video.SearchCondition;
+import com.ssafy.ssafit.model.dto.Video.VideoDto;
 import com.ssafy.ssafit.model.service.VideoService;
 import com.ssafy.ssafit.model.service.VideoServiceImpl;
 import com.ssafy.ssafit.util.JwtUtil;
@@ -78,8 +77,6 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			result.put("res", vs.getVideo(videoSeq, userSeq));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
@@ -165,7 +162,7 @@ public class VideoController {
 	}
 	
 	// 5) [POST] /video/comment/{commentSeq}
-	@PostMapping("comment/{commentSeq}")
+	@PostMapping("/comment/{commentSeq}")
 	public ResponseEntity<Map<String, Object>> updateComment(@PathVariable("commentSeq") int commentSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
@@ -197,8 +194,6 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 
 			int res = vs.registUserWish(videoSeq, userSeq);
@@ -227,8 +222,6 @@ public class VideoController {
 		HttpStatus status = null;
 		
 		try {
-//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-//			int userSeq = Integer.parseInt(tokenMap.get("userSeq"));
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 
 			int res = vs.deleteUserWish(videoSeq, userSeq);
@@ -239,6 +232,32 @@ public class VideoController {
 			
 			result.put("res", res);
 			result.put("message", "delete mylist success");
+			result.put("isSuccess", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		} catch (BaseException e) {
+			result.put("isSuccess", FAIL);
+			result.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		}
+	}
+	
+	// 8) [POST] /video //비디오 등록 코치만
+	@PostMapping() 
+	public ResponseEntity<Map<String, Object>> registVideo(VideoDto videoDto) {
+		HashMap<String, Object> result = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			int res = vs.registVideo(videoDto); // insert 된 row 개수
+			
+			if (res == 0) { 
+				throw new BaseException(FAIL, 500, "insert video fail");
+			}
+			
+			result.put("res", res);
+			result.put("message", "insert video success");
 			result.put("isSuccess", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			return new ResponseEntity<Map<String, Object>>(result, status);

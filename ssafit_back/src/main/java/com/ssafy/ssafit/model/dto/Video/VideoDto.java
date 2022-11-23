@@ -21,4 +21,6 @@ public class VideoDto {
 	private String videoUpdatedAt;
 	private int videoCommentCnt; // 영상의 댓글 수 
 	private int videoWishCnt; // 영상의 찜 수
+	private String superType; // 대분류 카테고리
+	private String subType; // 소분류 운동부위
 }

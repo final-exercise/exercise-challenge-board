@@ -12,6 +12,10 @@ public class SearchCondition {
 	private String word; // 검색어
 	private String sort = "none";	//정렬 기준
 	private String sortDir = "asc";	//정렬 방향
+	private String superType = "none";	//대분류 카테고리
+	private String subType = "none";	//소분류 운동부위
+	
+	
 	private int page;
 	
 	//lombok error
