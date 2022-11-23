@@ -17,7 +17,14 @@
       <div v-for="(food, index) in foods" :key="index">
         <user-my-record-calendar-diet-item :food="food"></user-my-record-calendar-diet-item>
       </div>
+      <v-pagination
+      v-model="page"
+      :length="10"
+      :color="`#81C784`"
+      @input="inputPage"
+    ></v-pagination>
     </div>
+    
   </div>
 </template>
 
@@ -33,20 +40,7 @@ export default {
     return{
       today: new Date(),
       keyword:"",
-      foods:[
-        {
-          name: "김치찌개",
-          seq: 1,
-          calc: 200,
-          maker: "cj제일제당"
-        },
-        {
-          name: "된장찌개",
-          seq: 2,
-          calc: 300,
-          maker: "집밥"
-        }
-      ]
+      foods:[]
     }
   },
   filters:{
@@ -59,7 +53,18 @@ export default {
   },
   methods:{
     search(event){
+      const API_URL=`https://openapi.foodsafetykorea.go.kr/api/${process.env.VUE_APP_DIET_API_KEY}/I2790/json/1/10/DESC_KOR=${this.keyword}`;
 
+      axios({
+        url: API_URL,
+        method: 'GET',
+      })
+      .then((res) => {
+        this.foods = res.data.I2790.row
+        console.log(this.foods);
+      }).catch((err)=>{
+        console.log(err)
+      })
     }
   }
 }

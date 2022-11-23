@@ -15,9 +15,11 @@ export default new Vuex.Store({
       videoTitle:"dudtkd1",
       videoId: "6j5CB0yeemg",
       part: "bottom",
-      channelName:"hi"
+      channelName:"hi",
+      
     },],
     selectedVideoList:[],
+    videos: [],
   },
   getters: {
   },
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     },
     GET_WISH_VIDEO(state,data){
       // state.videoList = data;
+    },
+    GET_VIDEO_LIST(state, data){
+      state.videos = data;
     }
   },
   actions: {
@@ -98,11 +103,33 @@ export default new Vuex.Store({
       sessionStorage.removeItem("userNickname");
       window.location.href = "/";
     },
-    getVideoTypeList({commit}, obj){
+    getVideoList({commit}, obj){
       //추가 필요 ->  super, sub 가지고 영상 가져오기
       //페이지 잡아서
       console.log(obj.super);
       console.log(obj.sub);
+      let SearchCondition = {
+        superType: obj.super,
+        subType: obj.sub,
+      }
+
+      const API_URL = `${REST_API}/video`
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: SearchCondition,
+      }).then((res)=>{
+        commit('GET_VIDEO_LIST', res.data.res);
+      }).catch((err)=>{
+        console.log(err);
+      })
+      
+
+
+
     },
     getWishVideoList({commit}){
       //추가 필요-> 헤더에서 userseq 추출하고 wish 비디오 다 가져오기

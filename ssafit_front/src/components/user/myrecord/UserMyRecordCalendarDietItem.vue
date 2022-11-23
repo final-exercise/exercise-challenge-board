@@ -1,9 +1,9 @@
 <template>
   <div class="container-food-item">
-    <h3>{{food.name}}</h3>
-    <span> {{food.calc|calcFilter}}</span>
+    <h5>{{food.DESC_KOR|lengthFilter(8)}}</h5>
+    <span> {{food.NUTR_CONT1|calcFilter}}</span>
     <span> | </span>
-    <span style="color: rgb(116, 150, 255);">{{food.maker}}</span>
+    <span style="color: rgb(116, 150, 255);">{{food.MAKER_NAME|lengthFilter(5)}}</span>
   </div>
 </template>
 
@@ -18,6 +18,13 @@ export default {
   filters:{
     calcFilter(value){
       return `${value}kcal`
+    },
+    lengthFilter(value,tar){
+      if(value.length>tar){
+       return value.substring(0,tar)+"...";
+      } else{
+        return value;
+      }
     }
   }
 

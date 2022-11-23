@@ -18,6 +18,7 @@
 
 <script>
 import VideoListItem from "./VideoListItem.vue"
+import {mapState} from 'vuex'
 
 export default {
   name: "VideoSort",
@@ -29,45 +30,48 @@ export default {
       super:"",
       sub:"",
       page:1,
-      videos:[
-      {
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      },{
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      }, {
-        videoSeq: 1,
-        videoId: "g2ZeT9v7wt0",
-        part: "total",
-        channelName: "hello",
-        videoTitle: "heihihihihihih"
-      }
-    ]
+    //   videos:[
+    //   {
+    //     videoSeq: 1,
+    //     videoId: "g2ZeT9v7wt0",
+    //     part: "total",
+    //     channelName: "hello",
+    //     videoTitle: "heihihihihihih"
+    //   },{
+    //     videoSeq: 1,
+    //     videoId: "g2ZeT9v7wt0",
+    //     part: "total",
+    //     channelName: "hello",
+    //     videoTitle: "heihihihihihih"
+    //   },{
+    //     videoSeq: 1,
+    //     videoId: "g2ZeT9v7wt0",
+    //     part: "total",
+    //     channelName: "hello",
+    //     videoTitle: "heihihihihihih"
+    //   },{
+    //     videoSeq: 1,
+    //     videoId: "g2ZeT9v7wt0",
+    //     part: "total",
+    //     channelName: "hello",
+    //     videoTitle: "heihihihihihih"
+    //   }, {
+    //     videoSeq: 1,
+    //     videoId: "g2ZeT9v7wt0",
+    //     part: "total",
+    //     channelName: "hello",
+    //     videoTitle: "heihihihihihih"
+    //   }
+    // ]
     }
   },
   methods: {
     inputPage(pageNum){
       console.log(pageNum);
     }
+  },
+  computed: {
+    ...mapState(['videos'])
   },
   created(){
     const params = new URL(document.location).searchParams;
