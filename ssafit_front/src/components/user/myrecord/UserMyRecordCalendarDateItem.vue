@@ -1,15 +1,13 @@
 <template>
   <div class="container-food-item" @click="selectDiet">
-    <h5>{{food.DESC_KOR|lengthFilter(8)}}</h5>
-    <span> {{food.NUTR_CONT1|calcFilter}}</span>
-    <span> | </span>
-    <span style="color: rgb(116, 150, 255);">{{food.MAKER_NAME|lengthFilter(5)}}</span>
+    {{item.name}}
+    <hr>
   </div>
 </template>
 
 <script>
 export default {
-  props:["food"],
+  props:["item"],
   data(){
     return{
     }

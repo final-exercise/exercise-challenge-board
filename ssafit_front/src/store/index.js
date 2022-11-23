@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import router from '@/router'
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 
 Vue.use(Vuex)
 
@@ -16,15 +17,20 @@ export default new Vuex.Store({
       videoId: "6j5CB0yeemg",
       part: "bottom",
       channelName:"hi",
-      
     },],
     selectedVideoList:[],
     videos: [],
+<<<<<<< HEAD
     video:"",
     comments: [],
     videoIsWish: "",
+=======
+    events:[],
+    isLoading:false
+>>>>>>> 9ac12a58478c9dd9177c6493edc740cff961a506
   },
   getters: {
+   
   },
   mutations: {
     GET_USER(state, data){
@@ -36,11 +42,29 @@ export default new Vuex.Store({
     GET_VIDEO_LIST(state, data){
       state.videos = data;
     },
+<<<<<<< HEAD
     GET_VIDEO(state, data) {
       console.log(data)
       state.video = data.videodto;
       state.comments = data.comments;
       state.videoIsWish = data.videoIsWish;
+=======
+    PAGE_LOAD(state,data){
+      state.isLoading = data;
+    },
+    GET_DIET_LIST(state, data){
+      for(let obj of data){
+
+        const event = {
+          name: `${obj.dietName}(+${obj.dietCal}cal)`,
+          start: (obj.createdAt).substr(0,10),
+          color: "indigo",
+          food: obj
+        }
+
+        state.events.push(event);
+      }
+>>>>>>> 9ac12a58478c9dd9177c6493edc740cff961a506
     }
   },
   actions: {
@@ -53,7 +77,8 @@ export default new Vuex.Store({
           userBirth: payload.userBirth,
           userNickname: payload.userNickname,
           userGender: payload.userGender,
-          userType: payload.userType
+          userType: payload.userType,
+          userHeight: payload.userHeight
       }
       const API_URL = `${REST_API}/user/signup`
       axios({
@@ -158,7 +183,26 @@ export default new Vuex.Store({
       //추가 필요-> 헤더에서 userseq 추출하고 wish 비디오 다 가져오기
       //페이지 잡아서
     },
+    getDietList({commit}){
+      const API_URL=`http://localhost:331/user/diet`;
+
+      this.isLoading=true;
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      })
+      .then((res) => {
+        this.isLoading=false;
+        commit("GET_DIET_LIST",res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   },
   modules: {
+    FadeLoader
   }
 })

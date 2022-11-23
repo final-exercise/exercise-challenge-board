@@ -23,4 +23,5 @@ public class UserDto {
 	private String userCreatedAt;
 	private String userUpdatedAt;
 	private String userType;
+	private int userHeight;
 }

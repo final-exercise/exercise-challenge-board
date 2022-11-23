@@ -1,5 +1,8 @@
 <template>
   <div class="container-myrecord-calendar">
+    <div class="loading" v-if="loading">
+      <FadeLoader/>
+    </div>
     <div class="div-myrecord-calendar-title">
       <h1>나의 한달은?</h1>
       <div class="div-decorate" style="margin-left:0px; margin-bottom: 10px; width: 20%"></div>
@@ -15,8 +18,6 @@
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
         </div>
-       
-
       <v-sheet height="600">
         <v-calendar
           ref="calendar"
@@ -26,7 +27,7 @@
           :events="events"
           :event-overlap-threshold="30"
           :event-color="getEventColor"
-          @click:day="tmpEvent"
+          @click:day="specificDayEvent"
         ></v-calendar>
       </v-sheet>
       </div>
@@ -43,23 +44,26 @@
 </template>
 
 <script>
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import axios from 'axios'
+import { mapState } from 'vuex';
+
 export default {
+  components:{
+    FadeLoader
+  },
   data: () => ({
+    // loading:false,
     type: 'month',
     mode: 'stack',
     weekday: [0, 1, 2, 3, 4, 5, 6],
     value: '',
-    events: [
-      {
-        "name":"스쿼트영상...(-400kcal)",
-        "start": "2022-11-10",
-        "color":"red",
-        "timed": true
-      },
-    ],
-    colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-    names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+    // events: [],
+    foods:[],
   }),
+  computed:{
+    ... mapState(['events','loading'])
+  },
   methods: {
     getEvents ({ start, end }) {
       const events = []
@@ -100,7 +104,20 @@ export default {
       const curActive = document.querySelector('.menu-item.active');
       if(curActive)curActive.classList.remove('active');
       event.target.classList.add('active');
+    },
+    specificDayEvent(event){
+      let dayEvent = [];
+      for(let e of this.$store.state.events){
+        if(e.start==event.date){
+          console.log(e);
+          dayEvent.push(e);
+        }
+      }
+      this.$router.push({name:'myrecord-calendar-date',params:{date:event.date, dayEvent:dayEvent}, props:true });
     }
+  },
+  created(){
+    this.$store.dispatch('getDietList');
   },
 }
 </script>
@@ -167,4 +184,6 @@ a:active{
 .div-myrecord-button .ma-2{
   background-color:rgb(255, 255, 255);
 }
+
+
 </style>

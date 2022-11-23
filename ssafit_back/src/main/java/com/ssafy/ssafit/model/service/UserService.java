@@ -44,4 +44,6 @@ public interface UserService {
 	public int getCntByUserId(String Id) throws BaseException;
 	
 	public int registerUserBmi(UserBmiDto userBmiDto, int userSeq) throws BaseException;
+
+	public int createUserSubTable(UserDto userDto) throws BaseException;
 }

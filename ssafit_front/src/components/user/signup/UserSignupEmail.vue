@@ -31,6 +31,7 @@
           <option :value="'F'">여성</option>
           <option :value="'N'">선택하지 않음</option>
         </select>
+        <input type="number" placeholder="키 입력" v-model="user.userHeight" ref="inputHeight" required/>
         <button @click="completedLevel2">다음 단계로</button>
       </fieldset>
     </div>
@@ -70,7 +71,8 @@ export default {
         userBirth:"",
         userNickname:"",
         userGender:"",
-        userType:""
+        userType:"",
+        userHeight:""
       }
     }
   },

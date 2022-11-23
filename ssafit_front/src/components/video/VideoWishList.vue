@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     inputPage(pageNum){
-      //pageNum 바로 반환!!
+      return pageNum;
     },
     createChallenage(){
       //selectedVideoList 가지고 challenge 만들기

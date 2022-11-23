@@ -44,4 +44,6 @@ public interface UserDao {
 	public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition);
 
 	public int updateUserActivity(Map<String, Object> map);
+	
+	public int insertUserActivity(UserDto userDto);
 }

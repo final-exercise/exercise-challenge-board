@@ -106,6 +106,10 @@ public class CoachServiceImpl implements CoachService {
 			//1. 매칭할 코치의 seq 가져오기
 //			return cd.selectManageUser(coachSeq);
 			int coachSeq = cd.selectMinMatchedCoach(userType);
+			System.out.println("===");
+			System.out.println(coachSeq);
+			System.out.println(userSeq);
+			System.out.println(userType);
 			//2. 유저와 매칭하기
 			HashMap<String,Integer> param = new HashMap<>();
 			param.put("userSeq",userSeq);
