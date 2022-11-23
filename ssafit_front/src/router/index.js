@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import IndexView from '../views/IndexView.vue'
 import CoachManageView from "../views/CoachManageView.vue"
 import UserLogin from "../components/user/UserLogin.vue"
-import CoachLogin from "../components/coach/CoachLogin.vue"
 import VideoView from "../views/VideoView.vue"
 import VideoDetailView from "../views/VideoDetailView.vue"
 import ChallengeView from "../views/ChallengeView"
@@ -20,6 +19,7 @@ import UserMyRecordCalendar from "../components/user/myrecord/UserMyRecordCalend
 import UserMyRecordCalendarDiet from "../components/user/myrecord/UserMyRecordCalendarDiet.vue"
 import UserMyRecordCalendarWorkout from "../components/user/myrecord/UserMyRecordCalendarWorkout.vue"
 import UserMyRecordCalendarDate from "../components/user/myrecord/UserMyRecordCalendarDate"
+import CoachMyPageInfo from "../components/coach/CoachMyPageInfo.vue"
 
 Vue.use(VueRouter)
 
@@ -73,7 +73,7 @@ const routes = [
         path:"wish",
         name:"mypage-wish",
         component: VideoWishList
-      }
+      },
     ]
   },
   {
@@ -97,11 +97,17 @@ const routes = [
     component: CoachManageView
   },
   {
+    path:"/coach/mypage",
+    name:"mypage-coach",
+    component: CoachMyPageInfo
+  },
+  {
     path: "/myrecord",
     component: UserMyRecordView,
     children:[
       {
         path:"",
+        alias:["","bmi"],
         name: "myrecord-bmi",
         component: UserMyRecordBmi
       },

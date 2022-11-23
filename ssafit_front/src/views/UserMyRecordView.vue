@@ -1,7 +1,7 @@
 <template>
   <div class="container-user-mypage">
     <div class="div-mypage-menu">
-      <router-link :to="{name:'myrecord-bmi'}">
+      <router-link to="/myrecord/bmi">
         <div class="div-menu-item active" @click="makeActive">나의 bmi</div>
       </router-link>
       <router-link :to="{name:'myrecord-calendar'}">

@@ -1,5 +1,9 @@
 package com.ssafy.ssafit.controller;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 /*
  * jwt 추가 필요라고 쓴 애들은 모두 인자에서 userSeq 빼고
  * jwt에서 추출해서 사용하도록 수정 필요
@@ -9,6 +13,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.ssafy.ssafit.config.secret.Secret;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
@@ -35,6 +44,7 @@ import com.ssafy.ssafit.model.service.CoachService;
 import com.ssafy.ssafit.model.service.CoachServiceImpl;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.model.service.UserServiceImpl;
+import com.ssafy.ssafit.util.AES128;
 import com.ssafy.ssafit.util.JwtUtil;
 
 import io.swagger.annotations.Api;
@@ -42,7 +52,7 @@ import io.swagger.annotations.Api;
 @RequestMapping("/user")
 @RestController
 @Api("User")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8080", "*" })
 public class UserController {
 
 	private JwtUtil jwtUtil;
@@ -74,7 +84,6 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println(userDto);
 			int res = us.signup(userDto);
 		
 			int newUserSeq = userDto.getUserSeq();
@@ -105,10 +114,10 @@ public class UserController {
 
 	// 2) [POST] /user/login
 	@PostMapping("login")
-	public ResponseEntity<Map<String, Object>> login(UserDto userDto) {
+	public ResponseEntity<Map<String, Object>> login(UserDto userDto) throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
+		
 		try {
 			UserDto resUser = us.login(userDto);
 
@@ -145,11 +154,9 @@ public class UserController {
 		int userSeq;
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println(1);
+
 		try {
-			System.out.println(1);
 			userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
-			System.out.println(userSeq);
 			UserDto resUser = us.getUser(userSeq);
 
 			result.put("message", "get user success");
@@ -245,8 +252,7 @@ public class UserController {
 	// jwt 추가 필요
 	@GetMapping("/workout")
 	public ResponseEntity<Map<String, Object>> getUserMonthlyWorkout(@RequestParam(required=false) Integer year, 
-																	@RequestParam(required=false) Integer month, 
-																	int userSeq) {
+																	@RequestParam(required=false) Integer month) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -258,7 +264,7 @@ public class UserController {
 				year = LocalDate.now().getYear();
 			}
 
-//			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
 			List<UserWorkoutDto> resWorkouts = us.getUserMonthlyWorkout(userSeq, month, year);
 
 			result.put("message", "get userMonthlyWorkout success");
@@ -283,7 +289,8 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-//			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
+			userWorkoutDto.setUserSeq(userSeq);
 			int res = us.registUserWorkout(userWorkoutDto);
 
 			if (res != 1) {
@@ -343,9 +350,8 @@ public class UserController {
 		
 		try {
 			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
-			System.out.println(userSeq);
+
 			userDietDto.setUserSeq(userSeq);
-			System.out.println(userDietDto);
 			int res = us.registUserDiet(userDietDto);
 
 			if (res != 1) {
@@ -378,8 +384,9 @@ public class UserController {
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			PageHelper.startPage(page, 10);
 //			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			
 			Page<VideoDto> res = us.getWish(userSeq);
-//			System.out.println(res);
+			
 			result.put("total", res.getTotal());
 			result.put("message", "get userWish success");
 			result.put("res", res);
@@ -402,18 +409,19 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> getUserActivity(SearchCondition searchCondition) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
 		try {
 			//상위 5명
 			PageHelper.startPage(1, 5);
 			//sortDir는 무조건 내림차순
 			searchCondition.setSortDir("DESC");
-		
+			
 			//sort key 검사
-			String key = searchCondition.getSort();
-			if(!(key.equals("monthly_attendance") || key.equals("montyly_reply") || key.equals("monthly_exp"))){
+			String key = searchCondition.getKey();
+			
+			if(!(key.equals("monthly_attendance") || key.equals("monthly_reply") || key.equals("monthly_exp"))){
 				throw new BaseException(FAIL, 500, "unvalid key");
 			}
+	
 			
 			Page<UserActivityDto> res = us.getUserActivityRank(searchCondition);
 

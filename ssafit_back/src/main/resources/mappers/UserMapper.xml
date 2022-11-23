@@ -57,7 +57,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_seq" property="userSeq" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="value" property="value" />
-		<result column="key" property="key" />
 	</resultMap>	
 
 
@@ -174,14 +173,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				) as sub_type
 		from video v
         join wish w on w.video_seq = v.video_seq
-		where w.user_seq = 1 AND w.is_valid=1
+		where w.user_seq = #{userSeq} AND w.is_valid=1
 	</select>
 	
 	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->
 	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="userActivityDtoMap">
-		select user_seq, user_nickname, ${sort} as "value", #{sort} as "key"
+		select user_seq, user_nickname, ${key} as "value"
 		from user_activity
-		order by ${sort} DESC
+		order by ${key} DESC
 	</select>
 	
 	<!-- public int updateUserActivity(Map<String, Object> map); -->

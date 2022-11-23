@@ -1,17 +1,17 @@
 use ssafit;
 
 select * from user;
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'ssafy', '1234', '싸피', 'ssafy@ssafy.com', '1995-12-02', '싸피', 'M'); 
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'yang', '1234', '양명균', 'yang@ssafy.com', '1995-12-02', '양띵균', 'M'); 
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'jii', '1234', '김지현', 'jii@ssafy.com', '1997-03-03', '젤레나', 'F'); 
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'sso', '1234', '김소정', 'sso@ssafy.com', '1997-06-06', '블레어', 'F'); 
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'jay', '1234', '박재범', 'jay@ssafy.com', '1993-01-21', '제이팍', 'M'); 
-insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'simon', '1234', '정기훈', 'simon@ssafy.com', '1984-09-09', '쌈디', 'M'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'ssafy', '1dFRwaOps2514T4cExvWmw==', '싸피', 'ssafy@ssafy.com', '1995-12-02', '싸피', 'M'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'yang', '1dFRwaOps2514T4cExvWmw==', '양명균', 'yang@ssafy.com', '1995-12-02', '양띵균', 'M'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'jii', '1dFRwaOps2514T4cExvWmw==', '김지현', 'jii@ssafy.com', '1997-03-03', '젤레나', 'F'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'sso', '1dFRwaOps2514T4cExvWmw==', '김소정', 'sso@ssafy.com', '1997-06-06', '블레어', 'F'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'jay', '1dFRwaOps2514T4cExvWmw==', '박재범', 'jay@ssafy.com', '1993-01-21', '제이팍', 'M'); 
+insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'simon', '1dFRwaOps2514T4cExvWmw==', '정기훈', 'simon@ssafy.com', '1984-09-09', '쌈디', 'M'); 
 
 select * from coach;
-insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'tubo', '1234', '김종국', 'tubo@ssafy.com', '1977-08-25', '꾹코치', 'M');
-insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'bbo', '1234', '정보경', 'bbo@ssafy.com', '1996-01-19', '필라뽀스', 'F');
-insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'doctorK', '1234', '권한빛', 'doctorK@ssafy.com', '1974-12-25', '권선생', 'M');
+insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'tubo', '1dFRwaOps2514T4cExvWmw==', '김종국', 'tubo@ssafy.com', '1977-08-25', '꾹코치', 'M');
+insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'bbo', '1dFRwaOps2514T4cExvWmw==', '정보경', 'bbo@ssafy.com', '1996-01-19', '필라뽀스', 'F');
+insert into coach (coach_seq, coach_id, coach_password, coach_name, coach_email, coach_birth, coach_nickname, coach_gender) values (0, 'doctorK', '1dFRwaOps2514T4cExvWmw==', '권한빛', 'doctorK@ssafy.com', '1974-12-25', '권선생', 'M');
 
 select * from workout_super_type;
 insert into workout_super_type (workout_super_type_seq, workout_super_type_type) values (1, '스트레칭');
@@ -136,5 +136,3 @@ insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_se
 values (0, '내것도', 1, null, 2, '양싸피', false, 1, 1);
 insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
 values (0, '내뱃살도', 1, null, 3, '아몰랑', false, 1, 1);
-
-select * from comment;

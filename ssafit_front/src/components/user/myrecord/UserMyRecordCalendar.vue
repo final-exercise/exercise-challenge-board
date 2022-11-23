@@ -118,7 +118,11 @@ export default {
   },
   created(){
     this.$store.dispatch('getDietList');
+    this.$store.dispatch('getWorkoutList');
   },
+  beforeDestroy(){
+    
+  }
 }
 </script>
 

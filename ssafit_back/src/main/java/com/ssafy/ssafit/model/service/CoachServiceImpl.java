@@ -47,13 +47,13 @@ public class CoachServiceImpl implements CoachService {
 		try {
 			String reqId = coachDto.getCoachId();
 			CoachDto resCoach = cd.selectCoachByCoachId(reqId);
+
 			try {
 				if(resCoach==null 
-						|| resCoach.getCoachId().length()==0 
+						|| resCoach.getCoachId().length()==0
 						|| !new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(resCoach.getCoachPassword()).equals(coachDto.getCoachPassword())) {
 					return null;
 				} else {
-					
 					return resCoach;
 				}
 			} catch (Exception e) {

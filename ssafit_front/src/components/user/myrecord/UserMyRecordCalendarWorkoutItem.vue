@@ -1,15 +1,17 @@
 <template>
-  <div class="container-food-item" @click="selectDiet">
-    <h5>{{food.DESC_KOR|lengthFilter(8)}}</h5>
-    <span> {{food.NUTR_CONT1|calcFilter}}</span>
+  <div class="container-workout-item" @click="selectWorkout">
+    <h5>{{workout.videoTitle|lengthFilter(15)}}</h5>
+    <span> {{workout.videoCal|calcFilter}}</span>
     <span> | </span>
-    <span style="color: rgb(116, 150, 255);">{{food.MAKER_NAME|lengthFilter(5)}}</span>
+    <span style="color: rgb(116, 150, 255); font-weight:600">
+      <a :href="`/video/`+workout.videoSeq">상세보기</a>
+    </span>
   </div>
 </template>
 
 <script>
 export default {
-  props:["food"],
+  props:["workout"],
   data(){
     return{
     }
@@ -27,16 +29,18 @@ export default {
     }
   },
   methods:{
-    selectDiet(event){
-      this.$emit("selectFood",this.food);
+    selectWorkout(event){
+      this.$emit("selectWorkout",this.workout);
     }
+  },
+  created(){
   }
 
 }
 </script>
 
 <style scoped>
-.container-food-item{
+.container-workout-item{
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(153, 153, 153);
   width: 100%;

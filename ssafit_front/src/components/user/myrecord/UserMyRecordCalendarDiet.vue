@@ -112,12 +112,16 @@ export default {
       .then((res) => {
         // this.loading=false;
         console.log(res)
+        
+      })
+      .then((res)=>{
+        window.location.replace(document.location);
       }).catch((err)=>{
         // this.loading=false;
         console.log(err)
       })
-
-      location.href="redirect:/"
+      
+      
     }
   },
   computed:{

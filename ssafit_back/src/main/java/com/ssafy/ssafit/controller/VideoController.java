@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import com.ssafy.ssafit.util.JwtUtil;
 
 import io.swagger.annotations.Api;
 
+@CrossOrigin(origins = "*")
 @RequestMapping("/video")
 @RestController
 @Api("Video")
@@ -50,10 +52,11 @@ public class VideoController {
 	// 1) [GET] /video?page={page}&superType={superType}&subType={subType}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
-		System.out.println(sc.getSort());
+//		System.out.println(sc.getSort());
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
+			
 			int page = sc.getPage();
 			if(page == 0)
 				page = 1;

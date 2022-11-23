@@ -1,44 +1,34 @@
 <template>
-  <div class="container-header-button">
+  <div class="container-afterlogin-button">
+    <div class="div-nickname">
+      <h4>💪 {{coachNickname}}님 환영합니다!</h4>
+    </div>
     <button class="button-login">
-      <router-link to="login">로그인</router-link>
+      <router-link :to="{name:'mypage-coach'}">마이페이지</router-link>
     </button>
-    <button class="button-signup">
-      <a @click="modalStatusChange">회원가입</a>
+    <button class="button-myrecord">
+      <router-link to="/manage">나의 회원</router-link>
     </button>
-
-    <div @click="modalStatusChange" class="modal-user-signup" :class="{modalNotVisib:isModal, modalVisib:!isModal}">
-      <div @click="modalStatusChange" class="form-user-signup">
-        <h1>회원가입</h1>
-        <button class="modal-button button-naver" @click="modalStatusChange">네이버로 회원가입</button>
-        <button class="modal-button button-kakao" @click="modalStatusChange">카카오로 회원가입</button>
-        <button class="modal-button button-email" @click="modalStatusChange"><router-link to="/signup/email" >이메일로 회원가입</router-link></button>
-
-      </div>
-    </div> 
+    <button class="button-logout" @click="logout">
+      <a>로그아웃</a>
+    </button>
   </div>
-
-      
 </template>
 
 <script>
 export default {
-  data(){
-    return{
-      isModal: true
-    }
-  },
+  props:['coachNickname'],
   methods:{
-    modalStatusChange(){
-      this.isModal = !this.isModal;
-    },
-  },
+    logout(){
+      this.$store.dispatch('logout');
+    }
+  }
 }
 </script>
 
 <style scoped>
 
-.container-header-button {
+.container-afterlogin-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,17 +47,31 @@ export default {
   top: 10%;
   position: absolute;
 }
-.button-signup {
+
+.div-nickname h4 {
+  color: rgb(60, 60, 60);
+}
+
+.div-nickname{
+  margin-right: 10px;
+}
+.button-logout {
   background-color: #87A2FB;
   border-color: #87A2FB;
 }
-
-.button-signup a{
+.button-logout a{
   color: white;
 }
 
-.button-login{
+.button-login, .button-myrecord {
   margin-right: 10px;
+}
+
+.button-myrecord a:visited,
+.button-myrecord a:active,
+.button-myrecord a:link{
+  color: grey;
+  text-decoration: none;
 }
 
 
@@ -152,5 +156,4 @@ a:hover,
 a:link{
   color: white;
 }
-
 </style>

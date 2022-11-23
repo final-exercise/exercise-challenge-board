@@ -47,32 +47,38 @@
       </nav>
     </div>
       <!-- login/signup 버튼 -->
-      <login-nav v-if="!userNickname"></login-nav>
-      <after-login-nav v-if="userNickname" :userNickname="userNickname"></after-login-nav>
+      <login-nav v-if="(auth!='c')&(auth!='u')"></login-nav>
+      <after-login-nav v-if="auth=='u'" :userNickname="nickname"></after-login-nav>
+      <after-coach-login-nav v-if="auth=='c'" :coachNickname="nickname"></after-coach-login-nav>
     </header>
   </div>
 </template>
 
 <script>
 import AfterLoginNav from "./AfterLoginNav.vue"
+import AfterCoachLoginNav from "./AfterCoachLoginNav.vue"
 import LoginNav from "./LoginNav.vue"
 
 export default {
   components:{
     LoginNav,
-    AfterLoginNav
+    AfterLoginNav,
+    AfterCoachLoginNav
   },
   data(){
     return{
       super:"",
       sub:"",
-      userNickname:"",
+      nickname:"",
+      isLogin:"",
+      auth:""
     }
   }, 
   computed: {
   },
   created(){
-    this.userNickname=sessionStorage.getItem("userNickname");
+    this.auth = sessionStorage.getItem("authority");
+    this.nickname = sessionStorage.getItem("nickname");
   },
   methods: {
     dropdown(){

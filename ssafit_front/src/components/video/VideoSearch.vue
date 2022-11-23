@@ -18,21 +18,21 @@
     <div class="div-search" :class="{'searchActive':isActive}">
       <select v-model="key" required>
           <option value="" selected disabled hidden >검색 기준</option>
-          <option :value="videoTitle" default>제목</option>
-          <option :value="videoChannelName">채널명</option>
+          <option value="videoTitle" default>제목</option>
+          <option value="videoChannelName">채널명</option>
       </select>
       <input v-model="word" required placeholder="검색어" class="input-key"/>
       <select v-model="sort" required>
           <option value="" selected disabled hidden >정렬 기준</option>
-          <option :value="videoTitle" default>제목순</option>
-          <option :value="duration">길이순</option>
-          <option :value="viewCnt">조회수순</option>
-          <option :value="videoCal">칼로리순</option>
+          <option value="videoTitle" default>제목순</option>
+          <option value="duration">길이순</option>
+          <option value="viewCnt">조회수순</option>
+          <option value="videoCal">칼로리순</option>
       </select>
       <select v-model="sortDir" required>
           <option value="" selected disabled hidden >정렬 기준</option>
-          <option :value="ASC" default>오름차순</option>
-          <option :value="DESC">내림차순</option>
+          <option value="ASC" default>오름차순</option>
+          <option value="DESC">내림차순</option>
       </select>
     </div>
   </div>

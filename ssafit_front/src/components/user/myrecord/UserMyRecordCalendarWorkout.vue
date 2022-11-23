@@ -5,26 +5,15 @@
     </div>
     <h3>운동 기록하기</h3>
     <h2>{{today|dateFilter}}</h2>
-    <div class="div-search">
-      <input class="input-search" placeholder="오늘 뭘 했냐면..." v-model="keyword"/>
-      <button class="button-search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-          fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"
-          @click="search">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-          </svg>
-      </button>
-    </div>
     <div class="div-decorate" style="width:100%; margin:5px 0px 15px 0px; background-color:rgb(150, 200, 255);">&nbsp;</div>
     <div class="div-workouts">
-      <!-- <div v-for="(food, index) in foods" :key="index">
-        <user-my-record-calendar-diet-item :food="food" @selectFood="selectFood"></user-my-record-calendar-diet-item>
-      </div> -->
+      <div v-for="(workout, index) in workouts" :key="index">
+        <user-my-record-calendar-workout-item :workout="workout" @selectWorkout="selectWorkout"></user-my-record-calendar-workout-item>
+      </div>
       <v-pagination
       v-model="page"
       :length="length"
       :color="`#81C784`"
-      @input="search"
       ></v-pagination>
     </div>
     
@@ -32,15 +21,16 @@
 </template>
 
 <script>
-import UserMyRecordCalendarWorkoutItem from "./UserMyRecordCalendarDietItem.vue";
+// import UserMyRecordCalendarWorkoutItem from "./UserMyRecordCalendarDietItem.vue";
 import axios from 'axios';
 import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 import { mapState } from "vuex";
+import UserMyRecordCalendarWorkoutItem from "./UserMyRecordCalendarWorkoutItem.vue"
 
 export default {
-  name:'UserMyRecordCalendarDiet',
+  name:'UserMyRecordCalendarWorkout',
   components:{
-    // UserMyRecordCalendarWorkoutItem,
+    UserMyRecordCalendarWorkoutItem,
     FadeLoader
   },
   data(){
@@ -61,51 +51,20 @@ export default {
     }
   },
   methods:{
-    search(event){
-      let pageN;
-      if(typeof event == "number"){
-        pageN = event;
-      } else{
-        pageN = 1;
-      }
-
-      const searchCondition = {
-        page: pageN,
-        key: 'video_title',
-        word: this.keyword
-      }
-
-      const API_URL = `http://localhost:331/video`
-
-      this.$store.commit("PAGE_LOAD",true);
-      axios({
-        url: API_URL,
-        method: 'GET',
-        params: searchCondition
-      })
-      .then((res) => {
-        this.$store.commit("PAGE_LOAD",false);
-        console.log(res);
-      }).catch((err)=>{
-        this.$store.commit("PAGE_LOAD",false);
-        console.log(err)
-      })
-    },
-    selectFood(data){
-      if(!window.confirm(`${data.DESC_KOR} 등록하시겠습니까?`)){
+    selectWorkout(data){
+      if(!window.confirm(`"${data.videoTitle}" 등록하시겠습니까?`)){
         return;
       }
-      console.log(data.MAKER_NAME)
-
-      const API_URL=`http://localhost:331/user/diet`;
+    
+      const API_URL=`http://localhost:331/user/workout`;
       let param={
-        dietId:data.FOOD_CD,
-        dietName:data.DESC_KOR,
-        dietCal:data.NUTR_CONT1,
-        dietMaker: data.MAKER_NAME,
+        videoSeq: data.videoSeq,
+        videoTitle: data.videoTitle,
+        videoCal: data.videoCal
       }
+      console.log(param);
 
-      // this.loading=true;
+      this.$store.commit("PAGE_LOAD",true);
       axios({
         url: API_URL,
         method: 'POST',
@@ -115,19 +74,42 @@ export default {
         params: param,
       })
       .then((res) => {
+        this.$store.commit("PAGE_LOAD",false);
+        return res;
+      })
+      .then((res) => {
         // this.loading=false;
         console.log(res)
       }).catch((err)=>{
-        // this.loading=false;
         console.log(err)
       })
 
-      location.href="redirect:/"
-    }
+      window.location.replace(document.location);
+    },
   },
   computed:{
     ...mapState(['isLoading'])
-  }
+  },
+  created(){
+    const API_URL = `http://localhost:331/user/wish`
+
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res)=>{
+        let total = res.data.total;
+        this.workouts = res.data.res;
+        console.log(this.workouts);
+        this.length = Math.ceil(total/10);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    
+  },
+  
 }
 </script>
 
@@ -165,7 +147,7 @@ export default {
   margin: 10px 0px;
 }
 
-.div-foods{
+.div-workouts{
   width:100%
 }
 

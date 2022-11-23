@@ -19,7 +19,7 @@ export default {
   name: "IndexView",
   components: {
     HeroImg,
-    // VideoSearch,
+    VideoSearch,
     VideoRating,
     UserRating
   }

@@ -3,9 +3,9 @@
     <h2>SSAFIT RANKING</h2>
     <div class="div-decorate">&nbsp;</div>
     <div class="container-rating-list">
-      <user-rating-list></user-rating-list>
-      <user-rating-list></user-rating-list>
-      <user-rating-list></user-rating-list>
+      <user-rating-list :keyword="`monthly_attendance`"></user-rating-list>
+      <user-rating-list :keyword="`monthly_reply`"></user-rating-list>
+      <user-rating-list :keyword="`monthly_exp`"></user-rating-list>
     </div>
   </div>
 </template>

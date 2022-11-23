@@ -25,7 +25,8 @@ export default new Vuex.Store({
     videoIsWish: "",
     events:[],
     isLoading:false,
-    videoListTotal:0
+    videoListTotal:0,
+    coach:""
   },
   getters: {
    
@@ -54,18 +55,36 @@ export default new Vuex.Store({
       state.isLoading = data;
     },
     GET_DIET_LIST(state, data){
+      state.events=[];
+
       for(let obj of data){
 
         const event = {
           name: `${obj.dietName}(+${obj.dietCal}cal)`,
           start: (obj.createdAt).substr(0,10),
-          color: "indigo",
+          color: `rgb(255, 109, 109)`,
           food: obj
         }
-
+        
         state.events.push(event);
       }
-    }
+    },
+    GET_WORKOUT_LIST(state, data){
+      for(let obj of data){
+
+        const event = {
+          name: `${obj.videoTitle}(-${obj.videoCal}cal)`,
+          start: (obj.createdAt).substr(0,10),
+          color: `rgb(106, 106, 207)`,
+          workout: obj
+        }
+        
+        state.events.push(event);
+      }
+    },
+    GET_COACH(state, data){
+      state.coach = data;
+    },
   },
   actions: {
     userSignup({commit}, payload){
@@ -110,7 +129,9 @@ export default new Vuex.Store({
           window.alert("로그인 실패");
         } else{
           sessionStorage.setItem("access-token", res.data["access-token"])
-          sessionStorage.setItem("userNickname", res.data.res.userNickname);
+          console.log(res.data.res);
+          sessionStorage.setItem("nickname", res.data.res.userNickname);
+          sessionStorage.setItem("authority", "u");
           window.location.href = "/";
         }
       }).catch((err)=>{
@@ -134,7 +155,8 @@ export default new Vuex.Store({
     },
     logout({commit}){
       sessionStorage.removeItem("access-token");
-      sessionStorage.removeItem("userNickname");
+      sessionStorage.removeItem("nickname");
+      sessionStorage.removeItem("authority");
       window.location.href = "/";
     },
     getRatingVideos({commit}, payload) {
@@ -197,7 +219,6 @@ export default new Vuex.Store({
         console.log(err);
       })
     }, 
-    
     getDietList({commit}){
       const API_URL=`http://localhost:331/user/diet`;
 
@@ -215,7 +236,65 @@ export default new Vuex.Store({
       }).catch((err)=>{
         console.log(err)
       })
-    }
+    },
+    getWorkoutList({commit}){
+      const API_URL=`http://localhost:331/user/workout`;
+
+      this.isLoading=true;
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      })
+      .then((res) => {
+        this.isLoading=false;
+        commit("GET_WORKOUT_LIST",res.data.res);
+      }).catch((err)=>{
+        this.isLoading=false;
+      })
+    },
+    coachLogin({commit}, payload){
+      let coachDto = {
+          coachId: payload.coachId,
+          coachPassword: payload.coachPassword,
+      }
+      
+      const API_URL = `${REST_API}/coach/login`
+      axios({
+        url: API_URL,
+        method: 'POST',
+        params: coachDto,
+      })
+      .then((res) => {
+        if(!res.data.isSuccess){
+          window.alert("로그인 실패");
+        } else{
+          sessionStorage.setItem("access-token", res.data["access-token"])
+          sessionStorage.setItem("nickname", res.data.res.coachNickname);
+          sessionStorage.setItem("authority", "c");
+          window.location.href = "/";
+        }
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
+    getCoach({commit}){
+      const API_URL = `${REST_API}coach/`
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        }
+      })
+      .then((res) => {
+        commit('GET_COACH', res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
   },
   modules: {
     FadeLoader

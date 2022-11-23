@@ -2,42 +2,39 @@
   <div class="container-auth">
     <nav class="container-auth-nav">
         <router-link to="/">회원</router-link>
-        <!-- <router-link to="/login/coach">코치</router-link> -->
         <button ><a @click="modalStatusChange">코치</a></button>
     </nav>
-
     <div class="modal-coach-login" :class="{modalVisib:isModal}">
-      
       <div class="form-coach-login">
         <h1>코치 로그인</h1>
-       
-        <input class="input-id" type="text" placeholder="아이디 입력"/> <br>
-        <input class="input-password" type="password" placeholder="비밀번호 입력" />
-        <button class="button-modal">로그인</button>
+        <input class="input-id" v-model="coach.coachId" type="text" placeholder="아이디 입력"/> <br>
+        <input class="input-password" v-model="coach.coachPassword" type="password" placeholder="비밀번호 입력" />
+        <button class="button-modal" @click="coachLogin">로그인</button>
         <button class="button-close" @click="modalStatusChange" >X</button>
         </div>
     </div> 
-  
-
   </div>
 </template>
 
 <script>
-// import CoachLogin from "../coach/CoachLogin.vue"
-
 export default {
   name:"AuthNav",
-  components: {
-    // CoachLogin
-  },
   data(){
     return{
       isModal: true,
+      coach:{
+        coachId:"",
+        coachPassword:""
+      }
     }
   },
   methods: {
     modalStatusChange(){
       this.isModal = !this.isModal;
+    },
+    coachLogin(){
+      console.log(this.coach);
+      this.$store.dispatch('coachLogin', this.coach);
     }
   }
 }

@@ -6,8 +6,9 @@
     <div class="div-foods">
       <div v-for="(item, index) in dayEvent" :key="index">
         <!-- <user-my-record-calendar-diet-item :food="food" @selectFood="selectFood"></user-my-record-calendar-diet-item> -->
-        <user-my-record-calendar-date-item :item="item"></user-my-record-calendar-date-item>
+        <user-my-record-calendar-date-item :item="item" @calcSum="calcSum"></user-my-record-calendar-date-item>
       </div>
+
     </div>
     
   </div>
@@ -31,6 +32,7 @@ export default {
   props:['date','dayEvent'],
   data(){
     return{
+      totalCal:0
     }
   },
   filters:{
@@ -40,7 +42,10 @@ export default {
     }
   },
   methods:{
-    
+    calcSum(val){
+
+      this.totalCal+=val;
+    }
   },
   created(){
     // for(let e in events){

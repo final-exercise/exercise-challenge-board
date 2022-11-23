@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ import com.ssafy.ssafit.util.JwtUtil;
 
 import io.swagger.annotations.Api;
 
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8080", "*" })
 @RequestMapping("/coach")
 @RestController
 @Api("Coach")
@@ -93,8 +95,9 @@ public class CoachController {
 		HttpStatus status = null;
 
 		try {
+			System.out.println(coachDto.getCoachId());
 			CoachDto resCoach = cs.login(coachDto);
-
+			
 			if (resCoach == null) {
 				result.put("isSuccess", FAIL);
 				result.put("message", "로그인 실패");
@@ -124,13 +127,14 @@ public class CoachController {
 	// 28) [GET] /coach
 	// jwt 추가 필요
 	@GetMapping("/")
-	public ResponseEntity<Map<String, Object>> getCoach(int coachSeq) {
+	public ResponseEntity<Map<String, Object>> getCoach() {
 //			int userSeq;
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-//				userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int coachSeq = Integer.parseInt(jwtUtil.getValueFromJwt("coachSeq").toString());
+			System.out.println(coachSeq);
 			CoachDto resCoach = cs.getCoach(coachSeq);
 
 			result.put("message", "get coach success");

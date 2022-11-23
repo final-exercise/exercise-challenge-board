@@ -9,36 +9,36 @@
         <li>
           <div class="div-user-item">
             <span class="medal">🥇</span>
-            <h4>김소정</h4>
-            <span>15개</span>
+            <h4>{{users[0].userNickname}}</h4>
+            <span>{{users[0].value}}개</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">🥈</span>
-            <h4>김소정</h4>
-            <span>15개</span>
+            <h4>{{users[1].userNickname}}</h4>
+            <span>{{users[1].value}}개</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">🥉</span>
-            <h4>김소정</h4>
-            <span>15개</span>
+            <h4>{{users[2].userNickname}}</h4>
+            <span>{{users[2].value}}개</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">4️⃣</span>
-            <h4>김소정</h4>
-            <span>15개</span>
+            <h4>{{users[3].userNickname}}</h4>
+            <span>{{users[3].value}}개</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">5️⃣</span>
-            <h4>김소정</h4>
-            <span>15개</span>
+            <h4>{{users[4].userNickname}}</h4>
+            <span>{{users[4].value}}개</span>
           </div>
         </li>
       </ul>
@@ -47,8 +47,36 @@
 </template>
 
 <script>
-export default {
+import axios from 'axios';
 
+export default {
+  props:['keyword'],
+  data(){
+    return{
+      users:[]
+    }
+  },
+  created(){
+    const API_URL = `http://localhost:331/user/activity`
+    const param = {
+      key:this.keyword
+    }
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: param
+      }).then((res)=>{
+        this.users=res.data.res;
+        console.log(this.users);
+      }).then((res)=>{
+        this.$create;
+      }).catch((err)=>{
+        console.log(err);
+      })
+  }
 }
 </script>
 
