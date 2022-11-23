@@ -9,7 +9,7 @@
         <path
           d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
       </svg></button>
-    <button class="button-search"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    <button class="button-search" @click="searchVideos"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
         class="bi bi-search" viewBox="0 0 16 16">
         <path
           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -17,29 +17,44 @@
     </div>
     <div class="div-search" :class="{'searchActive':isActive}">
       <select v-model="key" required>
-          <option value="" selected disabled hidden >검색 기준</option>
-          <option :value="videoTitle" default>제목</option>
-          <option :value="videoChannelName">채널명</option>
+          <option disalbed value="">검색 기준</option>
+          <option value="video_title">제목</option>
+          <option value="video_channel_name">채널 이름</option>
       </select>
       <input v-model="word" required placeholder="검색어" class="input-key"/>
       <select v-model="sort" required>
           <option value="" selected disabled hidden >정렬 기준</option>
-          <option :value="videoTitle" default>제목순</option>
-          <option :value="duration">길이순</option>
-          <option :value="viewCnt">조회수순</option>
-          <option :value="videoCal">칼로리순</option>
+          <option value="video_title" default>제목순</option>
+          <option value="duration">길이순</option>
+          <option value="view_cnt">조회수순</option>
+          <option value="video_Cal">칼로리순</option>
       </select>
       <select v-model="sortDir" required>
           <option value="" selected disabled hidden >정렬 기준</option>
-          <option :value="ASC" default>오름차순</option>
-          <option :value="DESC">내림차순</option>
+          <option value="ASC" default>오름차순</option>
+          <option value="DESC">내림차순</option>
       </select>
     </div>
+
+    <div class="div-sorted-videos">
+      <div v-for="(video, index) in videos" :key="index">
+        <search-list-item :video="video"></search-list-item>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import SearchListItem from "./VideoSearchListItem.vue"
+import {mapState} from 'vuex'
+
 export default {
+  name: "VideoSearch",
+  components: {
+    SearchListItem, // 이게 아까는 VideoListItem이었는데 그럼 아예 같이 돌아가고, 이렇ㄱㅔ하면 왜 검색한게 위에 안떠
+  },
+
   data(){
     return{
       key:"",
@@ -58,8 +73,15 @@ export default {
     },
     searchActive(){
       this.isActive = !this.isActive
+    },
+    searchVideos() {
+      console.log(this.word)
+      this.$store.dispatch('searchVideos', {key: this.key, word: this.word, sort: this.sort, sortDir: this.sortDir})
     }
-  }
+  },
+  computed: {
+    ...mapState(['videos', 'videoListTotal'])
+  },
 }
 </script>
 

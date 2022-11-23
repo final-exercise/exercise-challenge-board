@@ -45,10 +45,10 @@
         <span>{{commentContent|stringLength}}/100자</span>
       </div>
       <hr style="width:100%; margin-top:10px">
-      <textarea class="textarea-comment" v-model="commentContent" placeholder="댓글을 남겨보세요"></textarea>
+      <textarea id="comment-content" class="textarea-comment" v-model="commentContent" placeholder="댓글을 남겨보세요"></textarea>
         
       <div class="div-comment-block">
-        <button class="button-write">등록하기</button>
+        <button class="button-write" @click="getContent">등록하기</button>
       </div>
       
     </div>
@@ -118,12 +118,20 @@ export default {
         this.isLike = true;
         this.video.videoWishCnt++;
         //fals인 상태에서 클릭 -> wish에 넣겠다는 것
+        this.$store.dispatch('registUserWish', this.videoSeq);
       } else{
+
         this.isLike = false;
         this.video.videoWishCnt--;
         //wish에서 지우겠다는 것
+        this.$store.dispatch('deleteUserWish', this.videoSeq);
       }
     },
+    getContent() {
+      this.commentContent = document.getElementById("comment-content").value;
+
+      this.$store.dispatch('registComment', {videoSeq: this.videoSeq, commentContent: this.commentContent, bundleId: 0});
+    }
   },
   filters:{
     stringLength(val){

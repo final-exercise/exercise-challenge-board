@@ -53,6 +53,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="sort != 'none'">
 			ORDER BY ${sort} ${sortDir}
 		</if>
+		<!-- <if test="limit != 0">
+			LIMIT ${limit}
+		</if>  -->
 	</select>
 
 	<!-- public VideoDto selectVideo(int videoSeq); -->
