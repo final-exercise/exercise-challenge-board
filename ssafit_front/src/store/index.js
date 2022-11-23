@@ -20,14 +20,11 @@ export default new Vuex.Store({
     },],
     selectedVideoList:[],
     videos: [],
-<<<<<<< HEAD
     video:"",
     comments: [],
     videoIsWish: "",
-=======
     events:[],
     isLoading:false
->>>>>>> 9ac12a58478c9dd9177c6493edc740cff961a506
   },
   getters: {
    
@@ -42,13 +39,12 @@ export default new Vuex.Store({
     GET_VIDEO_LIST(state, data){
       state.videos = data;
     },
-<<<<<<< HEAD
     GET_VIDEO(state, data) {
       console.log(data)
       state.video = data.videodto;
       state.comments = data.comments;
       state.videoIsWish = data.videoIsWish;
-=======
+    },
     PAGE_LOAD(state,data){
       state.isLoading = data;
     },
@@ -64,7 +60,6 @@ export default new Vuex.Store({
 
         state.events.push(event);
       }
->>>>>>> 9ac12a58478c9dd9177c6493edc740cff961a506
     }
   },
   actions: {
@@ -205,4 +200,5 @@ export default new Vuex.Store({
   modules: {
     FadeLoader
   }
-})
+}
+)
