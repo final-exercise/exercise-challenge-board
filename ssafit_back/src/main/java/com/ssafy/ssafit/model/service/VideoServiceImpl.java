@@ -1,6 +1,7 @@
 package com.ssafy.ssafit.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import com.ssafy.ssafit.model.dto.Comment.CommentDto;
 import com.ssafy.ssafit.model.dto.Video.SearchCondition;
 import com.ssafy.ssafit.model.dto.Video.VideoDetailDto;
 import com.ssafy.ssafit.model.dto.Video.VideoDto;
-import com.ssafy.ssafit.util.JwtUtil;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -43,16 +43,17 @@ public class VideoServiceImpl implements VideoService {
 		try {
 			VideoDetailDto vdd = new VideoDetailDto();
 			vdd.setVideodto(vd.selectVideo(videoSeq));
-			System.out.println(vdd.getVideodto().getVideoTitle());
 			vdd.setComments(cd.getCommentsByVideoSeq(videoSeq));
-			for(CommentDto cd : vdd.getComments()) {
-				cd.set
+			List<CommentDto> comments = vdd.getComments();
+			for(CommentDto comment : comments) {
+				// 대댓글 가져오기
+				comment.setReplys(cd.getCommentsByCommentSeq(comment.getCommentSeq()));
 			}
+			
 			Map<String, Integer> map = new HashMap<>();
 			map.put("videoSeq", videoSeq);
 			map.put("userSeq", userSeq);
 			vdd.setVideoIsWish(vd.selectUserWish(map));
-			System.out.println(vdd.getVideoIsWish());
 			return vdd;
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -1,15 +1,15 @@
 package com.ssafy.ssafit.model.dao;
 
+import java.util.List;
 import java.util.Map;
 
-import com.github.pagehelper.Page;
 import com.ssafy.ssafit.model.dto.Comment.CommentDto;
 
 public interface CommentDao {
 	//비디오 seq에 따른 댓글 목록 select
-	public Page<CommentDto> getCommentsByVideoSeq(int videoSeq);
+	public List<CommentDto> getCommentsByVideoSeq(int videoSeq);
 	//댓글 seq에 따른 대댓글 목록 select
-	public Page<CommentDto> getCommentsByCommentSeq(int commentSeq);
+	public List<CommentDto> getCommentsByCommentSeq(int commentSeq);
 	//리뷰 등록
 	public int insertComment(CommentDto commentDto);
 	//리뷰 수정

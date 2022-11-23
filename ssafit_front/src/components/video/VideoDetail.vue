@@ -7,10 +7,10 @@
     </div>
     <div class="div-decorate">&nbsp;</div>
     <div>
-
-      <!-- <div v-for="(comment, index) in comments" :key="index">
+      <div v-for="(comment, index) in comments" :key="index">
         <comment-list-item :comment="comment"></comment-list-item>
-      </div> -->
+      </div>
+
     </div>
     
   </div>

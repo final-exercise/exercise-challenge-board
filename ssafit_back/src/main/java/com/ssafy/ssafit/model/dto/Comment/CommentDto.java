@@ -24,5 +24,4 @@ public class CommentDto {
 	private String nickname; // resultMap collection
 	private boolean isCoach;
 	private List<CommentDto> replys;
-
 }
