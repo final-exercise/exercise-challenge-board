@@ -37,6 +37,9 @@ export default new Vuex.Store({
     GET_WISH_VIDEO(state,data){
       // state.videoList = data;
     },
+    GET_RATING_VIDEOS(state, data) {
+      state.videos = data.res;
+    },
     GET_VIDEO_LIST(state, data){
       state.videoListTotal = data.total;
       state.videos = data.res;
@@ -133,6 +136,26 @@ export default new Vuex.Store({
       sessionStorage.removeItem("access-token");
       sessionStorage.removeItem("userNickname");
       window.location.href = "/";
+    },
+    getRatingVideos({commit}, payload) {
+      let SearchCondition = {
+        sort: payload,
+      }
+
+      const API_URL = `${REST_API}/video`
+      axios ({
+        url :API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: SearchCondition,
+
+      }).then((res) => {
+        commit('GET_RATING_VIDEOS', res.data);
+      }).catch((err) => {
+        console.log(err);
+      })
     },
     getVideoList({commit}, payload){
       //추가 필요 ->  super, sub 가지고 영상 가져오기
