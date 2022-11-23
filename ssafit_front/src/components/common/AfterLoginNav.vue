@@ -6,8 +6,8 @@
     <button class="button-login">
       <router-link to="mypage-info">마이페이지</router-link>
     </button>
-    <button class="button-login">
-      <router-link to="/login">나의 기록</router-link>
+    <button class="button-myrecord">
+      <router-link to="/myrecord">나의 기록</router-link>
     </button>
     <button class="button-logout" @click="logout">
       <a>로그아웃</a>
@@ -63,8 +63,15 @@ export default {
   color: white;
 }
 
-.button-login{
+.button-login, .button-myrecord {
   margin-right: 10px;
+}
+
+.button-myrecord a:visited,
+.button-myrecord a:active,
+.button-myrecord a:link{
+  color: grey;
+  text-decoration: none;
 }
 
 

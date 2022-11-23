@@ -6,13 +6,16 @@
     </div>
     <div class="div-myrecord-calendar-main">
       <div class="div-myrecord-calendar">
-        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
+        <div class="div-myrecord-button">
+          <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
 
         <v-btn icon class="ma-2" @click="$refs.calendar.next()">
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
+        </div>
+       
 
       <v-sheet height="600">
         <v-calendar
@@ -28,7 +31,11 @@
       </v-sheet>
       </div>
       <div class="div-myrecord-write">
-        <div class="fieldset-write">&nbsp;</div>
+        <div class="div-myrecord-button">
+          <router-link :to="{name:'myrecord-calendar-diet'}"><button class="menu-item" @click="makeActive">식단</button></router-link>
+          <router-link :to="{name:'myrecord-calendar-workout'}"><button class="menu-item" @click="makeActive">운동</button></router-link>
+        </div>
+        <router-view/>
       </div>
     </div>
 
@@ -88,12 +95,25 @@ export default {
     },
     tmpEvent(event){
       console.log(event);
+    },
+    makeActive(event){
+      const curActive = document.querySelector('.menu-item.active');
+      if(curActive)curActive.classList.remove('active');
+      event.target.classList.add('active');
     }
   },
 }
 </script>
 
 <style scoped>
+a:link,
+a:hover,
+a:visited,
+a:active{
+  color: rgb(46, 46, 46);
+  font-weight: 600;
+}
+
 .container-myrecord-calendar{
   width: 100%;
   display: flex;
@@ -118,19 +138,33 @@ export default {
   width: 100%;
 }
 
+.menu-item{
+  background-color:rgb(219, 219, 219);
+  padding: 0px 20px;
+  margin: 10px;
+  font-weight: 500;
+}
+
+.active{
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1px 1px 2px inset; */
+  background-color: rgb(255, 161, 161);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 3px 3px;
+}
+
 .div-myrecord-calendar{
   min-width: 60%;
 }
 
 .div-myrecord-write{
-  margin-top: 30px;
   margin-left: 20px;
   min-width: 40%;
 }
-.fieldset-write{
-  background-color:black;
-  min-width: 60%;
-  min-height: 70%;
-  border-radius: 30px;
+
+.div-myrecord-button{
+  height: 60px;
+}
+
+.div-myrecord-button .ma-2{
+  background-color:rgb(255, 255, 255);
 }
 </style>

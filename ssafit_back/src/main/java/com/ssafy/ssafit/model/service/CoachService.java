@@ -17,6 +17,8 @@ public interface CoachService {
 	public int modifyCoach(CoachDto coachDto) throws BaseException;
 	
 	public Page<UserDto> getManageUser(int coachSeq) throws BaseException;
+
+	public int matchCoach(int userSeq, String userType) throws BaseException;
 	
 	
 }

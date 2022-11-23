@@ -16,6 +16,8 @@ import VideoWishList from "../components/video/VideoWishList.vue"
 import UserMyRecordView from "../views/UserMyRecordView.vue"
 import UserMyRecordBmi from "../components/user/myrecord/UserMyRecordBmi.vue";
 import UserMyRecordCalendar from "../components/user/myrecord/UserMyRecordCalendar.vue"
+import UserMyRecordCalendarDiet from "../components/user/myrecord/UserMyRecordCalendarDiet.vue"
+import UserMyRecordCalendarWorkout from "../components/user/myrecord/UserMyRecordCalendarWorkout.vue"
 
 Vue.use(VueRouter)
 
@@ -36,16 +38,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    children:[
-      {
-        path: "",
-        component: UserLogin
-      },
-      {
-        path: "coach",
-        component: CoachLogin
-      }
-    ]
+    component: UserLogin,
   },
   {
     path: "/signup",
@@ -109,7 +102,19 @@ const routes = [
       {
         path: "calendar",
         name: 'myrecord-calendar',
-        component: UserMyRecordCalendar
+        component: UserMyRecordCalendar,
+        children:[
+          {
+            path:"diet",
+            name:"myrecord-calendar-diet",
+            component: UserMyRecordCalendarDiet
+          },
+          {
+            path:"workout",
+            name:"myrecord-calendar-workout",
+            component: UserMyRecordCalendarWorkout
+          }
+        ]
       }
     ]
   }

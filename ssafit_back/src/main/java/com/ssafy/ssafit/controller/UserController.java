@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +31,8 @@ import com.ssafy.ssafit.model.dto.User.UserDto;
 import com.ssafy.ssafit.model.dto.User.UserWorkoutDto;
 import com.ssafy.ssafit.model.dto.Video.SearchCondition;
 import com.ssafy.ssafit.model.dto.Video.VideoDto;
+import com.ssafy.ssafit.model.service.CoachService;
+import com.ssafy.ssafit.model.service.CoachServiceImpl;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.model.service.UserServiceImpl;
 import com.ssafy.ssafit.util.JwtUtil;
@@ -47,6 +47,7 @@ public class UserController {
 
 	private JwtUtil jwtUtil;
 	private UserService us;
+	private CoachService cs;
 
 	private final boolean SUCCESS = true;
 	private final boolean FAIL = false;
@@ -60,6 +61,11 @@ public class UserController {
 	public void setUserService(UserServiceImpl us) {
 		this.us = us;
 	}
+	
+	@Autowired
+	public void setCoachService(CoachServiceImpl cs) {
+		this.cs = cs;
+	}
 
 	// 1) [POST] /user/signup
 	@PostMapping("signup")
@@ -68,11 +74,13 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-			
-			String userType = userDto.getUserType();
-			
+			System.out.println(userDto);
 			int res = us.signup(userDto);
 
+			int newUserSeq = userDto.getUserSeq();
+			String userType = userDto.getUserType();
+			cs.matchCoach(newUserSeq,userType);
+			
 			if (res != 1) {
 				throw new BaseException(FAIL, 500, "signup insert fail");
 			}
@@ -95,7 +103,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(UserDto userDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
 			UserDto resUser = us.login(userDto);
 

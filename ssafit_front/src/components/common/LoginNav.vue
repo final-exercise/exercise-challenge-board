@@ -1,7 +1,7 @@
 <template>
   <div class="container-header-button">
     <button class="button-login">
-      <router-link to="/login">로그인</router-link>
+      <router-link to="login">로그인</router-link>
     </button>
     <button class="button-signup">
       <a @click="modalStatusChange">회원가입</a>
@@ -16,7 +16,6 @@
 
       </div>
     </div> 
-
   </div>
 
       

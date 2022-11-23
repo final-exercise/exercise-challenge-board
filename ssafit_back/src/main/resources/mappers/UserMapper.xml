@@ -64,6 +64,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertUser" parameterType="UserDto">
 		insert into user (user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) 
 		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userNickname}, #{userGender}); 
+		
+		<selectKey keyProperty="userSeq" resultType="Integer">
+			select user_seq from user order by created_at desc limit 1;
+		</selectKey>
 	</insert>
 	
 	<!-- public UserDto getUserByUserId(String userId); -->

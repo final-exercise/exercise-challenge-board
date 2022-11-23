@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.model.service;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +95,23 @@ public class CoachServiceImpl implements CoachService {
 	public Page<UserDto> getManageUser(int coachSeq) throws BaseException {
 		try {
 			return cd.selectManageUser(coachSeq);
+		} catch(Exception e) {
+			throw new BaseException(FAIL, 500, "database error");
+		}
+	}
+
+	@Override
+	public int matchCoach(int userSeq, String userType) throws BaseException {
+		try {
+			//1. 매칭할 코치의 seq 가져오기
+//			return cd.selectManageUser(coachSeq);
+			int coachSeq = cd.selectMinMatchedCoach(userType);
+			//2. 유저와 매칭하기
+			HashMap<String,Integer> param = new HashMap<>();
+			param.put("userSeq",userSeq);
+			param.put("coachSeq",coachSeq);
+			cd.insertUserCoachMatching(param);
+			return 1;
 		} catch(Exception e) {
 			throw new BaseException(FAIL, 500, "database error");
 		}
