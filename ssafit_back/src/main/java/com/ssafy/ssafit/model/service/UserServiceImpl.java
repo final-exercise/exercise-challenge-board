@@ -145,8 +145,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int registUserDiet(UserDietDto userDietDto) throws BaseException {
 		try {
+			System.out.println(userDietDto);
 			return ud.insertUserDiet(userDietDto);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
@@ -212,6 +214,16 @@ public class UserServiceImpl implements UserService {
 			map.put("user_weight", userBmiDto.getUserWeight());
 			map.put("user_seq", userSeq);
 			return ud.insertUserBmi(map);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new BaseException(FAIL, 500, "database error");
+		}
+	}
+
+	@Override
+	public int createUserSubTable(UserDto userDto) throws BaseException {
+		try {
+			return ud.insertUserActivity(userDto);
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");

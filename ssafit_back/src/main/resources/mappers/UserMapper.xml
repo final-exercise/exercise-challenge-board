@@ -35,9 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_seq" property="userSeq" />
 		<result column="created_at" property="createdAt" />
 		<result column="user_diet_seq" property="userDietSeq" />
-		<result column="diet_seq" property="dietSeq" />
+		<result column="diet_id" property="dietId" />
 		<result column="diet_name" property="dietName" />
-		<result column="diet_img_url" property="dietImgUrl" />
+		<result column="diet_maker" property="dietMaker" />
 		<result column="diet_cal" property="dietCal" />
 	</resultMap>
 	
@@ -148,8 +148,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public int insertUserDiet(UserDietDto userDietDto); -->
 	<insert id="insertUserDiet" parameterType="userDietDto">
-		insert into user_diet(diet_seq, diet_name, diet_img_url, diet_cal, user_seq)
-		values (#{dietSeq}, #{dietName}, #{dietImgUrl}, #{dietCal}, #{userSeq});
+		insert into user_diet(diet_id, diet_name, diet_maker, diet_cal, user_seq)
+		values (#{dietId}, #{dietName}, #{dietMaker}, #{dietCal}, #{userSeq});
 	</insert>
 	
 	<!-- public Page<Video> selectWishVideo(int userSeq); -->
@@ -173,5 +173,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set ${key1} = ${key1} + #{value}, ${key2} = ${key2} + #{value}
 		where user_seq=#{userSeq}
 	</update>
+	
+	<!-- 	public int insertUserActivity(UserDto userDto); -->
+	<insert id="insertUserActivity" parameterType="userDto">
+		insert into user_activity(user_seq, user_nickname, user_height) 
+		values(#{userSeq},#{userNickname}, #{userHeight});
+	</insert>
 	
 </mapper>

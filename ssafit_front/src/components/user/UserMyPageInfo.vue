@@ -21,10 +21,11 @@
       </div>
       <div class="div div-id">
         <label>성별</label>
-        <select ref="inputGender" v-model="userGender" placeholder="성별 선택" required>
-          <option :value="{userGender: 'M'}">남성</option>
-          <option :value="{userGender: 'F'}">여성</option>
-          <option :value="{userGender: 'N'}">선택하지 않음</option>
+        <select ref="inputGender" v-model="getUser.userGender" required>
+          <option value="" selected disabled hidden >성별 선택</option>
+          <option :value="'M'" default>남성</option>
+          <option :value="'F'">여성</option>
+          <option :value="'N'">선택하지 않음</option>
         </select>
       </div>
       <button class="button-modify">수정하기</button>
@@ -47,6 +48,7 @@ export default {
   },
   computed:{
     getUser(){
+      console.log(this.$store.state.user);
       return this.$store.state.user;
     }
   },

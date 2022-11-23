@@ -76,10 +76,15 @@ public class UserController {
 		try {
 			System.out.println(userDto);
 			int res = us.signup(userDto);
-
+			
 			int newUserSeq = userDto.getUserSeq();
+
+			
+			us.createUserSubTable(userDto);
+			
 			String userType = userDto.getUserType();
 			cs.matchCoach(newUserSeq,userType);
+			
 			
 			if (res != 1) {
 				throw new BaseException(FAIL, 500, "signup insert fail");
@@ -299,8 +304,7 @@ public class UserController {
 	// 9) [GET] /user/diet?month={month}&year={year}
 	@GetMapping("/diet")
 	public ResponseEntity<Map<String, Object>> getUserMonthlyDiet(@RequestParam(required=false) Integer year, 
-																	@RequestParam(required=false) Integer month, 
-																	int userSeq) {
+																	@RequestParam(required=false) Integer month) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -312,7 +316,8 @@ public class UserController {
 				year = LocalDate.now().getYear();
 			}
 
-//			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
+
 			List<UserDietDto> resDiets = us.getUserMonthlyDiet(userSeq, month, year);
 
 			result.put("message", "get userMonthlyDiet success");
@@ -335,9 +340,12 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> postUserDiet(UserDietDto userDietDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
+		
 		try {
-//			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
+			System.out.println(userSeq);
+			userDietDto.setUserSeq(userSeq);
+			System.out.println(userDietDto);
 			int res = us.registUserDiet(userDietDto);
 
 			if (res != 1) {

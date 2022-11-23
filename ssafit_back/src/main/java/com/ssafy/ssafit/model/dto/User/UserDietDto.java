@@ -4,17 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserDietDto {
 	int userSeq;
 	String createdAt;
 	int userDietSeq;
-	int dietSeq;
+	String dietId;
 	String dietName;
-	String dietImgUrl;
+	String dietMaker;
 	int dietCal;
 }

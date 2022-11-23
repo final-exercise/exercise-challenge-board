@@ -18,6 +18,7 @@ import UserMyRecordBmi from "../components/user/myrecord/UserMyRecordBmi.vue";
 import UserMyRecordCalendar from "../components/user/myrecord/UserMyRecordCalendar.vue"
 import UserMyRecordCalendarDiet from "../components/user/myrecord/UserMyRecordCalendarDiet.vue"
 import UserMyRecordCalendarWorkout from "../components/user/myrecord/UserMyRecordCalendarWorkout.vue"
+import UserMyRecordCalendarDate from "../components/user/myrecord/UserMyRecordCalendarDate"
 
 Vue.use(VueRouter)
 
@@ -107,12 +108,18 @@ const routes = [
           {
             path:"diet",
             name:"myrecord-calendar-diet",
-            component: UserMyRecordCalendarDiet
+            component: UserMyRecordCalendarDiet,
           },
           {
             path:"workout",
             name:"myrecord-calendar-workout",
             component: UserMyRecordCalendarWorkout
+          },
+          {
+            path:":date",
+            name:"myrecord-calendar-date",
+            component: UserMyRecordCalendarDate,
+            props: true
           }
         ]
       }

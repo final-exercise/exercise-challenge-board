@@ -1,5 +1,8 @@
 <template>
-  <div class="fieldset-write">
+  <div class="fieldset-write" >
+    <div class="loading" v-if="isLoading">
+      <FadeLoader/>
+    </div>
     <h3>식단 기록하기</h3>
     <h2>{{today|dateFilter}}</h2>
     <div class="div-search">
@@ -15,14 +18,14 @@
     <div class="div-decorate" style="width:100%; margin:5px 0px 15px 0px; background-color:rgb(150, 200, 255);">&nbsp;</div>
     <div class="div-foods">
       <div v-for="(food, index) in foods" :key="index">
-        <user-my-record-calendar-diet-item :food="food"></user-my-record-calendar-diet-item>
+        <user-my-record-calendar-diet-item :food="food" @selectFood="selectFood"></user-my-record-calendar-diet-item>
       </div>
       <v-pagination
       v-model="page"
-      :length="10"
+      :length="length"
       :color="`#81C784`"
-      @input="inputPage"
-    ></v-pagination>
+      @input="search"
+      ></v-pagination>
     </div>
     
   </div>
@@ -31,16 +34,22 @@
 <script>
 import UserMyRecordCalendarDietItem from "./UserMyRecordCalendarDietItem.vue";
 import axios from 'axios';
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import { mapState } from "vuex";
 
 export default {
+  name:'UserMyRecordCalendarDiet',
   components:{
     UserMyRecordCalendarDietItem,
+    FadeLoader
   },
   data(){
     return{
       today: new Date(),
       keyword:"",
-      foods:[]
+      page:1,
+      length:0,
+      foods:[],
     }
   },
   filters:{
@@ -53,19 +62,66 @@ export default {
   },
   methods:{
     search(event){
-      const API_URL=`https://openapi.foodsafetykorea.go.kr/api/${process.env.VUE_APP_DIET_API_KEY}/I2790/json/1/10/DESC_KOR=${this.keyword}`;
+      let startN, endN
+      if(typeof event == "number"){
+        startN = (event-1)*10+1;
+        endN = event*10;
+      } else{
+        startN = 1;
+        endN = 10;
+      }
 
+      const API_URL=`https://openapi.foodsafetykorea.go.kr/api/${process.env.VUE_APP_DIET_API_KEY}/I2790/json/${startN}/${endN}/DESC_KOR=${this.keyword}`;
+      
+      this.$store.commit("PAGE_LOAD",true);
       axios({
         url: API_URL,
         method: 'GET',
       })
       .then((res) => {
-        this.foods = res.data.I2790.row
-        console.log(this.foods);
+        this.$store.commit("PAGE_LOAD",false);
+        this.foods = res.data.I2790.row;
+        this.length = Math.ceil(res.data.I2790.total_count/10);
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    selectFood(data){
+      if(!window.confirm(`${data.DESC_KOR} 등록하시겠습니까?`)){
+        return;
+      }
+      console.log(data.MAKER_NAME)
+
+      const API_URL=`http://localhost:331/user/diet`;
+      let param={
+        dietId:data.FOOD_CD,
+        dietName:data.DESC_KOR,
+        dietCal:data.NUTR_CONT1,
+        dietMaker: data.MAKER_NAME,
+      }
+
+      // this.loading=true;
+      axios({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: param,
+      })
+      .then((res) => {
+        // this.loading=false;
+        console.log(res)
+      }).catch((err)=>{
+        // this.loading=false;
+        console.log(err)
+      })
+
+      location.href="redirect:/"
     }
+  },
+  computed:{
+    ...mapState(['isLoading'])
   }
 }
 </script>
@@ -106,6 +162,15 @@ export default {
 
 .div-foods{
   width:100%
+}
+
+.loading {
+  z-index: 2;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 9999px;
 }
 
 </style>
