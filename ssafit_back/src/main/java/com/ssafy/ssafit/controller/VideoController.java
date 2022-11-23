@@ -52,7 +52,17 @@ public class VideoController {
 	// 1) [GET] /video?page={page}&superType={superType}&subType={subType}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
-//		System.out.println(sc.getSort());
+
+		System.out.println(sc.toString());
+		if(sc.getKey().length()==0 && sc.getKey() !="none") {
+			sc.setKey("none");
+		} // 이건 할필요가 없나?
+		if(sc.getSort().length()==0 && sc.getSort() !="none") {
+			sc.setSort("none");
+		}
+		if(sc.getSortDir().length() == 0) {
+			sc.setSortDir("desc");
+		}
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -87,7 +97,7 @@ public class VideoController {
 		try {
 			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
 			result.put("res", vs.getVideo(videoSeq, userSeq));
-			System.out.println(result.get("res"));
+//			System.out.println(result.get("res"));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
 			result.put("message", "get video success");
 			result.put("isSuccess", SUCCESS);
@@ -103,25 +113,25 @@ public class VideoController {
 	
 	// 3) [POST] /video/{videoSeq}?bundleId={bundleId}
 	@PostMapping("/{videoSeq}")
-	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, String bundleId, CommentDto commentDto) {
+	public ResponseEntity<Map<String, Object>> registComment(@PathVariable("videoSeq") int videoSeq, CommentDto commentDto) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
 		try {
+			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
+			commentDto.setUserSeq(userSeq);
 			int res = ((Integer) vs.registComment(commentDto)).intValue();
 			
 			if (res != 1) {
 				throw new BaseException(FAIL, 500, "insert comment fail");
 			}
 			
-			System.out.println(bundleId);
 			//댓글 depth 설정해줘야함
-			if(bundleId == null) {
+			if(commentDto.getBundleId() == 0) {
 				commentDto.setBundleId(commentDto.getCommentSeq());
 				commentDto.setCommentDepth(0);
 			}
 			else {
-				commentDto.setBundleId(Integer.parseInt(bundleId));
+				commentDto.setBundleId(commentDto.getBundleId());
 				commentDto.setCommentDepth(1);
 			}
 
@@ -201,7 +211,7 @@ public class VideoController {
 	public ResponseEntity<Map<String, Object>> registUserWish(@PathVariable("videoSeq") int videoSeq, HttpServletRequest request) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
+		System.out.println(videoSeq);
 		try {
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 

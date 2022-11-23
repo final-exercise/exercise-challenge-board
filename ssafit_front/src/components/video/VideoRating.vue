@@ -25,6 +25,10 @@ export default {
       sort:"",
     }
   },
+  created() {
+    this.sort = "created_at";
+    this.$store.dispatch('getRatingVideos', {sort: this.sort, limit: 3});
+  },
   methods:{
     getKey(event){
       const selectKey = event.target.innerHTML;
@@ -43,7 +47,7 @@ export default {
         this.sort = "video_comment_cnt"
       }
       
-      this.$store.dispatch('getRatingVideos', this.sort);
+      this.$store.dispatch('getRatingVideos', {sort:this.sort, limit:3});
     }
   }
 }

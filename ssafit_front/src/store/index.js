@@ -41,6 +41,10 @@ export default new Vuex.Store({
     GET_RATING_VIDEOS(state, data) {
       state.videos = data.res;
     },
+    GET_SEARCH_VIDEO_LIST(state, data) {
+      state.videoListTotal = data.total;
+      state.videos = data.res;
+    },
     GET_VIDEO_LIST(state, data){
       state.videoListTotal = data.total;
       state.videos = data.res;
@@ -161,7 +165,8 @@ export default new Vuex.Store({
     },
     getRatingVideos({commit}, payload) {
       let SearchCondition = {
-        sort: payload,
+        sort: payload.sort,
+        limit: payload.limit
       }
 
       const API_URL = `${REST_API}/video`
@@ -237,6 +242,7 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+
     getWorkoutList({commit}){
       const API_URL=`http://localhost:331/user/workout`;
 
@@ -295,9 +301,95 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    registComment({commit}, payload) {
+      let videoSeq = payload.videoSeq;
+      let commentDto = {
+        commentContent: payload.commentContent,
+        bundleId: payload.bundleId,
+      }
+      console.log(commentDto.bundleId)
+      const API_URL = `${REST_API}video/${videoSeq}`
+
+      axios ({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: commentDto,
+
+      }).then((res) => {
+
+      }).catch((err) => {
+        console.log(err)
+      })
+      window.location.replace(document.location);
+    },
+    registUserWish({commit}, payload) {
+      console.log("등록")
+      console.log(payload);
+      let videoSeq = payload;
+
+      const API_URL = `${REST_API}video/mylist/${videoSeq}`
+
+      axios ({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }
+      ).then((res) => {
+
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    deleteUserWish({commit}, payload) {
+      console.log("삭제");
+      console.log(payload)
+
+      let videoSeq = payload;
+
+      const API_URL = `${REST_API}video/mylist/${videoSeq}`
+
+      axios ({
+        url: API_URL,
+        method: 'DELETE',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }
+      ).then((res) => {
+        
+
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    searchVideos({commit}, payload) {
+      let SearchCondition = {
+        key: payload.key,
+        word: payload.word,
+        sort: payload.sort,
+        sortDir: payload.sortDir,
+      }
+
+      const API_URL = `${REST_API}video`
+
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        params: SearchCondition,
+      }).then((res) => {
+        commit('GET_SEARCH_VIDEO_LIST', res.data);
+      }).catch((err) => {
+        console.log(err)
+      })
+
+    }
   },
   modules: {
     FadeLoader
   }
-}
-)
+})

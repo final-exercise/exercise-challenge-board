@@ -44,7 +44,7 @@ public class VideoServiceImpl implements VideoService {
 			VideoDetailDto vdd = new VideoDetailDto();
 			vdd.setVideodto(vd.selectVideo(videoSeq));
 			vdd.setComments(cd.getCommentsByVideoSeq(videoSeq));
-
+			vd.updateViewCntOne(vdd.getVideodto().getVideoSeq());
 			List<CommentDto> comments = vdd.getComments();
 			for(CommentDto comment : comments) {
 				// 대댓글 가져오기
