@@ -366,8 +366,7 @@ public class UserController {
 	// 11) [GET] /user/wish?page={page}
 	// jwt 추가 필요 
 	@GetMapping("/wish")
-	public ResponseEntity<Map<String, Object>> getUserMyList(@RequestParam(required = false) Integer page,
-																@RequestParam int userSeq) {
+	public ResponseEntity<Map<String, Object>> getUserMyList(@RequestParam(required = false) Integer page) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -375,11 +374,13 @@ public class UserController {
 			if (page == null) {
 				page = 1;
 			}
-
-			PageHelper.startPage(page, 3);
+			
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			PageHelper.startPage(page, 10);
 //			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
 			Page<VideoDto> res = us.getWish(userSeq);
-			
+//			System.out.println(res);
+			result.put("total", res.getTotal());
 			result.put("message", "get userWish success");
 			result.put("res", res);
 			result.put("isSuccess", SUCCESS);

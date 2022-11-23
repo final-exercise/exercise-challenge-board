@@ -49,6 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="video_duration" property="videoDuration" />
 		<result column="video_view_cnt" property="videoViewCnt" />
 		<result column="video_cal" property="videoCal" />
+		<result column="super_type" property="superType" />
+		<result column="sub_type" property="subType" />
 	</resultMap>	
 
 	<resultMap type="UserActivityDto" id="userActivityDtoMap">
@@ -154,10 +156,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public Page<Video> selectWishVideo(int userSeq); -->
 	<select id="selectWishVideo" parameterType="int" resultMap="userWishVideoMap">
-		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal
+		select v.video_seq, video_id, video_title, video_channel_name,video_duration, video_view_cnt, video_cal
+				,(select workout_super_type_type 
+					from workout_super_type wsuper
+					where wsuper.workout_super_type_seq = 
+            						(select workout_super_type_seq 
+            						from video_super_type vsuper
+									where vsuper.video_seq = v.video_seq) 
+
+				) as super_type
+				, (select workout_sub_type_type 
+					from workout_sub_type wsub
+					where wsub.workout_sub_type_seq = 
+            						(select workout_sub_type_seq 
+            						from video_sub_type vsub
+									where vsub.video_seq = v.video_seq) 
+				) as sub_type
 		from video v
-		join wish w on w.video_seq = v.video_seq
-		where w.user_seq = #{userSeq} AND w.is_valid=1
+        join wish w on w.video_seq = v.video_seq
+		where w.user_seq = 1 AND w.is_valid=1
 	</select>
 	
 	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->

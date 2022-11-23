@@ -46,7 +46,7 @@ public class VideoServiceImpl implements VideoService {
 			System.out.println(vdd.getVideodto().getVideoTitle());
 			vdd.setComments(cd.getCommentsByVideoSeq(videoSeq));
 			for(CommentDto cd : vdd.getComments()) {
-				cd.set
+//				cd.set
 			}
 			Map<String, Integer> map = new HashMap<>();
 			map.put("videoSeq", videoSeq);

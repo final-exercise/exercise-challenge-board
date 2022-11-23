@@ -135,8 +135,6 @@ export default new Vuex.Store({
     getVideoList({commit}, payload){
       //추가 필요 ->  super, sub 가지고 영상 가져오기
       //페이지 잡아서
-      console.log(payload.super);
-      console.log(payload.sub);
       let SearchCondition = {
         superType: payload.super,
         subType: payload.sub,
@@ -174,10 +172,7 @@ export default new Vuex.Store({
         console.log(err);
       })
     }, 
-    getWishVideoList({commit}){
-      //추가 필요-> 헤더에서 userseq 추출하고 wish 비디오 다 가져오기
-      //페이지 잡아서
-    },
+    
     getDietList({commit}){
       const API_URL=`http://localhost:331/user/diet`;
 

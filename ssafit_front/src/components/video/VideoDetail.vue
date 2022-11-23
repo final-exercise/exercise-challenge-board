@@ -23,7 +23,7 @@ import { mapState } from 'vuex';
 export default {
   name: "VideoDetail",
   components: {
-    CommentListItem,
+    // CommentListItem,
   },
   data() {
     return {

@@ -7,9 +7,10 @@
     </div>
     <div class="hr">&nbsp;</div>
     <div class="container-videos-video-content">
-      <button class="button-part" :class="video.part">{{video.part}}</button>
+      <button class="button-superPart" :class="video.superType">{{video.superType}}</button>
+      <button class="button-part" :class="video.subType">{{video.subType}}</button>
       <h3>{{video.videoTitle|titleLength}}</h3>
-      <p>{{video.channelName}}</p>
+      <p>{{video.videoChannelName}}</p>
     </div>
   </div>
 </template>
@@ -31,7 +32,7 @@ export default {
         return value;
       }
     }
-  }
+  },
 }
 </script>
 
@@ -75,27 +76,53 @@ export default {
 .button-part {
   border-radius: 18px;
   padding: 0px 5px;
-  width: 70px;
+  width: 50px;
   color: white;
   font-weight: 500;
   font-size: 0.9rem;
-  height: 30px;
+  height: 25px;
   margin-bottom: 5px;
 }
 
-.button-part.total{
+.button-part.전신{
   background-color: rgb(255, 117, 117);
 }
-.button-part.upper{
-  background-color: rgb(161, 255, 117);
+.button-part.상체{
+  background-color: rgb(123, 217, 80);
 }
-.button-part.bottom{
+.button-part.하체{
   background-color: rgb(117, 122, 255);
 }
-.button-part.belly{
+.button-part.복부{
   background-color: rgb(255, 220, 92);
 }
 
+.button-superPart {
+  border-radius: 18px;
+  padding: 0px 5px;
+  width: 65px;
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  height: 25px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+.button-superPart.체중감량{
+  background-color: rgb(255, 170, 117);
+}
+.button-superPart.스트레칭{
+  background-color: rgb(89, 80, 217);
+}
+.button-superPart.근력강화{
+  background-color: rgb(161, 255, 117);
+}
+.button-superPart.체형교정{
+  background-color: rgb(255, 92, 92);
+}
+.button-superPart.스포츠{
+  background-color: rgb(255, 92, 250);
+}
 
 .container-videos-video-content p{
   font-size: 0.8rem;
