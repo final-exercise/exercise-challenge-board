@@ -273,4 +273,29 @@ public class VideoController {
 			return new ResponseEntity<Map<String, Object>>(result, status);
 		}
 	}
+	
+	//
+	@GetMapping("/{videoSeq}/mylist")
+	public ResponseEntity<Map<String, Object>> getIsWish(@PathVariable("videoSeq") int videoSeq) {
+		HashMap<String, Object> result = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+
+			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
+			int res = vs.selectUserWish(userSeq, videoSeq);
+
+			result.put("res", res);
+			result.put("message", "getIsWish success");
+			result.put("isSuccess", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		} catch (BaseException e) {
+			result.put("isSuccess", FAIL);
+			result.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		}
+	}
+	
 }

@@ -158,5 +158,16 @@ public class VideoServiceImpl implements VideoService {
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
+	
+	public int selectUserWish(int userSeq, int videoSeq) throws BaseException {
+		try {
+			Map<String, Integer> map = new HashMap<>();
+			map.put("videoSeq", videoSeq);
+			map.put("userSeq", userSeq);
+			return vd.selectUserWish(map);
+		} catch(Exception e) {
+			throw new BaseException(FAIL, 500, "database error");
+		}
+	}
 
 }

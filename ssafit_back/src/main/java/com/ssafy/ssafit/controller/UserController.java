@@ -76,7 +76,7 @@ public class UserController {
 		try {
 			System.out.println(userDto);
 			int res = us.signup(userDto);
-			
+		
 			int newUserSeq = userDto.getUserSeq();
 
 			

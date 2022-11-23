@@ -116,7 +116,7 @@ div.searchActive{
 select{
   appearance:auto;
   margin-top: 20px;
-  background-color: #EEEEEE;
+  background-color: #ffffff;
   width: 100px;
   height: 40px;
   display: flex;
@@ -131,7 +131,7 @@ select{
 input{
   appearance:auto;
   margin-top: 20px;
-  background-color: #EEEEEE;
+  background-color: #ffffff;
   width: 200px;
   height: 40px;
   display: flex;

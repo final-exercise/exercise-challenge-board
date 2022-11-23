@@ -1,3 +1,5 @@
+use ssafit;
+
 select * from user;
 insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'ssafy', '1234', '싸피', 'ssafy@ssafy.com', '1995-12-02', '싸피', 'M'); 
 insert into user (user_seq, user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) values (0, 'yang', '1234', '양명균', 'yang@ssafy.com', '1995-12-02', '양띵균', 'M'); 
@@ -125,3 +127,14 @@ insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 1);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 5);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 8, 2);
 
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1, '싸피', false);
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '왜 찌는지 저는 모름니다.', '1', null, 2, '양싸피', false);
+
+update comment set bundle_id = comment_seq where comment_seq in (1,2);
+
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
+values (0, '내것도', 1, null, 2, '양싸피', false, 1, 1);
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
+values (0, '내뱃살도', 1, null, 3, '아몰랑', false, 1, 1);
+
+select * from comment;

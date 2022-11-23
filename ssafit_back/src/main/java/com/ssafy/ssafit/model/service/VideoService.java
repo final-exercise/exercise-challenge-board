@@ -24,4 +24,6 @@ public interface VideoService {
 	public int updateComment(CommentDto commentDto) throws BaseException;
 	//리뷰 삭제
 	public int deleteComment(int commentSeq) throws BaseException;
+	//특정 유저가 해당 비디오 좋아요했는
+	public int selectUserWish(int userSeq, int videoSeq) throws BaseException;
 }

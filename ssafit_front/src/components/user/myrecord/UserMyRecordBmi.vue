@@ -8,8 +8,18 @@
       <div class="div-decorate" style="margin-left:0px; margin-bottom: 10px; width: 20%"></div>
     </div>
     <div class="div-myrecord-bmi-main">
-      
-    </div>
+      <v-sparkline
+      :fill="fill"
+      :gradient="selectedGradient"
+      :line-width="width"
+      :padding="padding"
+      :smooth="radius || false"
+      :value="value"
+    ></v-sparkline>
+    <!-- <template v-slot:label="item">
+            ${{ item.value }}
+          </template>
+    --> </div> 
 
   </div>
 </template>
@@ -19,19 +29,28 @@ import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 import axios from 'axios'
 import { mapState } from 'vuex';
 
+const gradients = [
+    ['#222'],
+    ['#42b3f4'],
+    ['red', 'orange', 'yellow'],
+    ['purple', 'violet'],
+    ['#00c6ff', '#F0F', '#FF0'],
+    ['#f72047', '#ffd200', '#1feaea'],
+  ]
+
 export default {
   components:{
     FadeLoader
   },
   data: () => ({
-    // loading:false,
-    type: 'month',
-    mode: 'stack',
-    weekday: [0, 1, 2, 3, 4, 5, 6],
-    value: '',
-    // events: [],
-    foods:[],
-  }),
+      fill: false,
+      selectedGradient: gradients[4],
+      gradients,
+      padding: 8,
+      radius: 5,
+      value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+      width: 2,
+    }),
   computed:{
     ... mapState(['events','loading'])
   },
