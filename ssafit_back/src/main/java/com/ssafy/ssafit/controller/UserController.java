@@ -176,12 +176,12 @@ public class UserController {
 	// 4) [DELETE] /user
 	// jwt 추가 필요
 	@DeleteMapping("")
-	public ResponseEntity<Map<String, Object>> deleteUser(int userSeq) {
+	public ResponseEntity<Map<String, Object>> deleteUser() {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-//			int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			int res = us.deleteUser(userSeq);
 
 			if (res != 1) {
@@ -227,12 +227,12 @@ public class UserController {
 	// 6) [GET] /user/bmi
 	// jwt 추가 필요
 	@GetMapping("/bmi")
-	public ResponseEntity<Map<String, Object>> getUserBmi(int userSeq) {
+	public ResponseEntity<Map<String, Object>> getUserBmi() {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			List<UserBmiDto> resBMIs = us.getUserBmi(userSeq);
 
 			result.put("message", "get userBmi success");
@@ -533,11 +533,13 @@ public class UserController {
 	// 40) [POST] /user/bmi
 	// 추후 jwt 추가 필요 및 dto 수정 필요
 	@PostMapping("/bmi")
-	public ResponseEntity<Map<String, Object>> postUserBmi(int userWeight, int userSeq) {
+	public ResponseEntity<Map<String, Object>> postUserBmi(int userWeight) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			
 			UserBmiDto userBmiDto = new UserBmiDto();
 			userBmiDto.setUserWeight(userWeight);
 			

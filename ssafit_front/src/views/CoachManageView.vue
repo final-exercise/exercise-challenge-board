@@ -13,18 +13,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data(){
         return{
-            userList:[
-                {
-                userName: "김소정",
-                userSeq: 1,
-                },{
-                userName: "김지현",
-                userSeq: 2,
-                },
-            ],
+            userList:[],
             selectedUser:"",
         }
     },
@@ -38,6 +32,25 @@ export default {
             //event.target으로 유저 이름
             //이걸 가지고 axios -> bmi랑 캘린더 
         }
+    },
+    created(){
+      const API_URL = `http://localhost:331/coach/manage`
+
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res)=>{
+        console.log(res);
+        // let total = res.data.total;
+        // console.log(res.data.res);
+        // this.videos = res.data.res;
+        // this.length = Math.ceil(total/10);
+      }).catch((err)=>{
+        console.log(err);
+      })
     }
 }
 </script>

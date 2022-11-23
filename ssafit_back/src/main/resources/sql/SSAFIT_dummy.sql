@@ -127,6 +127,24 @@ insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 1);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 5);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 8, 2);
 
+DROP TABLE IF EXISTS COMMENT;
+
+CREATE TABLE COMMENT (
+    `comment_seq`    INT    NOT NULL auto_increment primary key,
+    `comment_content`    VARCHAR(500)    NOT NULL,
+    `video_seq`    INT    NOT NULL,
+    `coach_seq`    INT    NULL,
+    `user_seq`    INT    NULL,
+    `nickname` VARCHAR(30) not NULL,
+    `is_coach` boolean not null,
+    `comment_depth`    INT    NULL default 0,
+    `bundle_id`    INT    NULL,
+    `created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `is_valid`    boolean    NOT NULL  DEFAULT true
+);
+
+
 insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1, '싸피', false);
 insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '왜 찌는지 저는 모름니다.', '1', null, 2, '양싸피', false);
 
@@ -136,3 +154,5 @@ insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_se
 values (0, '내것도', 1, null, 2, '양싸피', false, 1, 1);
 insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
 values (0, '내뱃살도', 1, null, 3, '아몰랑', false, 1, 1);
+
+select * from coach;

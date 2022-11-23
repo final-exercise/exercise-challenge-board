@@ -154,12 +154,12 @@ public class CoachController {
 	// 29) [DELETE] /coach
 	// jwt 추가 필요
 	@DeleteMapping("/")
-	public ResponseEntity<Map<String, Object>> deleteCoach(int coachSeq) {
+	public ResponseEntity<Map<String, Object>> deleteCoach( ) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-//				int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
+			int coachSeq = Integer.parseInt(jwtUtil.getValueFromJwt("coachSeq").toString());
 			int res = cs.deleteCoach(coachSeq);
 
 			if (res != 1) {
@@ -205,8 +205,7 @@ public class CoachController {
 	// 31) [GET] /coach/manage
 	// jwt ㅊ추가 필요
 	@GetMapping("/manage")
-	public ResponseEntity<Map<String, Object>> getManageUser(@RequestParam(required = false) Integer page,
-			int coachSeq) {
+	public ResponseEntity<Map<String, Object>> getManageUser(@RequestParam(required = false) Integer page) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -214,7 +213,9 @@ public class CoachController {
 			if (page == null) {
 				page = 1;
 			}
-
+			
+			int coachSeq = Integer.parseInt(jwtUtil.getValueFromJwt("coachSeq").toString());
+			System.out.println(coachSeq);
 			PageHelper.startPage(page, 10);
 //				int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
 			Page<UserDto> res = cs.getManageUser(coachSeq);
@@ -240,8 +241,6 @@ public class CoachController {
 		HttpStatus status = null;
 
 		try {
-
-//						int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
 			List<UserBmiDto> resBMIs = us.getUserBmi(userSeq);
 
 			result.put("message", "get manageUserBmi success");
