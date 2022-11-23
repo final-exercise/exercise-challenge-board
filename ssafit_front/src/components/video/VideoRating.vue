@@ -6,8 +6,9 @@
       <button class="button-type active" @click="getKey">최신 영상</button>
       <button class="button-type" @click="getKey">좋아요순</button>
       <button class="button-type" @click="getKey">조회수순</button>
+      <button class="button-type" @click="getKey">댓글수순</button>
     </div>
-    <video-list></video-list>
+    <video-list :sort="sort"></video-list>
   </div>
 </template>
 
@@ -15,12 +16,13 @@
 import VideoList from "./VideoList.vue"
 
 export default {
+  name: "VideoRating",
   components:{
     VideoList,
   },
   data(){
     return{
-      sort:""
+      sort:"",
     }
   },
   methods:{
@@ -34,11 +36,14 @@ export default {
       if(selectKey=="최신 영상"){
         this.sort = "created_at"
       } else if(selectKey=="좋아요순"){
-        this.sort = "like"
-      } else{
+        this.sort = "video_wish_cnt"
+      } else if(selectKey=="조회수순"){
         this.sort = "video_view_cnt"
+      } else {
+        this.sort = "video_comment_cnt"
       }
-     
+      
+      this.$store.dispatch('getRatingVideos', this.sort);
     }
   }
 }

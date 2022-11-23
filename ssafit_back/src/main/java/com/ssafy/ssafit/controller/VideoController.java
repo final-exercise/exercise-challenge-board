@@ -50,6 +50,7 @@ public class VideoController {
 	// 1) [GET] /video?page={page}&superType={superType}&subType={subType}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
+		System.out.println(sc.getSort());
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
