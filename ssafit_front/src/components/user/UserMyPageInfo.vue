@@ -29,6 +29,7 @@
         </select>
       </div>
       <button class="button-modify">수정하기</button>
+      <button class="button-delete">회원 탈퇴하기</button>
     </div>
   </div>
 </template>
@@ -129,6 +130,16 @@ select{
   font-weight: 500;
   font-size: 1.1rem;
   background-color:rgb(255, 162, 162);
+}
+
+.button-delete{
+  margin-bottom:10px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: white;
+  background-color:rgba(212, 212, 212, 0.915);
 }
 
 </style>

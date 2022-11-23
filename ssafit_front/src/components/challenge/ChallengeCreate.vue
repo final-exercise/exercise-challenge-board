@@ -44,7 +44,6 @@ export default {
 .div-challenge-make{
   background-color: rgb(219, 219, 219);
   /* flex-shrink:; */
-  height: 100vh;
   min-width: 30%;
 }
 

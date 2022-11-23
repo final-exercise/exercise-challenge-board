@@ -3,12 +3,11 @@
     <h2>인기 영상 둘러보기</h2>
     <div class="div-decorate">&nbsp;</div>
     <div class="div-type-button">
-      <button class="active">최고 댓글</button>
-      <button>최고 좋아요</button>
-      <button>최고 조회수</button>
+      <button class="button-type active" @click="getKey">최신 영상</button>
+      <button class="button-type" @click="getKey">좋아요순</button>
+      <button class="button-type" @click="getKey">조회수순</button>
     </div>
     <video-list></video-list>
-
   </div>
 </template>
 
@@ -18,6 +17,29 @@ import VideoList from "./VideoList.vue"
 export default {
   components:{
     VideoList,
+  },
+  data(){
+    return{
+      sort:""
+    }
+  },
+  methods:{
+    getKey(event){
+      const selectKey = event.target.innerHTML;
+      
+      const curA = document.querySelector('.active');
+      curA.classList.remove('active');
+      event.target.classList.add('active');
+
+      if(selectKey=="최신 영상"){
+        this.sort = "created_at"
+      } else if(selectKey=="좋아요순"){
+        this.sort = "like"
+      } else{
+        this.sort = "video_view_cnt"
+      }
+     
+    }
   }
 }
 </script>

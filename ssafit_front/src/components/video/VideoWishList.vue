@@ -12,7 +12,7 @@
     </div>
     <v-pagination class="div-page"
       v-model="page"
-      :length="10"
+      :length="length"
       :color="`#81C784`"
       @input="inputPage"
     ></v-pagination>
@@ -21,15 +21,17 @@
 
 <script>
 import VideoListItem from "./VideoListItem.vue";
+import axios from "axios";
 
 export default {
   components:{
-    VideoListItem
+    VideoListItem,
   },
   data(){
     return{
       page: 1,
-      videoList:[],
+      length: 0,
+      videos:[],
       selectedVideoList:[]
     }
   },
@@ -42,11 +44,23 @@ export default {
     }
   },
   created(){
-    //created말고 이 컴포넌트가 불러질때(router-link) 최초 1페이지 불러지고
-    //다른 페이지 눌리면 그때마다 dispatch하고
-    // this.$store.dispatch('getWishVideoList');
-    // 근데 내가 지금 필요한 영상 리스트는 이 컴포넌트에서만 필요한데
-    // vuex가 필요한가?
+      const API_URL = `http://localhost:331/user/wish`
+
+      axios ({
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res)=>{
+        let total = res.data.total;
+        console.log(res.data.res);
+        this.videos = res.data.res;
+        this.length = Math.ceil(total/10);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    
   },
 
   
@@ -108,6 +122,9 @@ select{
 
 .div-sorted-videos{
   min-height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .div label{
@@ -140,6 +157,7 @@ select{
 
 .div-page{
   height: 5%;
+  margin-bottom: 30px;
 }
 
 </style>
