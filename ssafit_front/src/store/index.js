@@ -24,7 +24,8 @@ export default new Vuex.Store({
     comments: [],
     videoIsWish: "",
     events:[],
-    isLoading:false
+    isLoading:false,
+    videoListTotal:0
   },
   getters: {
    
@@ -37,7 +38,8 @@ export default new Vuex.Store({
       // state.videoList = data;
     },
     GET_VIDEO_LIST(state, data){
-      state.videos = data;
+      state.videoListTotal = data.total;
+      state.videos = data.res;
     },
     GET_VIDEO(state, data) {
       console.log(data)
@@ -149,7 +151,7 @@ export default new Vuex.Store({
         },
         params: SearchCondition,
       }).then((res)=>{
-        commit('GET_VIDEO_LIST', res.data.res);
+        commit('GET_VIDEO_LIST', res.data);
       }).catch((err)=>{
         console.log(err);
       })

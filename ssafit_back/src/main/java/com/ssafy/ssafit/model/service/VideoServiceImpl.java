@@ -44,15 +44,11 @@ public class VideoServiceImpl implements VideoService {
 			VideoDetailDto vdd = new VideoDetailDto();
 			vdd.setVideodto(vd.selectVideo(videoSeq));
 			vdd.setComments(cd.getCommentsByVideoSeq(videoSeq));
-<<<<<<< HEAD
+
 			List<CommentDto> comments = vdd.getComments();
 			for(CommentDto comment : comments) {
 				// 대댓글 가져오기
 				comment.setReplys(cd.getCommentsByCommentSeq(comment.getCommentSeq()));
-=======
-			for(CommentDto cd : vdd.getComments()) {
-//				cd.set
->>>>>>> afca2c4fe3740d2a3b9287d53e93d04e817c35e8
 			}
 			
 			Map<String, Integer> map = new HashMap<>();

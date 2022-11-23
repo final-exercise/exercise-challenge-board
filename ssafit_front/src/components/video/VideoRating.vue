@@ -77,7 +77,18 @@ button {
 
 button.active{
   background-color: #6F38C5;
+  border: 1px solid #6F38C5;
   color: white;
   font-weight: 500;
+}
+
+.button-type{
+  background-color:rgba(229, 229, 229, 0.45);
+}
+
+button{
+  border: 1px solid rgb(204, 204, 204);
+  width: 100px;
+  border-radius: 20px
 }
 </style>

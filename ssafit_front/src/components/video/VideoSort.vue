@@ -9,7 +9,7 @@
     </div>
     <v-pagination
       v-model="page"
-      :length="10"
+      :length="Math.ceil(videoListTotal/10)"
       :color="`#81C784`"
       @input="inputPage"
     ></v-pagination>
@@ -71,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['videos'])
+    ...mapState(['videos','videoListTotal'])
   },
   created(){
     const params = new URL(document.location).searchParams;

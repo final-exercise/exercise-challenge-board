@@ -36,6 +36,7 @@ export default {
   created() {
     const PathName = new URL(document.location).pathname.split("/");
     const videoSeq = PathName[PathName.length - 1];
+    console.log(videoSeq);
     this.$store.dispatch('getVideo', videoSeq);
   }
 

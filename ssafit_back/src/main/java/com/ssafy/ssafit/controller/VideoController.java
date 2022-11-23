@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dto.Comment.CommentDto;
@@ -57,7 +58,11 @@ public class VideoController {
 				page = 1;
 			
 			PageHelper.startPage(page, 10);
-			result.put("res", vs.getVideos(sc));
+			
+			Page<VideoDto> res = vs.getVideos(sc);
+			
+			result.put("res", res);
+			result.put("total", res.getTotal());
 			result.put("message", "get videos success");
 			result.put("isSuccess", SUCCESS);
 			status = HttpStatus.ACCEPTED;
