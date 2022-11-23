@@ -46,7 +46,7 @@ public class VideoController {
 		this.vs = vs;
 	}
 	
-	// 1) [GET] /video?page={page}&super={super}&sub={sub}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
+	// 1) [GET] /video?page={page}&superType={superType}&subType={subType}&key={key}&word={word}&sort={sort}&sortDir={sortDir}
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getVideos(SearchCondition sc) {
 		HashMap<String, Object> result = new HashMap<>();
@@ -75,10 +75,10 @@ public class VideoController {
 	public ResponseEntity<Map<String, Object>> getVideo(@PathVariable("videoSeq") int videoSeq, HttpServletRequest request) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-		
 		try {
-			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
 			result.put("res", vs.getVideo(videoSeq, userSeq));
+			System.out.println(result.get("res"));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
 			result.put("message", "get video success");
 			result.put("isSuccess", SUCCESS);

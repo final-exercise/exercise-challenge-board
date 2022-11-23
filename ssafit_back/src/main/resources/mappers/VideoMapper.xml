@@ -121,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<!-- public int selectUserWish(Map<String, Integer> map); -->
-	<select id="selectUserWish" parameterType="map">
+	<select id="selectUserWish" resultType="int" parameterType="map">
 		SELECT COUNT(*)
 		FROM
 		WISH

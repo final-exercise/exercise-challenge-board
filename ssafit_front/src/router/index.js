@@ -4,7 +4,8 @@ import IndexView from '../views/IndexView.vue'
 import CoachManageView from "../views/CoachManageView.vue"
 import UserLogin from "../components/user/UserLogin.vue"
 import CoachLogin from "../components/coach/CoachLogin.vue"
-import VideoView from "../views/VideoView"
+import VideoView from "../views/VideoView.vue"
+import VideoDetailView from "../views/VideoDetailView.vue"
 import ChallengeView from "../views/ChallengeView"
 import ChallengeCreate from "../components/challenge/ChallengeCreate.vue"
 import ChallengeIndex from "../components/challenge/ChallengeIndex.vue"
@@ -52,7 +53,11 @@ const routes = [
   },
   {
     path: "/video",
-    component: VideoView
+    component: VideoView,
+  },
+  {
+    path: "/video/:vidoeSeq",
+    component: VideoDetailView,
   },
   {
     path: "/mypage",

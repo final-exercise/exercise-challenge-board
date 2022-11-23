@@ -43,15 +43,19 @@ public class VideoServiceImpl implements VideoService {
 		try {
 			VideoDetailDto vdd = new VideoDetailDto();
 			vdd.setVideodto(vd.selectVideo(videoSeq));
-			vdd.setComments(cd.getComments(videoSeq));
+			System.out.println(vdd.getVideodto().getVideoTitle());
+			vdd.setComments(cd.getCommentsByVideoSeq(videoSeq));
+			for(CommentDto cd : vdd.getComments()) {
+				cd.set
+			}
 			Map<String, Integer> map = new HashMap<>();
 			map.put("videoSeq", videoSeq);
-//			Map<String, String> tokenMap = (HashMap) jwtUtil.getValueFromJwt("access-token");
-//			map.put("userSeq", Integer.parseInt(tokenMap.get("userSeq")));
 			map.put("userSeq", userSeq);
 			vdd.setVideoIsWish(vd.selectUserWish(map));
+			System.out.println(vdd.getVideoIsWish());
 			return vdd;
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}

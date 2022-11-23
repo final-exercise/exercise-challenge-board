@@ -20,6 +20,9 @@ export default new Vuex.Store({
     },],
     selectedVideoList:[],
     videos: [],
+    video:"",
+    comments: [],
+    videoIsWish: "",
   },
   getters: {
   },
@@ -32,6 +35,12 @@ export default new Vuex.Store({
     },
     GET_VIDEO_LIST(state, data){
       state.videos = data;
+    },
+    GET_VIDEO(state, data) {
+      console.log(data)
+      state.video = data.videodto;
+      state.comments = data.comments;
+      state.videoIsWish = data.videoIsWish;
     }
   },
   actions: {
@@ -103,14 +112,14 @@ export default new Vuex.Store({
       sessionStorage.removeItem("userNickname");
       window.location.href = "/";
     },
-    getVideoList({commit}, obj){
+    getVideoList({commit}, payload){
       //추가 필요 ->  super, sub 가지고 영상 가져오기
       //페이지 잡아서
-      console.log(obj.super);
-      console.log(obj.sub);
+      console.log(payload.super);
+      console.log(payload.sub);
       let SearchCondition = {
-        superType: obj.super,
-        subType: obj.sub,
+        superType: payload.super,
+        subType: payload.sub,
       }
 
       const API_URL = `${REST_API}/video`
@@ -126,11 +135,25 @@ export default new Vuex.Store({
       }).catch((err)=>{
         console.log(err);
       })
-      
-
-
-
     },
+    getVideo({commit}, payload) {
+      console.log(payload);
+      let videoSeq = payload
+      const API_URL = `${REST_API}video/${videoSeq}`
+      console.log(API_URL);
+      axios ( {
+        url: API_URL,
+        method: 'GET',
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res) => {
+        console.log(res);
+        commit('GET_VIDEO', res.data.res);
+      }).catch((err) => {
+        console.log(err);
+      })
+    }, 
     getWishVideoList({commit}){
       //추가 필요-> 헤더에서 userseq 추출하고 wish 비디오 다 가져오기
       //페이지 잡아서

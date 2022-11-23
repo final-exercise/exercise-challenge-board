@@ -7,7 +7,9 @@ import com.ssafy.ssafit.model.dto.Comment.CommentDto;
 
 public interface CommentDao {
 	//비디오 seq에 따른 댓글 목록 select
-	public Page<CommentDto> getComments(int videoSeq);
+	public Page<CommentDto> getCommentsByVideoSeq(int videoSeq);
+	//댓글 seq에 따른 대댓글 목록 select
+	public Page<CommentDto> getCommentsByCommentSeq(int commentSeq);
 	//리뷰 등록
 	public int insertComment(CommentDto commentDto);
 	//리뷰 수정

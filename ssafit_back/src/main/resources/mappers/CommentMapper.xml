@@ -13,13 +13,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="bundle_id" property="bundleId"/>
 		<result column="created_at" property="commentCreatedAt"/>
 		<result column="updated_at" property="commentUpdatedAt"/>
+		<result column="user_nickname" property="userNickname"/>
+		<result column="coach_nickname" property="coachNickname"/>
 	</resultMap>
 
-	<!-- public Page<CommentDto> getComments(int videoSeq); -->
-	<select id="getComments" resultMap="CommentDtoMap" parameterType="int">
-		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq, comment_depth, bundle_id, created_at, updated_at
+	<!-- public Page<CommentDto> getCommentsByVideoSeq(int videoSeq); -->
+	<select id="getCommentsByVideoSeq" resultMap="CommentDtoMap" parameterType="int">
+		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq, comment_depth, bundle_id, created_at, updated_at,
+		, (select user_nickname from user u where u.user_seq = c.user_seq) as user_nickname
+		, (select coach_nickname from coach where coach_seq = c.coach_seq) as coach_nickname
 		FROM COMMENT
-		WHERE video_seq = #{videoSeq} AND is_valid = 1
+		WHERE video_seq = #{videoSeq} AND is_valid = 1 and comment_depth = 0
+		ORDER BY bundle_id, created_at
 	</select>
 		
 	<!-- public int insertComment(CommentDto commentDto); -->
