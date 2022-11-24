@@ -224,7 +224,6 @@ public class UserController {
 	}
 
 	// 6) [GET] /user/bmi
-	// jwt 추가 필요
 	@GetMapping("/bmi")
 	public ResponseEntity<Map<String, Object>> getUserBmi() {
 		HashMap<String, Object> result = new HashMap<>();
@@ -248,7 +247,6 @@ public class UserController {
 	}
 
 	// 7) [GET] /user/workout?month={month}&year={year}
-	// jwt 추가 필요
 	@GetMapping("/workout")
 	public ResponseEntity<Map<String, Object>> getUserMonthlyWorkout(@RequestParam(required=false) Integer year, 
 																	@RequestParam(required=false) Integer month) {

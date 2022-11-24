@@ -2,12 +2,12 @@
   <div class="container-challenge-item">
     <div class="div-challenge-info">
       <div class="challenge-title">
-        <h2>챌린지 타이들 </h2>
+        <h2>{{challenge.challengeDto.challengeTitle}} </h2>
         <button>{{challenge.challengeUsers.length}}명</button>
       </div>
       
       <div class="challenge-duration">{{challenge.challengeDto.endDate}}까지</div>
-      <div class="challenge-description">챌린지 디스크립션</div>
+      <div class="challenge-description">{{challenge.challengeDto.challengeDescription}}</div>
     </div>
     <hr>
     <div class="div-challenge-videos"> <!--이거는 비디오리스트 포문 돌려야하고 그리고 컴포넌트에서 뽑아오기.아닌가 여기서 바로할수있음 하기-->
