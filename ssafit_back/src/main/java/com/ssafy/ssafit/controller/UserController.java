@@ -352,6 +352,7 @@ public class UserController {
 			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
 
 			userDietDto.setUserSeq(userSeq);
+			System.out.println(userSeq);
 			int res = us.registUserDiet(userDietDto);
 
 			if (res != 1) {

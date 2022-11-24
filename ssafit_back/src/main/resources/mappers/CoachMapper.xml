@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultMap="coachDtoMap">
 		select *
 		from coach
-		where coach_seq=#{coachSeq};
+		where coach_seq=#{coachSeq}
 	</select>
 
 	<!-- public int deleteCoach(int coachSeq); -->
@@ -81,10 +81,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- public Page<UserDto> selectManageUser(int coachSeq); -->
 	<select id="selectManageUser" parameterType="int" resultMap="userDtoMap">
-		elect *
+		select *
 		from user u
 		join coach_user cu on cu.user_seq = u.user_seq
-		where cu.coach_seq=1;
+		where cu.coach_seq=#{coachSeq}
 	</select>
 	
 	<!-- public int selectMinMatchedCoach(String userType); -->
@@ -97,13 +97,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							on c.workout_super_type_seq = w.workout_super_type_seq
 							where w.workout_super_type_type='스트레칭')
 		order by count(*)
-		limit 1;
+		limit 1
 	</select>
 	
 	<!-- public void insertUserCoachMatching(HashMap<String, Integer> param); -->
 	<update id="insertUserCoachMatching" parameterType="hashmap">
 		insert into coach_user(coach_seq, user_seq)
-		values (#{coachSeq}, #{userSeq});
+		values (#{coachSeq}, #{userSeq})
 	</update>
 
 </mapper>

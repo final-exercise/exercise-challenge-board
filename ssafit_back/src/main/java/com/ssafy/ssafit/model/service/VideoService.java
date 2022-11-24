@@ -11,7 +11,7 @@ public interface VideoService {
 	//비디오 전체 목록 가져오기
 	public Page<VideoDto> getVideos(SearchCondition sc) throws BaseException;
 	//비디오 하나 가져오기 + 댓글 목록 가져오기 + 뷰카운트 하나 올려줌 + 찜개수가져옴 + 댓글개수 가져옴 + 회원이 찜한 비디온지 가져옴
-	public VideoDetailDto getVideo(int videoSeq,  int userSeq) throws BaseException;
+	public VideoDetailDto getVideo(int videoSeq,  int memberSeq, int isCoach) throws BaseException;
 	//비디오 등록하기
 	public int registVideo(VideoDto videoDto) throws BaseException;
 	//찜 하기

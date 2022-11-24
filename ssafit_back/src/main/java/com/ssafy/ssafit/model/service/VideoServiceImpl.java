@@ -38,7 +38,7 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public VideoDetailDto getVideo(int videoSeq, int userSeq) throws BaseException {
+	public VideoDetailDto getVideo(int videoSeq, int memberSeq, int isCoach) throws BaseException {
 		//비디오 하나 가져오기 + 댓글 목록 가져오기 + 뷰카운트 하나 올려줌 + 찜개수가져옴 + 댓글개수 가져옴 + 회원이 찜한 비디온지 가져옴
 		try {
 			VideoDetailDto vdd = new VideoDetailDto();
@@ -53,7 +53,8 @@ public class VideoServiceImpl implements VideoService {
 			
 			Map<String, Integer> map = new HashMap<>();
 			map.put("videoSeq", videoSeq);
-			map.put("userSeq", userSeq);
+			map.put("memberSeq", memberSeq);
+			map.put("isCoach", isCoach);
 			vdd.setVideoIsWish(vd.selectUserWish(map));
 			return vdd;
 		} catch(Exception e) {

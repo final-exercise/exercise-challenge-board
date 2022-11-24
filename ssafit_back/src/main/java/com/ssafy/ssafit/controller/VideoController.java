@@ -71,8 +71,13 @@ public class VideoController {
 			if(page == 0)
 				page = 1;
 			
-			PageHelper.startPage(page, 10);
-			
+			if(sc.getLimit() != 0) {
+                PageHelper.startPage(page, sc.getLimit());
+            }
+            else {
+                PageHelper.startPage(page, 10);
+            }
+
 			Page<VideoDto> res = vs.getVideos(sc);
 			
 			result.put("res", res);
@@ -95,8 +100,19 @@ public class VideoController {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
-			result.put("res", vs.getVideo(videoSeq, userSeq));
+			int memberSeq;
+			int isCoach;
+			
+			if(((String)jwtUtil.getValueFromJwt("authority")).equals("user")) {
+				memberSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
+				isCoach = 0;
+			} else {
+				memberSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("coachSeq"));
+				isCoach = 1;
+			}
+			
+			
+			result.put("res", vs.getVideo(videoSeq, memberSeq, isCoach));
 //			System.out.println(result.get("res"));
 			//videoDetail 말고 result.put("comment", 댓글목록가져오기로 할까);
 			result.put("message", "get video success");

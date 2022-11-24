@@ -3,149 +3,155 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.ssafit.model.dao.VideoDao">
-	<resultMap type="VideoDto" id="VideoDtoMap">
-		<result column="video_seq" property="videoSeq" />
-		<result column="video_id" property="videoId" />
-		<result column="video_title" property="videoTitle" />
-		<result column="video_channel_name" property="videoChannelName" />
-		<result column="video_duration" property="videoDuration" />
-		<result column="video_view_cnt" property="videoViewCnt" />
-		<result column="video_cal" property="videoCal" />
-		<result column="created_at" property="videoCreatedAt" />
-		<result column="updated_at" property="videoUpdatedAt" />
-		<result column="video_comment_cnt" property="videoCommentCnt" />
-		<result column="video_wish_cnt" property="videoWishCnt" />
-		<result column="super_type" property="superType" />
-		<result column="sub_type" property="subType" />
-	</resultMap>
+    <resultMap type="VideoDto" id="VideoDtoMap">
+        <result column="video_seq" property="videoSeq" />
+        <result column="video_id" property="videoId" />
+        <result column="video_title" property="videoTitle" />
+        <result column="video_channel_name" property="videoChannelName" />
+        <result column="video_duration" property="videoDuration" />
+        <result column="video_view_cnt" property="videoViewCnt" />
+        <result column="video_cal" property="videoCal" />
+        <result column="created_at" property="videoCreatedAt" />
+        <result column="updated_at" property="videoUpdatedAt" />
+        <result column="video_comment_cnt" property="videoCommentCnt" />
+        <result column="video_wish_cnt" property="videoWishCnt" />
+        <result column="super_type" property="superType" />
+        <result column="sub_type" property="subType" />
+    </resultMap>
 
-	<!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
-	<select id="selectVideos" resultMap="VideoDtoMap"
-		parameterType="SearchCondition">
-		<!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
-		select video_seq, video_id, video_title, video_channel_name,
-		video_duration, video_view_cnt, video_cal, created_at, updated_at
-		, (select count(*) from wish w where w.video_seq = v.video_seq and
-		w.is_valid = 1) as video_wish_cnt
-		, (select count(*) from comment c where c.video_seq = v.video_seq and
-		c.is_valid = 1) as video_comment_cnt
+    <!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
+    <select id="selectVideos" resultMap="VideoDtoMap"
+        parameterType="SearchCondition">
+        <!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
+        select video_seq, video_id, video_title, video_channel_name,
+        video_duration, video_view_cnt, video_cal, created_at, updated_at
+        , (select count(*) from wish w where w.video_seq = v.video_seq and
+        w.is_valid = 1) as video_wish_cnt
+        , (select count(*) from comment c where c.video_seq = v.video_seq and
+        c.is_valid = 1) as video_comment_cnt
         , (select workout_super_type_type from workout_super_type wsuper
-			where wsuper.workout_super_type_seq = 
+            where wsuper.workout_super_type_seq = 
             (select workout_super_type_seq from video_super_type vsuper
-				where vsuper.video_seq = v.video_seq) 
-				<if test="superType != 'none'">
-					and workout_super_type_type = #{superType}
-				</if>
-			) as super_type
-		, (select workout_sub_type_type from workout_sub_type wsub
-			where wsub.workout_sub_type_seq = 
+                where vsuper.video_seq = v.video_seq) 
+                <if test="superType != 'none'">
+                    and workout_super_type_type = #{superType}
+                </if>
+            ) as super_type
+        , (select workout_sub_type_type from workout_sub_type wsub
+            where wsub.workout_sub_type_seq = 
             (select workout_sub_type_seq from video_sub_type vsub
-				where vsub.video_seq = v.video_seq) 
-				<if test="subType != 'none'">
-					and workout_sub_type_type = #{subType}
-				</if>
-			) as sub_type
-		from video v
-		where v.is_valid = 1
-		<if test="key != 'none'">
-			and ${key} like concat('%', #{word}, '%')
-		</if>
-		<if test="sort != 'none'">
-			ORDER BY ${sort} ${sortDir}
-		</if>
-		<!-- <if test="limit != 0">
-			LIMIT ${limit}
-		</if>  -->
-	</select>
+                where vsub.video_seq = v.video_seq) 
+                <if test="subType != 'none'">
+                    and workout_sub_type_type = #{subType}
+                </if>
+            ) as sub_type
+        from video v
+        where v.is_valid = 1
+        <if test="key != 'none'">
+            and ${key} like concat('%', #{word}, '%')
+        </if>
+        <if test="sort != 'none'">
+            ORDER BY ${sort} ${sortDir}
+        </if>
+        
+    </select>
 
-	<!-- public VideoDto selectVideo(int videoSeq); -->
-	<select id="selectVideo" resultMap="VideoDtoMap"
-		parameterType="int">
-		select video_seq, video_id, video_title, video_channel_name,
-		video_duration, video_view_cnt, video_cal, created_at, updated_at
-		, (select count(*) from wish w where w.video_seq = v.video_seq and
-		w.is_valid = 1) as video_wish_cnt
-		, (select count(*) from comment c where c.video_seq = v.video_seq and
-		c.is_valid = 1) as video_comment_cnt
+    <!-- public VideoDto selectVideo(int videoSeq); -->
+    <select id="selectVideo" resultMap="VideoDtoMap"
+        parameterType="int">
+        select video_seq, video_id, video_title, video_channel_name,
+        video_duration, video_view_cnt, video_cal, created_at, updated_at
+        , (select count(*) from wish w where w.video_seq = v.video_seq and
+        w.is_valid = 1) as video_wish_cnt
+        , (select count(*) from comment c where c.video_seq = v.video_seq and
+        c.is_valid = 1) as video_comment_cnt
         , (select workout_super_type_type from workout_super_type wsuper
-			where wsuper.workout_super_type_seq = 
+            where wsuper.workout_super_type_seq = 
             (select workout_super_type_seq from video_super_type vsuper
-				where vsuper.video_seq = v.video_seq) ) as super_type
-		, (select workout_sub_type_type from workout_sub_type wsub
-			where wsub.workout_sub_type_seq = 
+                where vsuper.video_seq = v.video_seq) ) as super_type
+        , (select workout_sub_type_type from workout_sub_type wsub
+            where wsub.workout_sub_type_seq = 
             (select workout_sub_type_seq from video_sub_type vsub
-				where vsub.video_seq = v.video_seq) ) as sub_type
-		from video v
-		WHERE video_seq = #{videoSeq} AND is_valid = 1
-	</select>
+                where vsub.video_seq = v.video_seq) ) as sub_type
+        from video v
+        WHERE video_seq = #{videoSeq} AND is_valid = 1
+    </select>
 
 
-	<!-- public int insertVideo(VideoDto videoDto); -->
-	<insert id="insertVideo" parameterType="videoDto">
-		INSERT INTO VIDEO
-		(video_seq, video_id, video_title, video_channel_name, video_duration,
-		video_cal)
-		values (0, #{videoId}, #{videoTitle}, #{videoChannelName}, #{videoDuration},
-		#{videoCal})
-	</insert>
-	
-	<!-- public String selectVideoSuperTypeSeq(String superType); // 운동 super type seq 가져오기 -->
-	<select id="selectVideoSuperTypeSeq" resultType="String" parameterType="String">
-		SELECT workout_super_type_seq
-		FROM workout_super_type
-		WHERE workout_super_type_type = #{superType}
-	</select>
-	
-	<!-- public String selectVideoSubTypeSeq(String subType); //  운동 super type seq 가져오기 -->
-	<select id="selectVideoSubTypeSeq" resultType="String" parameterType="String">
-		SELECT workout_sub_type_seq
-		FROM workout_sub_type
-		WHERE workout_sub_type_type = #{subType}
-	</select>	
-	
-	<!-- public int insertSuperType(Map<String, String> map); -->
-	<insert id="insertSuperType" parameterType="map">
-		INSERT INTO video_super_type (video_seq, workout_super_type_seq)
-		VALUES (#{videoSeq}, #{superTypeSeq})
-	</insert>	
+    <!-- public int insertVideo(VideoDto videoDto); -->
+    <insert id="insertVideo" parameterType="videoDto">
+        INSERT INTO VIDEO
+        (video_seq, video_id, video_title, video_channel_name, video_duration,
+        video_cal)
+        values (0, #{videoId}, #{videoTitle}, #{videoChannelName}, #{videoDuration},
+        #{videoCal})
+    </insert>
+    
+    <!-- public String selectVideoSuperTypeSeq(String superType); // 운동 super type seq 가져오기 -->
+    <select id="selectVideoSuperTypeSeq" resultType="String" parameterType="String">
+        SELECT workout_super_type_seq
+        FROM workout_super_type
+        WHERE workout_super_type_type = #{superType}
+    </select>
+    
+    <!-- public String selectVideoSubTypeSeq(String subType); //  운동 super type seq 가져오기 -->
+    <select id="selectVideoSubTypeSeq" resultType="String" parameterType="String">
+        SELECT workout_sub_type_seq
+        FROM workout_sub_type
+        WHERE workout_sub_type_type = #{subType}
+    </select>    
+    
+    <!-- public int insertSuperType(Map<String, String> map); -->
+    <insert id="insertSuperType" parameterType="map">
+        INSERT INTO video_super_type (video_seq, workout_super_type_seq)
+        VALUES (#{videoSeq}, #{superTypeSeq})
+    </insert>    
 
-	<!-- public int insertSubType(Map<String, String> map); -->
-	<insert id="insertSubType" parameterType="map">
-		INSERT INTO video_sub_type (video_seq, workout_sub_type_seq)
-		VALUES (#{videoSeq}, #{subTypeSeq})
-	</insert>
+    <!-- public int insertSubType(Map<String, String> map); -->
+    <insert id="insertSubType" parameterType="map">
+        INSERT INTO video_sub_type (video_seq, workout_sub_type_seq)
+        VALUES (#{videoSeq}, #{subTypeSeq})
+    </insert>
 
-	<!-- public int updateViewCntOne(int videoSeq); -->
-	<update id="updateViewCntOne" parameterType="int">
-		UPDATE VIDEO
-		SET
-		video_view_cnt = video_view_cnt + 1
-		WHERE video_seq = #{videoSeq}
-	</update>
+    <!-- public int updateViewCntOne(int videoSeq); -->
+    <update id="updateViewCntOne" parameterType="int">
+        UPDATE VIDEO
+        SET
+        video_view_cnt = video_view_cnt + 1
+        WHERE video_seq = #{videoSeq}
+    </update>
 
-	<!-- public int selectUserWish(Map<String, Integer> map); -->
-	<select id="selectUserWish" resultType="int" parameterType="map">
-		SELECT COUNT(*)
-		FROM
-		WISH
-		WHERE video_seq = #{videoSeq} AND user_seq = #{userSeq} AND
-		is_valid = 1
-	</select>
+    <!-- public int selectUserWish(Map<String, Integer> map); -->
+    <select id="selectUserWish" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM
+        WISH
+        WHERE video_seq = #{videoSeq}
+        <choose>
+            <when test="isCoach == 1">
+                AND coach_seq
+            </when>
+            <otherwise>
+                AND user_seq
+            </otherwise>
+        </choose>
+         = #{memberSeq} AND is_valid = 1
+    </select>
 
-	<!-- public int insertUserWish(Map<String, Integer> map); -->
-	<insert id="insertUserWish" parameterType="map">
-		INSERT INTO WISH
-		(video_seq, user_seq)
-		VALUES (#{videoSeq}, #{userSeq})
-	</insert>
+    <!-- public int insertUserWish(Map<String, Integer> map); -->
+    <insert id="insertUserWish" parameterType="map">
+        INSERT INTO WISH
+        (video_seq, user_seq)
+        VALUES (#{videoSeq}, #{userSeq})
+    </insert>
 
-	<!-- public int deleteUserWish(Map<String, Integer> map); -->
-	<update id="deleteUserWish">
-		UPDATE WISH
-		SET is_valid = false
-		WHERE video_seq =
-		#{videoSeq} AND user_seq = #{userSeq}
-	</update>
+    <!-- public int deleteUserWish(Map<String, Integer> map); -->
+    <update id="deleteUserWish">
+        UPDATE WISH
+        SET is_valid = false
+        WHERE video_seq =
+        #{videoSeq} AND user_seq = #{userSeq}
+    </update>
 
 
 </mapper>

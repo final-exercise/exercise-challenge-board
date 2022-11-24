@@ -215,7 +215,6 @@ public class CoachController {
 			}
 			
 			int coachSeq = Integer.parseInt(jwtUtil.getValueFromJwt("coachSeq").toString());
-			System.out.println(coachSeq);
 			PageHelper.startPage(page, 10);
 //				int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
 			Page<UserDto> res = cs.getManageUser(coachSeq);
@@ -260,7 +259,7 @@ public class CoachController {
 	// [GET] /coach/:userSeq/workout?month={month}&year={year}
 	@GetMapping("/{userSeq}/workout")
 	public ResponseEntity<Map<String, Object>> getManageUserMonthlyWorkout(@RequestParam(required = false) Integer year,
-			@RequestParam(required = false) Integer month, int userSeq) {
+			@RequestParam(required = false) Integer month, @PathVariable("userSeq") int userSeq) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -291,7 +290,7 @@ public class CoachController {
 //	34	GET	/coach/:userSeq/diet?month={month}
 	@GetMapping("{userSeq}/diet")
 	public ResponseEntity<Map<String, Object>> getUserMonthlyDiet(@RequestParam(required = false) Integer year,
-			@RequestParam(required = false) Integer month, int userSeq) {
+			@RequestParam(required = false) Integer month, @PathVariable("userSeq") int userSeq) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
@@ -302,7 +301,8 @@ public class CoachController {
 			if (year == null) {
 				year = LocalDate.now().getYear();
 			}
-
+			
+			
 //int userSeq = jwtUtil.getIntValueFromJwt("userSeq");
 			List<UserDietDto> resDiets = us.getUserMonthlyDiet(userSeq, month, year);
 
