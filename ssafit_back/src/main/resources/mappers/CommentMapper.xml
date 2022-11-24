@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM COMMENT
 		WHERE video_seq = #{videoSeq} AND is_valid = 1 and
 		comment_depth = 0
-		ORDER BY bundle_id, created_at
+		ORDER BY bundle_id DESC, created_at DESC
 	</select>
 
 	<!-- public Page<CommentDto> getCommentsByCommentSeq(int commentSeq); //댓글 seq에 따른 대댓글 목록 select -->
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		comment_depth, bundle_id, created_at, updated_at, nickname, is_coach
 		FROM COMMENT
 		WHERE bundle_id = #{commentSeq} and is_valid = 1 and comment_depth = 1
-		ORDER BY created_at
+		ORDER BY created_at DESC
 	</select>
 	
 	<!-- public int insertComment(CommentDto commentDto); -->
@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		<selectKey keyProperty="commentSeq" resultType="Integer">
 			select
-			comment_seq from comment order by created_at desc limit 1;
+			comment_seq from comment order by created_at DESC limit 1;
 		</selectKey>
 	</insert>
 

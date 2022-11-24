@@ -7,7 +7,7 @@
       <router-link :to="{name:'mypage-info'}">마이페이지</router-link>
     </button>
     <button class="button-myrecord">
-      <router-link to="/myrecord/bmi">나의 기록</router-link>
+      <router-link to="/myrecord">나의 기록</router-link>
     </button>
     <button class="button-logout" @click="logout">
       <a>로그아웃</a>

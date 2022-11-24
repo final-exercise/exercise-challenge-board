@@ -57,6 +57,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_seq" property="userSeq" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="value" property="value" />
+	</resultMap>
+	
+	<resultMap type="CoachDto" id="coachDtoMap">
+		<result column="coach_seq" property="coachSeq" />
+		<result column="coach_id" property="coachId" />
+		<result column="coach_password" property="coachPassword" />
+		<result column="coach_name" property="coachName" />
+		<result column="coach_email" property="coachEmail" />
+		<result column="coach_birth" property="coachBirth" />
+		<result column="coach_address" property="coachAddress" />
+		<result column="coach_nickname" property="coachNickname" />
+		<result column="coach_gender" property="coachGender" />
+		<result column="coach_profile_img_url"
+			property="coachProfileImgUrl" />
+		<result column="created_at" property="coachCreatedAt" />
+		<result column="updated_at" property="coachUpdatedAt" />
 	</resultMap>	
 
 
@@ -195,5 +211,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into user_activity(user_seq, user_nickname, user_height) 
 		values(#{userSeq},#{userNickname}, #{userHeight});
 	</insert>
+	
+	<!-- public CoachDto selectUserCoach(int userSeq); -->
+	<select id="selectUserCoach" parameterType="int" resultMap="coachDtoMap">
+		select * 
+        from coach c
+        join coach_user cu
+        on c.coach_seq = cu.coach_seq
+        where cu.user_seq = #{userSeq}
+	</select>
 	
 </mapper>

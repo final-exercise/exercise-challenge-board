@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.ssafy.ssafit.config.secret.Secret;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dao.UserDao;
+import com.ssafy.ssafit.model.dto.Coach.CoachDto;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
         try{
             //password 암호화
             pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(userDto.getUserPassword());
+            System.out.println(pwd);
             userDto.setUserPassword(pwd);
         } catch (Exception e) {
             throw new BaseException(false,500,"password encrypt error");
@@ -225,6 +227,16 @@ public class UserServiceImpl implements UserService {
 	public int createUserSubTable(UserDto userDto) throws BaseException {
 		try {
 			return ud.insertUserActivity(userDto);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new BaseException(FAIL, 500, "database error");
+		}
+	}
+
+	@Override
+	public CoachDto getUserCoach(int userSeq) throws BaseException {
+		try {
+			return ud.selectUserCoach(userSeq);
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");

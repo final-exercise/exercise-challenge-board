@@ -134,8 +134,14 @@ public class VideoController {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			int userSeq = Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq"));
-			commentDto.setUserSeq(userSeq);
+			int userSeq = 0;
+			int coachSeq = 0;
+			if(jwtUtil.getValueFromJwt("userSeq")!=null) {
+				commentDto.setUserSeq(Integer.parseInt((String) jwtUtil.getValueFromJwt("userSeq")));
+			} else {
+				commentDto.setCoachSeq(Integer.parseInt((String) jwtUtil.getValueFromJwt("coachSeq")));
+			}
+	
 			int res = ((Integer) vs.registComment(commentDto)).intValue();
 			
 			if (res != 1) {

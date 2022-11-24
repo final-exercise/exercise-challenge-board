@@ -1,11 +1,11 @@
 <template>
   <div class="container-user-mypage">
     <div class="div-mypage-menu">
-      <router-link to="/myrecord/bmi">
-        <div class="div-menu-item active" @click="makeActive">나의 bmi</div>
+      <router-link to="/myrecord/coach">
+        <div class="div-menu-item active" @click="makeActive">나의 코치</div>
       </router-link>
       <router-link :to="{name:'myrecord-calendar'}">
-        <div class="div-menu-item" @click="makeActive">나의 한달은?</div>
+        <div class="div-menu-item" @click="makeActive">나의 한달</div>
       </router-link>
     </div>
     <div class="div-router-view">

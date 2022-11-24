@@ -3,7 +3,13 @@
     <div class="container-comment">
       <div class="div-left">
         <!-- {{comment}} -->
-        {{comment.nickname}}
+        <div v-if="comment.coach" class="div-nickname">
+          <div>{{comment.nickname}}</div>
+          <button>코치</button>
+        </div>
+        <div v-if="!comment.coach" class="div-nickname">
+          <div>{{comment.nickname}}</div>
+        </div>
         <h3>{{comment.commentContent}}</h3>
         <span class="createdD">작성: {{comment.commentCreatedAt}}</span>
       </div>
@@ -26,7 +32,6 @@
 
         </button>
       </div>
-          
       </div>  
       <!-- <hr style="width: 100%; margin:10px 0px;" v-if="commentCnt!=0"> -->
       <div class="div-reply" v-for="(reply, index) in comment.replys" :key="index">
@@ -69,7 +74,6 @@ export default {
     },
     getContent() {
       this.replyContent = document.getElementById("reply-content").value;
-      console.log(this.commentSeq);
       this.$store.dispatch('registComment', {videoSeq: this.videoSeq, commentContent: this.replyContent, bundleId: this.commentSeq});
     }
   }
@@ -150,6 +154,21 @@ export default {
   padding: 20px;
   margin-bottom: 30px;
 
+}
+
+.div-nickname{
+  display:flex;
+  align-items: center;
+}
+
+.div-nickname button{
+  background-color:rgb(255, 182, 72);
+  border-radius:15px;
+  height:25px;
+  color:white;
+  font-weight:400;
+  font-size:0.8rem;
+  margin-left:5px;
 }
 
 .button-write{

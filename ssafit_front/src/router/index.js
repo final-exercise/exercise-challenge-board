@@ -14,7 +14,7 @@ import UserSignupView from "../views/UserSignupView.vue"
 import UserMyPageInfo from "../components/user/UserMyPageInfo.vue"
 import VideoWishList from "../components/video/VideoWishList.vue"
 import UserMyRecordView from "../views/UserMyRecordView.vue"
-import UserMyRecordBmi from "../components/user/myrecord/UserMyRecordBmi.vue";
+import UserMyRecordCoach from "../components/user/myrecord/UserMyRecordCoach.vue";
 import UserMyRecordCalendar from "../components/user/myrecord/UserMyRecordCalendar.vue"
 import UserMyRecordCalendarDiet from "../components/user/myrecord/UserMyRecordCalendarDiet.vue"
 import UserMyRecordCalendarWorkout from "../components/user/myrecord/UserMyRecordCalendarWorkout.vue"
@@ -126,9 +126,9 @@ const routes = [
     children:[
       {
         path:"",
-        alias:["","bmi"],
-        name: "myrecord-bmi",
-        component: UserMyRecordBmi
+        alias:["","coach"],
+        name: "myrecord-coach",
+        component: UserMyRecordCoach
       },
       {
         path: "calendar",

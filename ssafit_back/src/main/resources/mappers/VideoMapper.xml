@@ -154,5 +154,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{videoSeq} AND user_seq = #{userSeq}
     </update>
 
+	<!-- public int updateUserComment(int userSeq); -->
+	<update id="updateUserComment" parameterType="int">
+        update user_activity
+		set monthly_reply = monthly_reply+1, total_reply = total_reply+1
+		where user_seq = #{userSeq};
+    </update>
 
 </mapper>

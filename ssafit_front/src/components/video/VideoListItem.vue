@@ -64,7 +64,7 @@ export default {
 }
 
 .video-cropped-img {
-  max-height: 98px;
+  max-height: 97px;
   overflow: hidden;
 }
 

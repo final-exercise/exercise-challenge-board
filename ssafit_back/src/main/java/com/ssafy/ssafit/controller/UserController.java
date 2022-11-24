@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.ssafy.ssafit.config.secret.Secret;
 import com.ssafy.ssafit.exception.BaseException;
+import com.ssafy.ssafit.model.dto.Coach.CoachDto;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
@@ -44,7 +44,6 @@ import com.ssafy.ssafit.model.service.CoachService;
 import com.ssafy.ssafit.model.service.CoachServiceImpl;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.model.service.UserServiceImpl;
-import com.ssafy.ssafit.util.AES128;
 import com.ssafy.ssafit.util.JwtUtil;
 
 import io.swagger.annotations.Api;
@@ -554,6 +553,31 @@ public class UserController {
 
 			result.put("message", "post userBmi success");
 			result.put("res", 1);
+			result.put("isSuccess", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		} catch (BaseException exception) {
+			result.put("isSuccess", FAIL);
+			result.put("message", exception.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			return new ResponseEntity<Map<String, Object>>(result, status);
+		}
+	}
+	
+	// 41) [GET] /user/coach
+	@GetMapping("/coach")
+	public ResponseEntity<Map<String, Object>> getUserCoach() {
+		HashMap<String, Object> result = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			
+			CoachDto res = us.getUserCoach(userSeq);
+			
+
+			result.put("message", "get userCoach success");
+			result.put("res", res);
 			result.put("isSuccess", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			return new ResponseEntity<Map<String, Object>>(result, status);

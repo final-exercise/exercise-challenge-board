@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.Page;
 import com.ssafy.ssafit.exception.BaseException;
+import com.ssafy.ssafit.model.dto.Coach.CoachDto;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
@@ -46,4 +47,6 @@ public interface UserService {
 	public int registerUserBmi(UserBmiDto userBmiDto, int userSeq) throws BaseException;
 
 	public int createUserSubTable(UserDto userDto) throws BaseException;
+
+	public CoachDto getUserCoach(int userSeq) throws BaseException;
 }

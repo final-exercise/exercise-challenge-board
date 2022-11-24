@@ -4,7 +4,7 @@
       <FadeLoader/>
     </div>
     <div class="div-myrecord-calendar-title">
-      <h1>나의 한달은?</h1>
+      <h1>나의 한달은 어땠을까</h1>
       <div class="div-decorate" style="margin-left:0px; margin-bottom: 10px; width: 20%"></div>
     </div>
     <div class="div-myrecord-calendar-main">

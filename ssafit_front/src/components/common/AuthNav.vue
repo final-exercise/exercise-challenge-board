@@ -1,7 +1,7 @@
 <template>
   <div class="container-auth">
     <nav class="container-auth-nav">
-        <router-link to="/">회원</router-link>
+        <button class="button-redir" @click="redirectHome"><a>회원</a></button>
         <button ><a @click="modalStatusChange">코치</a></button>
     </nav>
     <div class="modal-coach-login" :class="{modalVisib:isModal}">
@@ -35,6 +35,11 @@ export default {
     coachLogin(){
       console.log(this.coach);
       this.$store.dispatch('coachLogin', this.coach);
+    },
+    redirectHome(){
+      console.log(sessionStorage.getItem("authority"))
+      if(sessionStorage.getItem("authority")=="c")
+        this.$store.dispatch('logout');
     }
   }
 }
@@ -60,19 +65,19 @@ export default {
   font-size:0.9rem;
   color: #909090;
   padding-right: 10px;
-  border-right:  2px solid #EEEEEE;
 }
 
-a{
+a, button{
   cursor: pointer;
 }
 
-.container-auth-nav a:last-child{
+.container-auth-nav button:last-child{
   border-right:  2px solid #eeeeee00;
 }
 
-.container-auth-nav button{
-  background-color: white;
+.button-redir a{
+  border-right:  2px solid #EEEEEE;
+  padding-right: 20px;
   
 }
 

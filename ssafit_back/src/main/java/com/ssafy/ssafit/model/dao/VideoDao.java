@@ -40,4 +40,7 @@ public interface VideoDao {
 
 	// 찜 삭제 <videoSeq, userSeq>
 	public int deleteUserWish(Map<String, Integer> map);
+	
+	//댓글 수 증가
+	public int updateUserComment(int userSeq);
 }

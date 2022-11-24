@@ -120,6 +120,9 @@ public class VideoServiceImpl implements VideoService {
 	public int registComment(CommentDto commentDto) throws BaseException {
 		//리뷰 등록 + 닉네임 가져오기
 		try {
+			int userSeq = commentDto.getUserSeq();
+			vd.updateUserComment(userSeq);
+			
 			Map<String, String> map = new HashMap<>();
 			if(commentDto.getCoachSeq() == 0) {
 				commentDto.setCoach(false);
@@ -135,6 +138,8 @@ public class VideoServiceImpl implements VideoService {
 				map.put("Seq", String.valueOf(commentDto.getCoachSeq()));
 			}
 			commentDto.setNickname(cd.selectNickname(map));
+			System.out.println(commentDto.getNickname());
+			
 			return cd.insertComment(commentDto);
 		} catch(Exception e) {
 			e.printStackTrace();

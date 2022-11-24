@@ -5,7 +5,13 @@
         <h2>나만의 챌린지</h2>
       </div>
       <div class="div-challenge-make-info">
-        <div class="div-duration"><span>기간(일) </span><input type="number" v-model="challenge.duration" max="30" min="7" value="7"/></div>
+        <div class="div-title"><div>제목 </div><input type="text" v-model="challenge.challengeTitle"/></div>
+        <hr>
+        <div class="div-content"><div>설명 </div>
+          <textarea id="comment-content" class="textarea-comment" v-model="commentContent" placeholder="댓글을 남겨보세요"></textarea>
+        </div>
+        <hr>
+        <div class="div-duration"><div>기간(일) </div><input type="number" v-model="challenge.duration" max="30" min="7" value="7"/></div>
         <hr>
         <div class="div-isPublic">
           <div class="div-radio"><input type="radio" v-model="challenge.isPublic" value="true"/> 같이하기</div>
@@ -44,6 +50,8 @@ export default {
   data(){
     return{
       challenge:{
+        challengeTitle:"",
+        challengeDescription:"",
         isPublic: true,
         duration: 7
       }
@@ -87,7 +95,7 @@ export default {
 
 .div-challenge-make-info{
   background-color: rgb(234, 234, 234);
-  padding: 20px;
+  padding: 3px 20px;
 }
 .div-challenge-make{
   background-color: rgb(219, 219, 219);
@@ -96,11 +104,16 @@ export default {
 }
 
 
-.div-duration{
+.div-duration,
+.div-title,
+.div-content{
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
+  justify-content: space-between;
+}
+
+.div-challenge-make-info div{
+  margin: 10px 0px;
 }
 
 .div-isPublic{
@@ -145,6 +158,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items:center;
+}
+
+.div-challenge-make-info input,textarea{
+  width: 75%;
+}
+
+textarea{
+  background-color: white;
+  padding: 10px;
+  height: 5em;
+  border: none;
+  resize: none;
 }
 
 .div-wish-video-list{

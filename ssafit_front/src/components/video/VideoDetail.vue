@@ -50,7 +50,7 @@
       <div class="div-comment-block">
         <button class="button-write" @click="getContent">등록하기</button>
       </div>
-      
+
     </div>
     <div class="div-comments">
       <div v-for="(comment, index) in comments" :key="index">
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       videoSeq: 0,
-      userNickname:"",
+      userNickname:sessionStorage.getItem("nickname"),
       commentContent:"",
       
     }
@@ -127,7 +127,7 @@ export default {
     },
     getContent() {
       this.commentContent = document.getElementById("comment-content").value;
-
+      
       this.$store.dispatch('registComment', {videoSeq: this.videoSeq, commentContent: this.commentContent, bundleId: 0});
     }
   },

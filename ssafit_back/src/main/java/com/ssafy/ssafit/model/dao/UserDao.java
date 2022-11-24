@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
+import com.ssafy.ssafit.model.dto.Coach.CoachDto;
 import com.ssafy.ssafit.model.dto.User.UserActivityDto;
 import com.ssafy.ssafit.model.dto.User.UserBmiDto;
 import com.ssafy.ssafit.model.dto.User.UserDietDto;
@@ -46,4 +47,6 @@ public interface UserDao {
 	public int updateUserActivity(Map<String, Object> map);
 	
 	public int insertUserActivity(UserDto userDto);
+
+	public CoachDto selectUserCoach(int userSeq);
 }
