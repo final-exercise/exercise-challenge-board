@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class ChallengeDto {
     private int challengeSeq;
     private int userSeq;
+    private String challengeTitle;
+    private String challengeDescription;
     private boolean isPublic;
     private int duration; // 이거계산 어떻게 하지?
     private String endDate;

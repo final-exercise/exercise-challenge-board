@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="is_public" property="isPublic"/>
 		<result column="duration" property="duration"/>
 		<result column="end_date" property="endDate"/>
+		<result column="challenge_title" property="challengeTitle"/>
+		<result column="challenge_description" property="challengeDescription"/>
 		<result column="created_at" property="challengeCreatedAt"/>
 		<result column="updated_at" property="challengeUpdatedAt"/>
 	</resultMap>
@@ -44,8 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- public int insertChallenge(ChallengeDto challengeDto); -->
 	<!-- is_public 어케받닝 ? searchcondition처럼 받나? -->
 	<insert id="insertChallenge" parameterType="ChallengeDto">
-		INSERT INTO CHALLENGE (user_seq, is_public, duration, end_date)
-		VALUES (#{userSeq}, #{isPublic}, #{duration}, #{endDate})
+		INSERT INTO CHALLENGE (user_seq, is_public, duration, end_date, challenge_title, challenge_description)
+		VALUES (#{userSeq}, #{isPublic}, #{duration}, #{endDate}, #{challengeTitle}, #{challengeDescription})
 		
 		<selectKey keyProperty="challengeSeq" resultType="Integer">
 			select challenge_seq as challengeSeq
@@ -63,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public Page<ChallengeDto> selectJoinedChallenges(int userSeq); -->
 	<select id="selectJoinedChallenges" resultMap="ChallengeDtoMap" parameterType="int">
-		SELECT c.challenge_seq, c.user_seq, is_public, duration, end_date, c.created_at, c.updated_at
+		SELECT c.challenge_seq, c.user_seq, is_public, duration, end_date, challenge_title, challenge_description, c.created_at, c.updated_at
 		FROM CHALLENGE c
 		JOIN CHALLENGE_JOIN j ON c.challenge_seq = j.challenge_seq
 		WHERE j.user_seq = #{userSeq} and c.is_valid = 1
@@ -77,14 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectValidChallenge" resultMap="ChallengeDtoMap">
-		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		SELECT challenge_seq, user_seq, is_public, duration, challenge_title, challenge_description, created_at, updated_at
 		FROM CHALLENGE
 		WHERE is_valid = 1
 	</select>
 	
 	<!-- public ChallengeDto selectChallenge(int challengeSeq); -->
 	<select id="selectChallenge" resultType="ChallengeDto" parameterType="int">
-		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		SELECT challenge_seq, user_seq, is_public, duration, challenge_title, challenge_description, created_at, updated_at
 		FROM CHALLENGE
 		WHERE challenge_seq = #{challenge_seq} and is_valid = 1
 	</select>

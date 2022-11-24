@@ -5,7 +5,7 @@ CREATE DATABASE ssafit;
 USE ssafit;
 
 DROP TABLE IF EXISTS `USER`;
-
+ 
 CREATE TABLE `USER` (
     `user_seq`    INT    NOT NULL auto_increment primary key,
     `user_id`    VARCHAR(50)    NOT NULL unique,
@@ -138,6 +138,8 @@ CREATE TABLE `CHALLENGE` (
     `challenge_seq`    INT    NOT NULL auto_increment primary key,
     `user_seq`    INT    NOT NULL,
     `is_public`    BOOLEAN    NOT NULL    DEFAULT FALSE,
+    `challenge_title` VARCHAR(50) NOT NULL,
+    `challenge_description` VARCHAR(100) NOT NULL,
     `duration`    INT    NOT NULL,
     `end_date` DATE NULL,
     `created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,

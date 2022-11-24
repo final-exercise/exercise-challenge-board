@@ -22,6 +22,8 @@ import UserMyRecordCalendarDate from "../components/user/myrecord/UserMyRecordCa
 import CoachMyPageInfo from "../components/coach/CoachMyPageInfo.vue"
 import CoachManagerUserInfo from "../components/coach/CoachManagerUserInfo.vue"
 import CoachManageCalendarDate from "../components/coach/CoachManageCalendarDate.vue"
+import ChallengeStart from "../components/challenge/ChallengeStart.vue";
+
 
 Vue.use(VueRouter)
 
@@ -91,6 +93,11 @@ const routes = [
         path: "create",
         name: 'challenge-create',
         component: ChallengeCreate
+      },
+      {
+        path: ":challengeSeq",
+        name: 'challenge-start',
+        component: ChallengeStart
       }
     ]
   },

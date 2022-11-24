@@ -112,4 +112,3 @@ insert into wish (mylist_seq, video_seq, user_seq) values (0, 6, 5);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 1);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 5);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 8, 2);
-

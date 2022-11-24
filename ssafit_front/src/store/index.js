@@ -473,9 +473,12 @@ export default new Vuex.Store({
           duration: data.duration,
           endDate: du,
           isPublicStr: data.isPublic,
-          videoList: videoList
+          videoList: videoList,
+          challengeDescription: data.challengeDescription,
+          challengeTitle: data.challengeTitle
       }
 
+      console.log(challengeDto);
       // const challengeVideos = [];
 
       // for(let video of this.getters.getChallengeVideo){
@@ -522,6 +525,21 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    getChallenge({commit},challengeSeq){
+      const API_URL = `${REST_API}challenge/detail/${challengeSeq}`
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res) => {
+        console.log(res);
+        // commit('GET_MY_CHALLENGES', res.data);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   },
   modules: {
     FadeLoader

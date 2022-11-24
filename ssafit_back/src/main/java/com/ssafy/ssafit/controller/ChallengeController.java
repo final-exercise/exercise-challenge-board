@@ -49,10 +49,12 @@ public class ChallengeController {
 	public ResponseEntity<Map<String, Object>> registChallenge(ChallengeDto challengeDto, String isPublicStr, String videoList) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
+	
 		try {
 
+			
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+	
 			challengeDto.setUserSeq(userSeq);
 			
 			if(isPublicStr.equals("true")) {
@@ -61,7 +63,7 @@ public class ChallengeController {
 				challengeDto.setPublic(false);
 			}
 			
-
+			System.out.println(challengeDto);
 
 			int res = chs.registChallenge(challengeDto);
 			if(res != 1) {

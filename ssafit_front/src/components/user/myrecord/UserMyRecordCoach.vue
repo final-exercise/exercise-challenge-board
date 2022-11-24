@@ -17,11 +17,11 @@
       </div>
       <div class="div div-nickname">
         <label>닉네임</label>
-        <input class="input disabled" v-model="coach.coachNickname" type="text" />
+        <input class="input disabled" v-model="coach.coachNickname" type="text" disabled />
       </div>
       <div class="div div-name">
         <label>연락처</label>
-        <input class="input disabled" v-model="coach.coachEmail" type="text" />
+        <input class="input disabled" v-model="coach.coachEmail" type="text" disabled />
       </div>
       <button class="button-modify">채팅하기</button>
     </div>

@@ -1,14 +1,14 @@
 <template>
-  <div class="container-challenge-create">
-    <div class="div-challenge-make">
-      <div class="div-challenge-make-title">
+  <div class="container-challenge-start">
+    <div class="div-challenge-start">
+      <div class="div-challenge-start-title">
         <h2>나만의 챌린지</h2>
       </div>
-      <div class="div-challenge-make-info">
+      <!-- <div class="div-challenge-start-info">
         <div class="div-title"><div>제목 </div><input type="text" v-model="challenge.challengeTitle"/></div>
         <hr>
         <div class="div-content"><div>설명 </div>
-          <textarea id="comment-content" class="textarea-comment" v-model="challenge.challengeDescription" placeholder="어떤 챌린지인가요?"></textarea>
+          <textarea id="comment-content" class="textarea-comment" v-model="commentContent" placeholder="댓글을 남겨보세요"></textarea>
         </div>
         <hr>
         <div class="div-duration"><div>기간(일) </div><input type="number" v-model="challenge.duration" max="30" min="7" value="7"/></div>
@@ -25,36 +25,31 @@
         </div>
       </div>
 
-      <div class="div-challenge-make-button">
-        <button class="button-challenge-make" @click="createChallenge(challenge)">만들기! 👉</button>
-      </div>
+      <div class="div-challenge-start-button">
+        <button class="button-challenge-start" @click="createChallenge(challenge)">만들기! 👉</button>
+      </div> -->
     </div>
     <div class="div-wish-video-list">
       <!-- <h1>내가 찜한 영상</h1> -->
       <!-- <div class="div-decorate"></div> -->
       <!-- <video-list></video-list> -->
-      <video-wish-list @videoSelect="videoSelect"></video-wish-list>
+      <!-- <video-wish-list @videoSelect="videoSelect"></video-wish-list> -->
     </div>
   </div>
 </template>
 
 <script>
 // import VideoList from "@/components/video/VideoList.vue"
-import VideoWishList from "@/components/video/VideoWishList.vue";
+// import VideoWishList from "@/components/video/VideoWishList.vue";
 import {mapState} from 'vuex';
 
 export default {
   components:{
-    VideoWishList
+    // VideoWishList
   },
   data(){
     return{
-      challenge:{
-        challengeTitle:"",
-        challengeDescription:"",
-        isPublic: true,
-        duration: 7
-      }
+      challengeSeq:0
     }
   },
   methods:{
@@ -70,7 +65,7 @@ export default {
         return;
       }
       this.$store.dispatch("createChallenge",data);
-      // window.location.replace("/challenge");
+      window.location.replace("/challenge");
     }
   },
   computed:{
@@ -84,20 +79,26 @@ export default {
         return value;
       }
     }
+  }, 
+  created(){
+    const PathName = new URL(document.location).pathname.split("/");
+    this.challengeSeq = PathName[PathName.length - 1];
+
+    this.$store.dispatch('getChallenge',this.challengeSeq);
   }
 }
 </script>
 
 <style scoped>
-.container-challenge-create{
+.container-challenge-start{
   display: flex;
 }
 
-.div-challenge-make-info{
+.div-challenge-start-info{
   background-color: rgb(234, 234, 234);
   padding: 3px 20px;
 }
-.div-challenge-make{
+.div-challenge-start{
   background-color: rgb(219, 219, 219);
   /* flex-shrink:; */
   min-width: 30%;
@@ -112,7 +113,7 @@ export default {
   justify-content: space-between;
 }
 
-.div-challenge-make-info div{
+.div-challenge-start-info div{
   margin: 10px 0px;
 }
 
@@ -148,7 +149,7 @@ export default {
   text-align: right;
 }
 
-.div-challenge-make h2{
+.div-challenge-start h2{
   padding: 20px;
   
 }
@@ -160,7 +161,7 @@ export default {
   align-items:center;
 }
 
-.div-challenge-make-info input,textarea{
+.div-challenge-start-info input,textarea{
   width: 75%;
 }
 
@@ -195,7 +196,7 @@ textarea{
   margin-top: 15px;
 }
 
-.button-challenge-make{
+.button-challenge-start{
   background-color: rgb(255, 147, 147);
   width: 80%;
   height: 40px;
