@@ -4,14 +4,14 @@
       <div class="div-challenge-make-title">
         <h2>나만의 챌린지</h2>
       </div>
-      <div class="div-challenge-video-list">
-        <div class="div-challenge-video">
-          <h4>안녕하세요??</h4>
-        </div>
-        <div class="div-challenge-video">
-          <h4>두번째영상??</h4>
+
+      <div class="div-challenge-video-list" v-for="(item, index) in challengeVideo" :key="index">
+        <div class="div-challenge-video" @click="videoDelete(index)">
+          <h4>{{item.videoTitle|titleLength}}</h4>
+          <span style="display:none">{{index}}</span>
         </div>
       </div>
+
       <div class="div-challenge-make-button">
         <button class="button-challenge-make">만들기! 👉</button>
       </div>
@@ -20,7 +20,7 @@
       <!-- <h1>내가 찜한 영상</h1> -->
       <!-- <div class="div-decorate"></div> -->
       <!-- <video-list></video-list> -->
-      <video-wish-list></video-wish-list>
+      <video-wish-list @videoSelect="videoSelect"></video-wish-list>
     </div>
   </div>
 </template>
@@ -28,10 +28,32 @@
 <script>
 // import VideoList from "@/components/video/VideoList.vue"
 import VideoWishList from "@/components/video/VideoWishList.vue";
+import {mapState} from 'vuex';
 
 export default {
   components:{
     VideoWishList
+  },
+  methods:{
+    videoSelect(payload){
+      this.$store.commit("VIDEO_SELECT",payload);
+    },
+    videoDelete(payload){
+      console.log(payload);
+      this.$store.commit("VIDEO_DELETE",payload)
+    }
+  },
+  computed:{
+    ...mapState(['challengeVideo'])
+  },
+  filters:{
+    titleLength(value){
+      if(value.length>12){
+       return value.substring(0,12)+"...";
+      } else{
+        return value;
+      }
+    }
   }
 }
 </script>
@@ -63,7 +85,6 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 25px;
   justify-content: center;
   align-items: center;
 }

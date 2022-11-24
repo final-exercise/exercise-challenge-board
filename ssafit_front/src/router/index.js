@@ -20,6 +20,8 @@ import UserMyRecordCalendarDiet from "../components/user/myrecord/UserMyRecordCa
 import UserMyRecordCalendarWorkout from "../components/user/myrecord/UserMyRecordCalendarWorkout.vue"
 import UserMyRecordCalendarDate from "../components/user/myrecord/UserMyRecordCalendarDate"
 import CoachMyPageInfo from "../components/coach/CoachMyPageInfo.vue"
+import CoachManagerUserInfo from "../components/coach/CoachManagerUserInfo.vue"
+import CoachManageCalendarDate from "../components/coach/CoachManageCalendarDate.vue"
 
 Vue.use(VueRouter)
 
@@ -94,7 +96,24 @@ const routes = [
   },
   {
     path: "/manage",
-    component: CoachManageView
+    component: CoachManageView,
+    children:[
+      {
+        path: ":userSeq",
+        name: "manage-user-coach",
+        component: CoachManagerUserInfo,
+        props: true,
+        children:[
+          {
+            path:":date",
+            name:"coach-calendar-date",
+            component: CoachManageCalendarDate,
+            props: true
+          }
+        ]
+      },
+     
+    ]
   },
   {
     path:"/coach/mypage",

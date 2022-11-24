@@ -6,7 +6,7 @@
     </div>
     <div class="div-sorted-videos">
       <div v-for="(video, index) in videos" :key="index">
-        <video-list-item :video="video"></video-list-item>
+        <video-list-item :video="video" @videoSelect="videoSelect"></video-list-item>
       </div>
       &nbsp;
     </div>
@@ -41,6 +41,9 @@ export default {
     },
     createChallenage(){
       //selectedVideoList 가지고 challenge 만들기
+    },
+    videoSelect(payload){
+      this.$emit("videoSelect",payload);
     }
   },
   created(){

@@ -3,9 +3,15 @@
     <div class="loading" v-if="loading">
       <FadeLoader/>
     </div>
-    <div class="div-myrecord-calendar-title">
-      <h1>나의 한달은?</h1>
-      <div class="div-decorate" style="margin-left:0px; margin-bottom: 10px; width: 20%"></div>
+    <div class="div-calendar">
+      <div class="div-myrecord-calendar-title">
+      <div class="div-title">
+        <h2 class="div-title-nickname">{{$route.params.userNickname}}</h2>
+        <h2>님의 한달 기록</h2>
+        {{userNickname}}
+      </div>
+      
+      <div class="div-decorate" style="margin-left:0px;  width: 20%"></div>
     </div>
     <div class="div-myrecord-calendar-main">
       <div class="div-myrecord-calendar">
@@ -31,22 +37,15 @@
         ></v-calendar>
       </v-sheet>
       </div>
-      <div class="div-myrecord-write">
-        <div class="div-myrecord-button">
-          <router-link :to="{name:'myrecord-calendar-diet'}"><button class="menu-item" @click="makeActive">식단</button></router-link>
-          <router-link :to="{name:'myrecord-calendar-workout'}"><button class="menu-item" @click="makeActive">운동</button></router-link>
-        </div>
-        <router-view/>
-        <div class="div-default" v-if="isDefault">
-          <img src="@/assets/logo.png"/>
-        </div>
-      </div>
+      <router-view/>
     </div>
-
+    </div>
+    
   </div>
 </template>
 
 <script>
+
 import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 import axios from 'axios'
 import { mapState } from 'vuex';
@@ -63,7 +62,8 @@ export default {
     value: '',
     // events: [],
     foods:[],
-    isDefault: true
+    userSeq:0,
+    userNickname: this.$route.params.userNickname
   }),
   computed:{
     ... mapState(['events','loading'])
@@ -107,36 +107,30 @@ export default {
     makeActive(event){
       const curActive = document.querySelector('.menu-item.active');
       if(curActive)curActive.classList.remove('active');
-      this.isDefault = false;
       event.target.classList.add('active');
     },
     specificDayEvent(event){
-      this.isDefault = false;
       let dayEvent = [];
       for(let e of this.$store.state.events){
         if(e.start==event.date){
           dayEvent.push(e);
         }
       }
-      this.$router.push({name:'myrecord-calendar-date',params:{date:event.date, dayEvent:dayEvent}, props:true });
-    },
+      this.$router.push({name:'coach-calendar-date',params:{date:event.date, dayEvent:dayEvent, userNickname:this.$route.params.userNickname}, props:true });
+      // this.$router.push({name:'myrecord-calendar-date',params:{date:event.date, dayEvent:dayEvent}, props:true });
+    }
   },
   created(){
-    this.$store.dispatch('getDietList');
-    this.$store.dispatch('getWorkoutList');
-  },
-  beforeDestroy(){
-    
-  },
-  watch:{
-    showDefault(){
-
-    }
+    const PathName = new URL(document.location).pathname.split("/");
+    this.userSeq = PathName[PathName.length - 1];
+    console.log(this.userSeq);
+    this.$store.dispatch('getManageDietList', this.userSeq);
+    this.$store.dispatch('getManageWorkoutList', this.userSeq);
   }
 }
 </script>
 
-<style scoped>
+<style>
 a:link,
 a:hover,
 a:visited,
@@ -144,35 +138,35 @@ a:active{
   color: rgb(46, 46, 46);
   font-weight: 600;
 }
-img{
-  width:50%
+
+.div-title{
+  display:flex;
 }
+.div-calendar{
+  width: 100%
+}
+
 .container-myrecord-calendar{
   width: 100%;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
-  align-items: center;
+  align-items: flex-start;
   margin: 20px;
   padding-right: 20px;
 }
 
 .div-myrecord-calendar-title{
-  min-height: 15%;
+  min-height: 10%;
+  width: 100%;
   margin-top: 20px;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  align-items:center;
+  align-items:flex-start;
 }
-.div-default{
-  background-color:rgb(244, 244, 244);
-  border: 1px solid rgb(235, 235, 235);
-  height:91%;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.div-title-nickname{
+  background-color: rgb(255, 252, 234);
 }
 .div-myrecord-calendar-main{
   display: flex;
@@ -193,7 +187,7 @@ img{
 }
 
 .div-myrecord-calendar{
-  min-width: 60%;
+  width: 100%;
 }
 
 .div-myrecord-write{
@@ -208,6 +202,5 @@ img{
 .div-myrecord-button .ma-2{
   background-color:rgb(255, 255, 255);
 }
-
 
 </style>

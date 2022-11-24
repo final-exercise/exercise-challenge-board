@@ -44,7 +44,6 @@ export default {
 
 <style scoped>
 .container-list{
-  gap: 20px 2%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

@@ -8,7 +8,9 @@
       <button class="button-type" @click="getKey">조회수순</button>
       <button class="button-type" @click="getKey">댓글수순</button>
     </div>
-    <video-list :sort="sort"></video-list>
+    <div class="video-rate-list">
+      <video-list :sort="sort"></video-list>
+    </div>
   </div>
 </template>
 
@@ -82,6 +84,11 @@ button {
   padding: 10px;
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 3px 5px; */
   border-radius: 10px;
+}
+
+.video-rate-list{
+  display:flex;
+  
 }
 
 button.active{

@@ -26,7 +26,10 @@ export default new Vuex.Store({
     events:[],
     isLoading:false,
     videoListTotal:0,
-    coach:""
+    coach:"",
+    searchVideos:[],
+    manageUserNickname:"",
+    challengeVideo:[]
   },
   getters: {
    
@@ -43,7 +46,7 @@ export default new Vuex.Store({
     },
     GET_SEARCH_VIDEO_LIST(state, data) {
       state.videoListTotal = data.total;
-      state.videos = data.res;
+      state.searchVideos = data.res;
     },
     GET_VIDEO_LIST(state, data){
       state.videoListTotal = data.total;
@@ -89,6 +92,17 @@ export default new Vuex.Store({
     GET_COACH(state, data){
       state.coach = data;
     },
+    VIDEO_SELECT(state,data){
+      state.challengeVideo.push(data);
+      console.log(state.challengeVideo)
+    },
+    VIDEO_DELETE(state,data){
+      // console.log(data);
+      // console.log(state.challengeVideo);
+
+      state.challengeVideo.splice(data,1);
+      // console.log(state.challengeVideo);
+    }
   },
   actions: {
     userSignup({commit}, payload){
@@ -242,7 +256,6 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-
     getWorkoutList({commit}){
       const API_URL=`http://localhost:331/user/workout`;
 
@@ -367,7 +380,7 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-    searchVideos({commit}, payload) {
+    getSearchVideos({commit}, payload) {
       let SearchCondition = {
         key: payload.key,
         word: payload.word,
@@ -387,7 +400,45 @@ export default new Vuex.Store({
         console.log(err)
       })
 
-    }
+    },
+    getManageDietList({commit}, payload){
+      let userSeq = payload;
+      const API_URL = `${REST_API}coach/${userSeq}/diet`
+      console.log(API_URL)
+      this.isLoading=true;
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      })
+      .then((res) => {
+        this.isLoading=false;
+        commit("GET_DIET_LIST",res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
+    getManageWorkoutList({commit}, payload){
+      let userSeq = payload;
+      const API_URL = `${REST_API}coach/${userSeq}/workout`
+      console.log(API_URL)
+      this.isLoading=true;
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      })
+      .then((res) => {
+        this.isLoading=false;
+        commit("GET_WORKOUT_LIST",res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
   },
   modules: {
     FadeLoader

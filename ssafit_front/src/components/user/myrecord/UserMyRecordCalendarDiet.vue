@@ -99,6 +99,7 @@ export default {
         dietCal:data.NUTR_CONT1,
         dietMaker: data.MAKER_NAME,
       }
+      console.log(param)
 
       // this.loading=true;
       axios({

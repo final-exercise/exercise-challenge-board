@@ -3,13 +3,13 @@
     <h2>운동 영상 검색하기</h2>
     <div class="div-decorate">&nbsp;</div>
     <div class="search-bar">
-    <input class="input-video-search" type="text" placeholder="검색어를 입력하세요" />
+    <input class="input-video-search" v-model="word" type="text" placeholder="검색어를 입력하세요" />
     <button @click="searchActive"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots"
         viewBox="0 0 16 16">
         <path
           d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
       </svg></button>
-    <button class="button-search" @click="searchVideos"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    <button class="button-search" @click="getSearchVideos"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
         class="bi bi-search" viewBox="0 0 16 16">
         <path
           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -18,10 +18,9 @@
     <div class="div-search" :class="{'searchActive':isActive}">
       <select v-model="key" required>
           <option disalbed value="">검색 기준</option>
-          <option value="video_title">제목</option>
+          <option value="video_title" >제목</option>
           <option value="video_channel_name">채널 이름</option>
       </select>
-      <input v-model="word" required placeholder="검색어" class="input-key"/>
       <select v-model="sort" required>
           <option value="" selected disabled hidden >정렬 기준</option>
           <option value="video_title" default>제목순</option>
@@ -37,7 +36,7 @@
     </div>
 
     <div class="div-sorted-videos">
-      <div v-for="(video, index) in videos" :key="index">
+      <div v-for="(video, index) in searchVideos" :key="index">
         <search-list-item :video="video"></search-list-item>
       </div>
     </div>
@@ -57,7 +56,7 @@ export default {
 
   data(){
     return{
-      key:"",
+      key:"video_title",
       word:"",
       sort:"",
       sortDir:"",
@@ -74,13 +73,12 @@ export default {
     searchActive(){
       this.isActive = !this.isActive
     },
-    searchVideos() {
-      console.log(this.word)
-      this.$store.dispatch('searchVideos', {key: this.key, word: this.word, sort: this.sort, sortDir: this.sortDir})
+    getSearchVideos() {
+      this.$store.dispatch('getSearchVideos', {key: this.key, word: this.word, sort: this.sort, sortDir: this.sortDir})
     }
   },
   computed: {
-    ...mapState(['videos', 'videoListTotal'])
+    ...mapState(['searchVideos', 'videoListTotal'])
   },
 }
 </script>
@@ -113,6 +111,11 @@ export default {
   align-items: center;
 }
 
+.div-sorted-videos{
+  display:flex;
+  
+}
+
 .input-video-search {
   height: 40px;
   width: 300px;
@@ -140,10 +143,10 @@ select{
   margin-top: 20px;
   background-color: #ffffff;
   width: 100px;
-  height: 40px;
+  height: 30px;
   display: flex;
   justify-content: flex-end;
-  border-radius: 8px;
+  border-radius: 30px;
   padding-left: 8px;
   color: grey;
   margin-left: 10px;

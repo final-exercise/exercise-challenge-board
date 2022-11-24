@@ -5,7 +5,6 @@
       <button class="button-part" :class="video.subType">{{video.subType}}</button>
     </div>
     <h1>{{video.videoTitle}}</h1>
-    
     <div class="div-video-info">
       <div class="div-video-info-comments">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
@@ -14,13 +13,14 @@
         </svg>
         <span>{{video.videoCommentCnt}}</span>
       </div>
-      <div class="div-video-info-hearts-false" v-if="!isLike" @click="changeLike">
+      <div class="div-video-info-hearts-false" v-if="videoIsWish==0" @click="changeLike">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
           <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
         </svg>
         <span>{{video.videoWishCnt}}</span>
       </div>
-      <div class="div-video-info-hearts-true" v-if="isLike" @click="changeLike">
+
+      <div class="div-video-info-hearts-true" v-if="videoIsWish==1" @click="changeLike">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
         </svg>
@@ -74,7 +74,6 @@ export default {
   },
   data() {
     return {
-      isLike: false,
       videoSeq: 0,
       userNickname:"",
       commentContent:"",
@@ -88,43 +87,38 @@ export default {
   created() {
     const PathName = new URL(document.location).pathname.split("/");
     this.videoSeq = PathName[PathName.length - 1];
+
     this.$store.dispatch('getVideo', this.videoSeq);
+    // console.log(this.video);
 
-    this.userNickname=sessionStorage.getItem("userNickname");
+    // this.userNickname=sessionStorage.getItem("userNickname");
 
-    const API_URL = `http://localhost:331/video/${this.videoSeq}/mylist`
+    // const API_URL = `http://localhost:331/video/${this.videoSeq}/mylist`
 
-    axios({
-      url: API_URL,
-      method: 'GET',
-      headers: {
-        "access-token": sessionStorage.getItem("access-token")
-      }
-    })
-    .then((res) => {
-      if(res.data.res==0){
-        this.isLike = false;
+    // axios({
+    //   url: API_URL,
+    //   method: 'GET',
+    //   headers: {
+    //     "access-token": sessionStorage.getItem("access-token")
+    //   }
+    // })
+    // .then((res) => {
+    //   if(res.data.res==0){
+    //     this.isLike = false;
         
-      }else{
-        this.isLike = true;
-      }
-    }).catch((err)=>{
-      console.log(err)
-    })
+    //   }else{
+    //     this.isLike = true;
+    //   }
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
   },
   methods: {
     changeLike(){
-      if(!this.isLike){
-        this.isLike = true;
-        this.video.videoWishCnt++;
-        //fals인 상태에서 클릭 -> wish에 넣겠다는 것
-        this.$store.dispatch('registUserWish', this.videoSeq);
+      if(this.videoIsWish==1){
+        //마이리스트에 삭제하는거
       } else{
-
-        this.isLike = false;
-        this.video.videoWishCnt--;
-        //wish에서 지우겠다는 것
-        this.$store.dispatch('deleteUserWish', this.videoSeq);
+        //마이리스트에 추가하는거
       }
     },
     getContent() {

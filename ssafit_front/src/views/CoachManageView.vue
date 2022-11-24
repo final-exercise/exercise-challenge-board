@@ -1,11 +1,14 @@
 <template>
   <div class="container-coach-manage-view">
     <div class="div-coach-manage-menu">
-        <div v-for="(user, index) in userList" :key="index" @click="makeActive">
-           <div class="div-user-menu">{{user.userName}}</div>
-           <div style="display:none">{{user.userSeq}}</div>
-        </div>
+      <div v-for="(user, index) in users" :key="index">
+          <router-link :to="{name:'manage-user-coach', params: {userSeq: user.userSeq, userNickname: user.userNickname}}">
+            <div class="div-user-menu" @click="makeActive">{{user.userNickname}}</div>
+          </router-link>
+     
+      </div>
     </div>
+    <router-view :key="$route.path"></router-view>
     <!-- <challenge-my></challenge-my>
     <div class="div-decorate" stype="width: 100%"></div>
     <challenge-total></challenge-total> -->
@@ -18,8 +21,7 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            userList:[],
-            selectedUser:"",
+            users:""
         }
     },
     methods:{
@@ -43,11 +45,7 @@ export default {
           "access-token": sessionStorage.getItem("access-token")
         },
       }).then((res)=>{
-        console.log(res);
-        // let total = res.data.total;
-        // console.log(res.data.res);
-        // this.videos = res.data.res;
-        // this.length = Math.ceil(total/10);
+        this.users = res.data.res;
       }).catch((err)=>{
         console.log(err);
       })
@@ -58,6 +56,7 @@ export default {
 <style scoped>
 .container-coach-manage-view{
   display: flex;
+  height: 100vh;
 }
 
 .div-coach-manage-menu{
@@ -65,6 +64,10 @@ export default {
   box-shadow: 2px 2px 7px -5px rgba(0,0,0,0.36);
   height: 100%;
   width: 20%;
+}
+.active{
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1px 1px 2px inset; */
+  background-color: white;
 }
 
 .div-user-menu{
@@ -77,9 +80,11 @@ export default {
   /* border-top: 3px solid rgb(229, 229, 229); */
   margin: 10px 20px;
 }
-.active{
-  /* box-shadow: rgba(0, 0, 0, 0.15) 1px 1px 2px inset; */
-  background-color: white;
+
+a:link,
+a:visited{
+  color: rgb(94, 94, 94);
+  font-weight:700;
 }
 
 </style>

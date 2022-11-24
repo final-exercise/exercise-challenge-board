@@ -1,9 +1,9 @@
 <template>
-  <div class="container-list-item">
+  <div class="container-list-item" @click="videoSelect">
     <div class="video-cropped-img">
       <router-link :to="`/video/${video.videoSeq}`">
         <img :src="'https://img.youtube.com/vi/'+video.videoId+'/0.jpg'">
-        </router-link>
+      </router-link>
     </div>
     <div class="hr">&nbsp;</div>
     <div class="container-videos-video-content">
@@ -33,6 +33,11 @@ export default {
       }
     }
   },
+  methods:{
+    videoSelect(){
+      this.$emit("videoSelect",this.video);
+    }
+  }
 }
 </script>
 
