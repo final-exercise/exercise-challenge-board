@@ -32,5 +32,7 @@ public interface ChallengeDao {
 	public int selectChallengeJoinSeq(Map<String, Integer> map);
 	//회원seq가 해당 챌린지seq에 참여중인지 아닌지 <"challengeSeq", "userSeq">
 	public int selectUserJoinChallenge(Map<String, Integer> map);
+	 //챌린지 생성 후 비디오 삽입 <"challenge_seq" , "video_seq">
+    public int insertChallengeVideo(Map<String, Integer> map);
 	
 }

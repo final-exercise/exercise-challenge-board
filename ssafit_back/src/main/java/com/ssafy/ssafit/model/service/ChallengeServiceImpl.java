@@ -26,6 +26,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		try {
 			return chd.insertChallenge(challengeDto);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
@@ -85,5 +86,18 @@ public class ChallengeServiceImpl implements ChallengeService {
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
+	
+	  @Override
+	    public int registChallengeVideo(int challengeSeq, int videoSeq) throws BaseException {
+	        try {
+	            Map<String, Integer> map = new HashMap<>();
+	            map.put("challengeSeq", challengeSeq);
+	            map.put("videoSeq", videoSeq);
+	            return chd.insertChallengeVideo(map);
+	        } catch(Exception e) {
+	        	e.printStackTrace();
+	            throw new BaseException(FAIL, 500, "database error");
+	        }
+	    }
 
 }

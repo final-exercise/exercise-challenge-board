@@ -6,9 +6,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="ChallengeDto" id="ChallengeDtoMap">
 		<result column="challenge_seq" property="challengeSeq"/>
-		<result column="user_seq" property="createUserSeq"/>
+		<result column="user_seq" property="userSeq"/>
 		<result column="is_public" property="isPublic"/>
 		<result column="duration" property="duration"/>
+		<result column="end_date" property="endDate"/>
 		<result column="created_at" property="challengeCreatedAt"/>
 		<result column="updated_at" property="challengeUpdatedAt"/>
 	</resultMap>
@@ -43,9 +44,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- public int insertChallenge(ChallengeDto challengeDto); -->
 	<!-- is_public 어케받닝 ? searchcondition처럼 받나? -->
 	<insert id="insertChallenge" parameterType="ChallengeDto">
-		INSERT INTO CHALLENGE (user_seq, is_public, duration)
-		VALUES (#{userSeq}, #{isPublic}, #{duration})
+		INSERT INTO CHALLENGE (user_seq, is_public, duration, end_date)
+		VALUES (#{userSeq}, #{isPublic}, #{duration}, #{endDate})
+		
+		<selectKey keyProperty="challengeSeq" resultType="Integer">
+			select challenge_seq as challengeSeq
+			from challenge 
+			order by created_at desc 
+			limit 1;
+		</selectKey>
 	</insert>
+	
+	 <!-- public int insertChallengeVideo(Map<String, Integer> map); -->
+    <insert id="insertChallengeVideo">
+        INSERT INTO CHALLENGE_VIDEO (challenge_seq, video_seq)
+        VALUES (#{challengeSeq}, #{videoSeq})
+    </insert>
 	
 	<!-- public Page<ChallengeDto> selectJoinedChallenges(int userSeq); -->
 	<select id="selectJoinedChallenges" resultMap="ChallengeDtoMap" parameterType="int">

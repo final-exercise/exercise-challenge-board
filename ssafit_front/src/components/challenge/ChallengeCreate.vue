@@ -4,7 +4,14 @@
       <div class="div-challenge-make-title">
         <h2>나만의 챌린지</h2>
       </div>
-
+      <div class="div-challenge-make-info">
+        <div class="div-duration"><span>기간(일) </span><input type="number" v-model="challenge.duration" max="30" min="7" value="7"/></div>
+        <hr>
+        <div class="div-isPublic">
+          <div class="div-radio"><input type="radio" v-model="challenge.isPublic" value="true"/> 같이하기</div>
+          <div class="div-radio"><input type="radio" v-model="challenge.isPublic" value="false"/> 혼자하기</div>
+        </div>
+      </div>
       <div class="div-challenge-video-list" v-for="(item, index) in challengeVideo" :key="index">
         <div class="div-challenge-video" @click="videoDelete(index)">
           <h4>{{item.videoTitle|titleLength}}</h4>
@@ -13,7 +20,7 @@
       </div>
 
       <div class="div-challenge-make-button">
-        <button class="button-challenge-make">만들기! 👉</button>
+        <button class="button-challenge-make" @click="createChallenge(challenge)">만들기! 👉</button>
       </div>
     </div>
     <div class="div-wish-video-list">
@@ -34,6 +41,14 @@ export default {
   components:{
     VideoWishList
   },
+  data(){
+    return{
+      challenge:{
+        isPublic: true,
+        duration: 7
+      }
+    }
+  },
   methods:{
     videoSelect(payload){
       this.$store.commit("VIDEO_SELECT",payload);
@@ -41,6 +56,13 @@ export default {
     videoDelete(payload){
       console.log(payload);
       this.$store.commit("VIDEO_DELETE",payload)
+    },
+    createChallenge(data){
+      if(!window.confirm("챌린지를 생성하시겠습니까?")){
+        return;
+      }
+      this.$store.dispatch("createChallenge",data);
+      window.location.replace("/challenge");
     }
   },
   computed:{
@@ -63,15 +85,59 @@ export default {
   display: flex;
 }
 
+.div-challenge-make-info{
+  background-color: rgb(234, 234, 234);
+  padding: 20px;
+}
 .div-challenge-make{
   background-color: rgb(219, 219, 219);
   /* flex-shrink:; */
   min-width: 30%;
 }
 
+
+.div-duration{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.div-isPublic{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.div-radio{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.div-radio input{
+  margin-right: 10px;
+}
+
+[type="radio"] {
+  vertical-align: middle;
+  border: max(2px, 0.1em) solid rgb(108, 108, 108);
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  accent-color: rgb(173, 223, 152);
+}
+
+.div-duration input{
+  width: 70%;
+  margin-left: 10px;
+  text-align: right;
+}
+
 .div-challenge-make h2{
   padding: 20px;
-  background-color: rgb(210, 210, 210);
+  
 }
 
 .div-challenge-video-list{

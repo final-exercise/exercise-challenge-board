@@ -116,9 +116,13 @@ export default {
   methods: {
     changeLike(){
       if(this.videoIsWish==1){
-        //마이리스트에 삭제하는거
+        this.$store.dispatch('deleteUserWish',this.videoSeq)
+        this.$store.state.videoIsWish=0
+        this.$store.state.video.videoWishCnt--;
       } else{
-        //마이리스트에 추가하는거
+        this.$store.dispatch('registUserWish',this.videoSeq)
+        this.$store.state.videoIsWish=1
+        this.$store.state.video.videoWishCnt++;
       }
     },
     getContent() {

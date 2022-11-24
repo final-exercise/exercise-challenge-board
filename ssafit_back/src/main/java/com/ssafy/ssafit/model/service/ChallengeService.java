@@ -18,4 +18,6 @@ public interface ChallengeService {
 	public int joinChallenge(int challengeSeq, int userSeq) throws BaseException;
 	//챌린지 daily 참여 완료
 	public int doneDailyChallenge(int challengeSeq, int userSeq) throws BaseException;
+	//챌린지 등록하면서 비디오 목록 넣기 (반복문)
+    public int registChallengeVideo(int challengeSeq, int videoSeq) throws BaseException;
 }

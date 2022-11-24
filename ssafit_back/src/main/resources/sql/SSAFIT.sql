@@ -56,8 +56,7 @@ DROP TABLE IF EXISTS `WISH`;
 CREATE TABLE `WISH` (
 	`mylist_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`user_seq`	INT	NULL,
-    `coach_seq` INT NULL,
+	`user_seq`	INT	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -67,9 +66,9 @@ DROP TABLE IF EXISTS `USER_DIET`;
 
 CREATE TABLE `USER_DIET` (
 	`user_diet_seq`	INT	NOT NULL auto_increment primary key,
-	`diet_id`	VARCHAR(50)	NULL,
+	`diet_seq`	INT	NULL,
 	`diet_name`	VARCHAR(50)	NULL,
-	`diet_maker`	VARCHAR(100)	NULL,
+	`diet_img_url`	VARCHAR(100)	NULL,
 	`diet_cal`	INT	NOT NULL	DEFAULT 0,
 	`user_seq`	INT	NOT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -88,23 +87,34 @@ CREATE TABLE `CHATROOM` (
 	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
+DROP TABLE IF EXISTS `COMMENT`;
+  
+CREATE TABLE `COMMENT` (
+	`comment_seq`	INT	NOT NULL auto_increment primary key,
+	`comment_content`	VARCHAR(500)	NOT NULL,
+	`video_seq`	INT	NOT NULL,
+	`coach_seq`	INT	NULL,
+	`user_seq`	INT	NULL,
+    `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
+);
 
+DROP TABLE IF EXISTS `COMMENT`;
 
-DROP TABLE IF EXISTS COMMENT;
-
-CREATE TABLE COMMENT (
-    `comment_seq`    INT    NOT NULL auto_increment primary key,
-    `comment_content`    VARCHAR(500)    NOT NULL,
-    `video_seq`    INT    NOT NULL,
-    `coach_seq`    INT    NULL,
-    `user_seq`    INT    NULL,
+CREATE TABLE `COMMENT` (
+	`comment_seq`	INT	NOT NULL auto_increment primary key,
+	`comment_content`	VARCHAR(500)	NOT NULL,
+	`video_seq`	INT	NOT NULL,
+	`coach_seq`	INT	NULL,
+	`user_seq`	INT	NULL,
     `nickname` VARCHAR(30) not NULL,
     `is_coach` boolean not null,
-    `comment_depth`    INT    NULL default 0,
-    `bundle_id`    INT    NULL,
-	`created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `is_valid`    boolean    NOT NULL  DEFAULT true
+	`comment_depth`	INT	NULL default 0,
+	`bundle_id`	INT	NULL,
+     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHAT_MESSAGE`;
@@ -297,13 +307,6 @@ ALTER TABLE `WISH` ADD CONSTRAINT `FK_USER_ACTIVITY_TO_WISH_1` FOREIGN KEY (
 )
 REFERENCES `USER_ACTIVITY` (
 	`user_seq`
-);
-
-ALTER TABLE `WISH` ADD CONSTRAINT `FK_COACH_TO_WISH_1` FOREIGN KEY (
-	`coach_seq`
-)
-REFERENCES `COACH` (
-	`coach_seq`
 );
 
 ALTER TABLE `USER_DIET` ADD CONSTRAINT `FK_USER_ACTIVITY_TO_USER_DIET_1` FOREIGN KEY (

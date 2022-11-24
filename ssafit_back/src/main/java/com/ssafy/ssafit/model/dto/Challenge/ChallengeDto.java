@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChallengeDto {
-	private int challengeSeq;
-	private int createUserSeq;
-	private boolean isPublic;
-	private String duration; // 이거계산 어떻게 하지?
-	private String challengeCreatedAt;
-	private String challengeUpdatedAt;
-	
+    private int challengeSeq;
+    private int userSeq;
+    private boolean isPublic;
+    private int duration; // 이거계산 어떻게 하지?
+    private String endDate;
+    private String challengeCreatedAt;
+    private String challengeUpdatedAt;
+   
 }
+

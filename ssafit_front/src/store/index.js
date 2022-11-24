@@ -32,7 +32,9 @@ export default new Vuex.Store({
     challengeVideo:[]
   },
   getters: {
-   
+    getChallengeVideo(state){
+      return state.challengeVideo;
+    }
   },
   mutations: {
     GET_USER(state, data){
@@ -441,6 +443,61 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    createChallenge({commit}, data){
+     
+      const date = new Date();
+      date.setDate(date.getDate() + data.duration); 
+      const tmp = date.toLocaleDateString().replace(/(\s*)/g, "").split(".");
+      const du = `${tmp[0]}-${tmp[1]}-${tmp[2]}`
+
+      // console.log(this.getters.getChallengeVideo);
+
+      let videoList = "";
+      for(let video of this.getters.getChallengeVideo){
+        videoList  = videoList + video.videoSeq + " ";
+      }
+
+      let isPublicBoolean;
+      if(data.isPublic=="true"){
+        isPublicBoolean = true;
+      } else{
+        isPublicBoolean = false;
+      }
+
+      const challengeDto = {
+          duration: data.duration,
+          endDate: du,
+          isPublicStr: data.isPublic,
+          videoList: videoList
+      }
+
+      // const challengeVideos = [];
+
+      // for(let video of this.getters.getChallengeVideo){
+      //   console.log(video);
+      // }
+
+
+      // console.log(challengeDto);
+
+      const API_URL = `${REST_API}challenge`
+      this.isLoading=true;
+      axios({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: challengeDto,
+      })
+      .then((res) => {
+        this.isLoading=false;
+        console.log(res)
+        // commit("GET_WORKOUT_LIST",res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   },
   modules: {
     FadeLoader

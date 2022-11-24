@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.controller;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,13 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dto.Challenge.ChallengeDto;
+import com.ssafy.ssafit.model.dto.Video.VideoDto;
 import com.ssafy.ssafit.model.service.ChallengeService;
 import com.ssafy.ssafit.model.service.ChallengeServiceImpl;
 import com.ssafy.ssafit.util.JwtUtil;
 
 import io.swagger.annotations.Api;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8080", "*" })
 @RequestMapping("/challenge")
 @RestController
 @Api("Challenge")
@@ -45,14 +48,38 @@ public class ChallengeController {
 
 	// 1) [POST] /challenge
 	@PostMapping()
-	public ResponseEntity<Map<String, Object>> registChallenge(ChallengeDto challengeDto) {
+	public ResponseEntity<Map<String, Object>> registChallenge(ChallengeDto challengeDto, String isPublicStr, String videoList) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
+
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
-			challengeDto.setCreateUserSeq(userSeq);
+			challengeDto.setUserSeq(userSeq);
+			
+			if(isPublicStr.equals("true")) {
+				challengeDto.setPublic(true);
+			} else {
+				challengeDto.setPublic(false);
+			}
+			
+
+
 			int res = chs.registChallenge(challengeDto);
+			int challengeSeq = challengeDto.getChallengeSeq();
+			
+			String[] seqs = videoList.split(" ");
+			ArrayList<Integer> challengeVideos = new ArrayList<>();
+			for(int i=0; i<seqs.length; i++) {
+				challengeVideos.add(Integer.parseInt(seqs[i]));
+			}
+			
+			for(Integer videoSeq : challengeVideos) {
+	              int insertVideo = chs.registChallengeVideo(challengeSeq, videoSeq);
+	              if(insertVideo != 1) {
+	                  throw new BaseException(FAIL, 500, "insert new challenge vidoe fail"+videoSeq);
+	              }
+	        }
 			
 			if(res != 1) {
 				throw new BaseException(FAIL, 500, "insert new challenge fail");
