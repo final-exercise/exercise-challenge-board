@@ -29,7 +29,8 @@ export default new Vuex.Store({
     coach:"",
     searchVideos:[],
     manageUserNickname:"",
-    challengeVideo:[]
+    challengeVideo:[],
+    curChallenge:{}
   },
   getters: {
     getChallengeVideo(state){
@@ -109,6 +110,12 @@ export default new Vuex.Store({
       console.log("여기 들어왔니?")
       console.log(data.res);
       state.myChallenges = data.res;
+    },
+    DETAIL_CHALLENGE(state,data){
+      state.curChallenge = data;
+    },
+    CLEAR_CHALLENGE(state,data){
+      state.curChallenge = "";
     }
   },
   actions: {
@@ -534,8 +541,29 @@ export default new Vuex.Store({
           "access-token": sessionStorage.getItem("access-token")
         },
       }).then((res) => {
+        // console.log(res);
+        commit('DETAIL_CHALLENGE', res.data.res);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
+    updateExp({commit}){
+      const API_URL = `${REST_API}user/activity`
+
+      const param={
+        key: "exp",
+        value: 200
+      }
+      axios({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params:param
+      }).then((res) => {
+        // console.log(res);
         console.log(res);
-        // commit('GET_MY_CHALLENGES', res.data);
       }).catch((err)=>{
         console.log(err)
       })

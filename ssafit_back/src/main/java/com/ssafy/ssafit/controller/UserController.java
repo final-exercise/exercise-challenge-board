@@ -444,6 +444,10 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
+			
+			int userSeq = Integer.parseInt((String)jwtUtil.getValueFromJwt("userSeq"));
+			userActivityDto.setUserSeq(userSeq);
+			
 			String key = userActivityDto.getKey();
 			
 			if (!key.equals("replay") && !key.equals("exp")) {

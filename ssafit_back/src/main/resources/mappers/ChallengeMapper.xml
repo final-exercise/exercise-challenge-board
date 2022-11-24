@@ -85,11 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- public ChallengeDto selectChallenge(int challengeSeq); -->
-    <select id="selectChallenge" resultMap="ChallengeDtoMap" parameterType="int">
-        SELECT challenge_seq, user_seq, is_public, duration, end_date, challenge_title, challenge_description, created_at, updated_at
-        FROM CHALLENGE
-        WHERE challenge_seq = #{challengeSeq} and is_valid = 1
-    </select>
+
+	<select id="selectChallenge" resultMap="ChallengeDtoMap" parameterType="int">
+		SELECT challenge_seq, user_seq, is_public, duration, end_date, challenge_title, challenge_description, created_at, updated_at
+		FROM CHALLENGE
+		WHERE challenge_seq = #{challengeSeq} and is_valid = 1
+	</select>
 	
 	<!-- public List<VideoDto> selectChallengeVideos(int challengeSeq); -->
 	<select id="selectChallengeVideos" resultMap="VideoDtoMap" parameterType="int">

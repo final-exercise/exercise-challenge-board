@@ -183,8 +183,15 @@ public class UserServiceImpl implements UserService {
 			map.put("userSeq", userActivityDto.getUserSeq());
 			map.put("value", userActivityDto.getValue());
 			
+			System.out.println(map.get("key1"));
+			
+			System.out.println(map.get("key2"));
+			System.out.println(map.get("userSeq"));
+			System.out.println(map.get("value"));
+
 			return ud.updateUserActivity(map);
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
