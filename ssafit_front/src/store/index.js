@@ -202,6 +202,7 @@ export default new Vuex.Store({
       //추가 필요 ->  super, sub 가지고 영상 가져오기
       //페이지 잡아서
       let SearchCondition = {
+        page: payload.page, 
         superType: payload.super,
         subType: payload.sub,
       }
@@ -215,6 +216,7 @@ export default new Vuex.Store({
         },
         params: SearchCondition,
       }).then((res)=>{
+        console.log(res);
         commit('GET_VIDEO_LIST', res.data);
       }).catch((err)=>{
         console.log(err);

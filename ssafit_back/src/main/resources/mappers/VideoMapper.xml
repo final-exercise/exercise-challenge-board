@@ -19,42 +19,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="sub_type" property="subType" />
     </resultMap>
 
-    <!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
-    <select id="selectVideos" resultMap="VideoDtoMap"
-        parameterType="SearchCondition">
-        <!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
-        select video_seq, video_id, video_title, video_channel_name,
-        video_duration, video_view_cnt, video_cal, created_at, updated_at
-        , (select count(*) from wish w where w.video_seq = v.video_seq and
-        w.is_valid = 1) as video_wish_cnt
-        , (select count(*) from comment c where c.video_seq = v.video_seq and
-        c.is_valid = 1) as video_comment_cnt
+	<!-- public Page<VideoDto> selectVideos(SearchCondition sc); -->
+	<select id="selectVideos" resultMap="VideoDtoMap"
+		parameterType="SearchCondition">
+		<!-- 이거 뷰카운트랑 위시카운트 조인해서 가져오기로 추가 -->
+		select * from (
+		select video_seq, video_id, video_title, video_channel_name,
+		video_duration, video_view_cnt, video_cal, created_at, updated_at
+		, (select count(*) from wish w where w.video_seq = v.video_seq and
+		w.is_valid = 1) as video_wish_cnt
+		, (select count(*) from comment c where c.video_seq = v.video_seq and
+		c.is_valid = 1) as video_comment_cnt
         , (select workout_super_type_type from workout_super_type wsuper
             where wsuper.workout_super_type_seq = 
             (select workout_super_type_seq from video_super_type vsuper
-                where vsuper.video_seq = v.video_seq) 
-                <if test="superType != 'none'">
-                    and workout_super_type_type = #{superType}
-                </if>
-            ) as super_type
-        , (select workout_sub_type_type from workout_sub_type wsub
-            where wsub.workout_sub_type_seq = 
+				where vsuper.video_seq = v.video_seq) 
+			) as super_type
+		, (select workout_sub_type_type from workout_sub_type wsub
+			where wsub.workout_sub_type_seq = 
             (select workout_sub_type_seq from video_sub_type vsub
-                where vsub.video_seq = v.video_seq) 
-                <if test="subType != 'none'">
-                    and workout_sub_type_type = #{subType}
-                </if>
-            ) as sub_type
-        from video v
-        where v.is_valid = 1
-        <if test="key != 'none'">
-            and ${key} like concat('%', #{word}, '%')
-        </if>
-        <if test="sort != 'none'">
-            ORDER BY ${sort} ${sortDir}
-        </if>
-        
-    </select>
+				where vsub.video_seq = v.video_seq) 
+			) as sub_type, is_valid
+		from video v) a
+		where is_valid = 1
+		<if test="key != 'none'">
+			and ${key} like concat('%', #{word}, '%')
+		</if>
+		<if test="superType != 'none'">
+			and super_type = #{superType}
+		</if>
+		<if test="subType != 'none'">
+			and sub_type = #{subType}
+		</if>
+		<if test="sort != 'none'">
+			ORDER BY ${sort} ${sortDir}
+		</if>
+		
+	</select>
 
     <!-- public VideoDto selectVideo(int videoSeq); -->
     <select id="selectVideo" resultMap="VideoDtoMap"
@@ -121,22 +122,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE video_seq = #{videoSeq}
     </update>
 
-    <!-- public int selectUserWish(Map<String, Integer> map); -->
-    <select id="selectUserWish" resultType="int" parameterType="map">
-        SELECT COUNT(*)
-        FROM
-        WISH
-        WHERE video_seq = #{videoSeq}
-        <choose>
-            <when test="isCoach == 1">
-                AND coach_seq
-            </when>
-            <otherwise>
-                AND user_seq
-            </otherwise>
-        </choose>
-         = #{memberSeq} AND is_valid = 1
-    </select>
+	<!-- public int selectUserWish(Map<String, Integer> map); -->
+	<select id="selectUserWish" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		FROM
+		WISH
+		WHERE video_seq = #{videoSeq}
+		<choose>
+			<when test="isCoach == 1">
+				AND coach_seq
+			</when>
+			<otherwise>
+				AND user_seq
+			</otherwise>
+		</choose>
+		 = #{memberSeq} AND is_valid = 1
+	</select>
 
     <!-- public int insertUserWish(Map<String, Integer> map); -->
     <insert id="insertUserWish" parameterType="map">

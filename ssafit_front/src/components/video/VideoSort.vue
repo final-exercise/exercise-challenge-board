@@ -67,6 +67,8 @@ export default {
   },
   methods: {
     inputPage(pageNum){
+      this.page = pageNum
+      this.$store.dispatch('getVideoList',{super: this.super,sub: this.sub, page:this.page})
       console.log(pageNum);
     }
   },
@@ -75,9 +77,16 @@ export default {
   },
   created(){
     const params = new URL(document.location).searchParams;
-    this.super=params.get("super");
-    this.sub=params.get("sub");
-    this.$store.dispatch('getVideoList',{super: this.super,sub: this.sub});
+    this.super=params.get("superType");
+    this.sub=params.get("subType");
+    console.log(this.sub)
+    if(this.sub == 'none') {
+      this.$store.dispatch('getVideoList',{super: this.super,sub: "none"});
+      this.sub = "";
+    }
+    else {
+      this.$store.dispatch('getVideoList',{super: this.super,sub: this.sub, page:0});
+    }
   }
 }
 </script>

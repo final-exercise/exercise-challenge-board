@@ -63,6 +63,7 @@ public class VideoController {
 		if(sc.getSortDir().length() == 0) {
 			sc.setSortDir("desc");
 		}
+		
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {

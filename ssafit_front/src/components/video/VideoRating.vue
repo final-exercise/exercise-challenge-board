@@ -48,7 +48,7 @@ export default {
       } else {
         this.sort = "video_comment_cnt"
       }
-      
+     
       this.$store.dispatch('getRatingVideos', {sort:this.sort, limit:3});
     }
   }
