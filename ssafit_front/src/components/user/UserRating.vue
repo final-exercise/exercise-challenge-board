@@ -3,9 +3,9 @@
     <h2>SSAFIT RANKING</h2>
     <div class="div-decorate">&nbsp;</div>
     <div class="container-rating-list">
-      <user-rating-list :keyword="`monthly_attendance`"></user-rating-list>
-      <user-rating-list :keyword="`monthly_reply`"></user-rating-list>
-      <user-rating-list :keyword="`monthly_exp`"></user-rating-list>
+      <user-rating-list :keyword="`monthly_attendance`" title="출석왕" unit="회"></user-rating-list>
+      <user-rating-list :keyword="`monthly_reply`" title="댓글왕" unit="개"></user-rating-list>
+      <user-rating-list :keyword="`monthly_exp`" title="레벨왕" unit="exp"></user-rating-list>
     </div>
   </div>
 </template>

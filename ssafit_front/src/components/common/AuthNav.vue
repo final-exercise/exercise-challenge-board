@@ -34,6 +34,18 @@ export default {
     },
     coachLogin(){
       console.log(this.coach);
+
+      if(sessionStorage.getItem("authority")=="u"){
+        if(window.confirm("로그아웃 후 다시 진행하시겠습니까?")){
+          this.$store.dispatch('logout');
+          this.$store.dispatch('coachLogin', this.coach);
+        } else{
+          return;
+        }
+      }else if(sessionStorage.getItem("authority")=="c"){
+        return;
+      }
+      
       this.$store.dispatch('coachLogin', this.coach);
     },
     redirectHome(){

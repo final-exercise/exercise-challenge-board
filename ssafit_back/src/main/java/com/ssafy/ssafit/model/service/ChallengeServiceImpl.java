@@ -86,6 +86,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		try {
 			ChallengeInfoDto cid = new ChallengeInfoDto();
 			cid.setChallengeDto(chd.selectChallenge(challengeSeq));
+			System.out.println(cid.getChallengeDto());
 			cid.setChallengeUsers(chd.selectJoinedUsers(challengeSeq));
 			cid.setChallengeVideos(chd.selectChallengeVideos(challengeSeq));
 			return cid;

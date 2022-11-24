@@ -1,7 +1,7 @@
 <template>
   <div class="container-user-rating-list">
     <div class="div-color">
-      <h3>댓글</h3>
+      <h3>{{title}}</h3>
     </div>
     <div class="div-decorate">&nbsp;</div>
     <div class="container-user-rating-list-item">
@@ -10,35 +10,35 @@
           <div class="div-user-item">
             <span class="medal">🥇</span>
             <h4>{{users[0].userNickname}}</h4>
-            <span>{{users[0].value}}개</span>
+            <span>{{users[0].value}}{{unit}}</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">🥈</span>
             <h4>{{users[1].userNickname}}</h4>
-            <span>{{users[1].value}}개</span>
+            <span>{{users[1].value}}{{unit}}</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">🥉</span>
             <h4>{{users[2].userNickname}}</h4>
-            <span>{{users[2].value}}개</span>
+            <span>{{users[2].value}}{{unit}}</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">4️⃣</span>
             <h4>{{users[3].userNickname}}</h4>
-            <span>{{users[3].value}}개</span>
+            <span>{{users[3].value}}{{unit}}</span>
           </div>
         </li>
         <li>
           <div class="div-user-item">
             <span class="medal">5️⃣</span>
             <h4>{{users[4].userNickname}}</h4>
-            <span>{{users[4].value}}개</span>
+            <span>{{users[4].value}}{{unit}}</span>
           </div>
         </li>
       </ul>
@@ -50,7 +50,7 @@
 import axios from 'axios';
 
 export default {
-  props:['keyword'],
+  props:['keyword','title','unit'],
   data(){
     return{
       users:[]

@@ -164,6 +164,7 @@ public class ChallengeController {
 		HttpStatus status = null;
 
 		try {
+
 			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
 			result.put("res", chs.getChallengeInfo(challengeSeq, userSeq));
 			result.put("message", "get challenge info success");

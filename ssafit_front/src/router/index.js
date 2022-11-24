@@ -23,7 +23,7 @@ import CoachMyPageInfo from "../components/coach/CoachMyPageInfo.vue"
 import CoachManagerUserInfo from "../components/coach/CoachManagerUserInfo.vue"
 import CoachManageCalendarDate from "../components/coach/CoachManageCalendarDate.vue"
 import ChallengeStart from "../components/challenge/ChallengeStart.vue";
-
+import ChallengeStartItem from "../components/challenge/ChallengeStartItem.vue"
 
 Vue.use(VueRouter)
 
@@ -62,6 +62,7 @@ const routes = [
   },
   {
     path: "/video/:vidoeSeq",
+    name: "video-detail",
     component: VideoDetailView,
   },
   {
@@ -97,7 +98,14 @@ const routes = [
       {
         path: ":challengeSeq",
         name: 'challenge-start',
-        component: ChallengeStart
+        component: ChallengeStart,
+        children:[
+          {
+            path:":videoSeq",
+            name: 'challenge-item',
+            component: ChallengeStartItem,
+          }
+        ]
       }
     ]
   },
