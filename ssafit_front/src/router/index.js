@@ -101,7 +101,7 @@ const routes = [
         component: ChallengeStart,
         children:[
           {
-            path:":videoSeq",
+            path:"video/:videoSeq",
             name: 'challenge-item',
             component: ChallengeStartItem,
           }

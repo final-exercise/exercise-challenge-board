@@ -7,18 +7,19 @@
       </button>
     </div>
 
-    <div class="div-my-challenge-list" v-for="(challenge, index) in myChallenges" :key="index">
-
+    <div class="div-my-challenge-list" >
+        <div v-for="(challenge, index) in myChallenges" :key="index">
         <challenge-my-item :challenge="challenge"></challenge-my-item>
+        </div>
         <!-- <challenge-my-item></challenge-my-item> -->
         <!-- <challenge-my-item></challenge-my-item> -->
     </div>
-    <v-pagination
+    <!-- <v-pagination
       v-model="page"
-      :length="10"
+      :length="1"
       :color="`#87A2FB`"
       @input="inputPage"
-    ></v-pagination>
+    ></v-pagination> -->
   </div>
 </template>
 
@@ -56,9 +57,10 @@ export default {
 
 <style scoped>
 .container-my-challenge{
+  width: 80%;
   display:flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   margin: 10px 10px 10px 20px;
 }
 

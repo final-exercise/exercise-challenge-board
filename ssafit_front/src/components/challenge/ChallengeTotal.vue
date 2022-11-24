@@ -3,21 +3,24 @@
     <div class="div-my-challenge-menu">
       <h1>최근 생성된 챌린지</h1>
     </div>
-    <div class="div-my-challenge-list" v-for="(challenge, index) in validChallenges" :key="index">
-        <challenge-item :challenge="challenge"></challenge-item>
+    <div class="div-my-challenge-list">
+        <div v-for="(challenge, index) in validChallenges" :key="index">
+ <challenge-item :challenge="challenge"></challenge-item>
+        </div>
+       
         <!-- <challenge-item></challenge-item> -->
         <!-- <challenge-item></challenge-item> -->
     </div>
     <div class="div-my-challenge-page">
       <!--pagehelper에 page 가져와야함 -->
-      <div style="margin: 20px;">◀ 1 2 3 4 5 ▶</div>
+      <!-- <div style="margin: 20px;">◀ 1 2 3 4 5 ▶</div> -->
     </div>
-    <v-pagination
+    <!-- <v-pagination
       v-model="page"
       :length="10"
       :color="`#87A2FB`"
       @input="inputPage"
-    ></v-pagination>
+    ></v-pagination> -->
   </div>
 </template>
 
@@ -57,6 +60,7 @@ export default {
 <style scoped>
 .container-my-challenge{
   display:flex;
+  width: 80%;
   flex-direction: column;
   margin: 10px 10px 10px 20px;
 }

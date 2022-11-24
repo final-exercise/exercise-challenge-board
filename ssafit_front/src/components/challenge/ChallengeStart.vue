@@ -60,7 +60,7 @@ export default {
     return{
       // restP: this.rest/this.curChallenge.challengeDto.duration,
       challengeSeq:0,
-      isDefault: true
+      isDefault: false
     }
   },
   methods:{
@@ -80,6 +80,7 @@ export default {
     completeChallenge(){
       window.alert("축하합니다! 200exp가 적립됩니다🎉");
       this.$store.dispatch("updateExp");
+      window.location.replace("/");
     }
   },
   computed:{
@@ -106,7 +107,7 @@ export default {
   }, 
   created(){
     const PathName = new URL(document.location).pathname.split("/");
-    this.challengeSeq = PathName[PathName.length - 1];
+    this.challengeSeq = PathName[2];
 
     this.$store.dispatch('getChallenge',this.challengeSeq);
   },

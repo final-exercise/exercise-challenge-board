@@ -10,8 +10,8 @@
     <div @click="modalStatusChange" class="modal-user-signup" :class="{modalNotVisib:isModal, modalVisib:!isModal}">
       <div @click="modalStatusChange" class="form-user-signup">
         <h1>회원가입</h1>
-        <button class="modal-button button-naver" @click="modalStatusChange">네이버로 회원가입</button>
-        <button class="modal-button button-kakao" @click="modalStatusChange">카카오로 회원가입</button>
+        <!-- <button class="modal-button button-naver" @click="modalStatusChange">네이버로 회원가입</button>
+        <button class="modal-button button-kakao" @click="modalStatusChange">카카오로 회원가입</button> -->
         <button class="modal-button button-email" @click="modalStatusChange"><router-link to="/signup/email" >이메일로 회원가입</router-link></button>
 
       </div>

@@ -513,6 +513,7 @@ export default new Vuex.Store({
         this.isLoading=false;
         console.log(res)
         // commit("GET_WORKOUT_LIST",res.data.res);
+        window.location.replace("/challenge");
       }).catch((err)=>{
         console.log(err)
       })
@@ -605,7 +606,7 @@ export default new Vuex.Store({
         console.log(err)
       })
       
-      window.location.href = `/challenge/detail/${challengeSeq}`;
+      window.location.href = `/challenge/${challengeSeq}`;
 
     }
   },

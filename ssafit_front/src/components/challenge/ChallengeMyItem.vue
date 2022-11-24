@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     startChallenge() {
-      const URL = `/challenge/detail/${this.challenge.challengeDto.challengeSeq}`
+      const URL = `/challenge/${this.challenge.challengeDto.challengeSeq}`
       console.log(this.challenge.challengeDto.challengeSeq); 
       console.log(URL)
       window.location.href = `${URL}`

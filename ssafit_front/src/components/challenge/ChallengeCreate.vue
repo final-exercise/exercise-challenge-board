@@ -70,7 +70,8 @@ export default {
         return;
       }
       this.$store.dispatch("createChallenge",data);
-      window.location.replace("/challenge");
+      window.location.replace("/");
+      
     }
   },
   computed:{

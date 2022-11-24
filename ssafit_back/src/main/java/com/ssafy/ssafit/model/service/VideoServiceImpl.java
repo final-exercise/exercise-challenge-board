@@ -56,6 +56,7 @@ public class VideoServiceImpl implements VideoService {
 			map.put("memberSeq", memberSeq);
 			map.put("isCoach", isCoach);
 			vdd.setVideoIsWish(vd.selectUserWish(map));
+			
 			return vdd;
 		} catch(Exception e) {
 			e.printStackTrace();
