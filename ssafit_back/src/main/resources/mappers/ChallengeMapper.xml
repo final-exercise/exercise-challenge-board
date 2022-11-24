@@ -104,11 +104,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public List<UserDto> selectJoinedUsers(int challengeSeq); -->
 	<select id="selectJoinedUsers" resultMap="UserDtoMap" parameterType="int">
-		SELECT user_seq, user_id, user_name, user_email, user_birth, user_nickname, user_gender, created_at, updated_at
+		SELECT u.user_seq, user_id, user_name, user_email, user_birth, user_nickname, user_gender, u.created_at, u.updated_at
+		FROM USER u join challenge_join c on u.user_seq = c.user_seq
+							WHERE c.challenge_seq = #{challengeSeq}
+	
+		<!-- SELECT user_seq, user_id, user_name, user_email, user_birth, user_nickname, user_gender, created_at, updated_at
 		FROM USER u
 		WHERE u.user_seq = (SELECT user_seq
 							FROM CHALLENGE_JOIN c
-							WHERE c.challenge_seq = #{challengeSeq})
+							WHERE c.challenge_seq = #{challengeSeq}) -->
 	</select>
 	
 	<!-- public int insertChallengeJoin(Map<String, Integer> map); -->

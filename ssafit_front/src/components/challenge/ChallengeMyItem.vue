@@ -1,4 +1,5 @@
 <template>
+  
   <div class="container-challenge-item">
     <div class="div-challenge-info">
       <div class="challenge-title">
@@ -22,7 +23,7 @@
       </div>
     </div>
     <div class="div-challenge-button">
-      <button class="button-start">시작하기</button>
+      <button class="button-start" @click="startChallenge">시작하기</button>
     </div>
   </div>
 </template>
@@ -40,6 +41,14 @@ export default {
       } else{
         return value;
       }
+    }
+  },
+  methods: {
+    startChallenge() {
+      const URL = `/challenge/detail/${this.challenge.challengeDto.challengeSeq}`
+      console.log(this.challenge.challengeDto.challengeSeq); 
+      console.log(URL)
+      window.location.href = `${URL}`
     }
   }
 

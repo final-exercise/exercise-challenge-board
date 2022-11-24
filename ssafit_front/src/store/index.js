@@ -107,8 +107,7 @@ export default new Vuex.Store({
       // console.log(state.challengeVideo);
     },
     GET_MY_CHALLENGES(state, data) {
-      console.log("여기 들어왔니?")
-      console.log(data.res);
+      // console.log(data.res);
       state.myChallenges = data.res;
     },
     DETAIL_CHALLENGE(state,data){
@@ -116,6 +115,11 @@ export default new Vuex.Store({
     },
     CLEAR_CHALLENGE(state,data){
       state.curChallenge = "";
+    }
+    ,
+    GET_VALID_CHALLENGES(state, data) {
+      console.log(data.res);
+      state.validChallenges = data.res;
     }
   },
   actions: {
@@ -532,6 +536,25 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    getVaildChallenges({commit}, payload) {
+      let param = {
+        page:payload,
+      }
+      console.log("여기")
+      const API_URL = `${REST_API}challenge`
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: param,
+      }).then((res) => {
+        commit('GET_VALID_CHALLENGES', res.data);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
     getChallenge({commit},challengeSeq){
       const API_URL = `${REST_API}challenge/detail/${challengeSeq}`
       axios({
@@ -567,6 +590,23 @@ export default new Vuex.Store({
       }).catch((err)=>{
         console.log(err)
       })
+    },
+    joinChallenge({commit}, payload) {
+      let challengeSeq = payload
+      const API_URL = `${REST_API}challenge/${challengeSeq}`
+      axios({
+        url: API_URL,
+        method: 'POST',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+      }).then((res) => {
+      }).catch((err)=>{
+        console.log(err)
+      })
+      
+      window.location.href = `/challenge/detail/${challengeSeq}`;
+
     }
   },
   modules: {

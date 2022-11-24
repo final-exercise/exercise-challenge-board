@@ -3,10 +3,10 @@
     <div class="div-my-challenge-menu">
       <h1>최근 생성된 챌린지</h1>
     </div>
-    <div class="div-my-challenge-list">
-        <challenge-item></challenge-item>
-        <challenge-item></challenge-item>
-        <challenge-item></challenge-item>
+    <div class="div-my-challenge-list" v-for="(challenge, index) in validChallenges" :key="index">
+        <challenge-item :challenge="challenge"></challenge-item>
+        <!-- <challenge-item></challenge-item> -->
+        <!-- <challenge-item></challenge-item> -->
     </div>
     <div class="div-my-challenge-page">
       <!--pagehelper에 page 가져와야함 -->
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ChallengeItem from "./ChallengeItem.vue"
 export default {
   components:{
@@ -36,6 +37,13 @@ export default {
     inputPage(pageNum){
       console.log(pageNum);
     }
+  },
+  computed: {
+    ...mapState(['validChallenges'])
+  },
+  created() {
+    // console.log('totalcreated')
+    this.$store.dispatch('getVaildChallenges', this.page);
   }
   // ,
   // beforeMount(){

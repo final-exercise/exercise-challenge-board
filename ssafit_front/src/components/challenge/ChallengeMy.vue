@@ -8,6 +8,7 @@
     </div>
 
     <div class="div-my-challenge-list" v-for="(challenge, index) in myChallenges" :key="index">
+
         <challenge-my-item :challenge="challenge"></challenge-my-item>
         <!-- <challenge-my-item></challenge-my-item> -->
         <!-- <challenge-my-item></challenge-my-item> -->
