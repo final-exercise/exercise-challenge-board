@@ -104,6 +104,11 @@ export default new Vuex.Store({
 
       state.challengeVideo.splice(data,1);
       // console.log(state.challengeVideo);
+    },
+    GET_MY_CHALLENGES(state, data) {
+      console.log("여기 들어왔니?")
+      console.log(data.res);
+      state.myChallenges = data.res;
     }
   },
   actions: {
@@ -497,7 +502,26 @@ export default new Vuex.Store({
       }).catch((err)=>{
         console.log(err)
       })
-    }
+    },
+    getMyChallenges({commit}, payload) {
+      let param = {
+        page: payload,
+      }
+
+      const API_URL = `${REST_API}challenge/my`
+      axios({
+        url: API_URL,
+        method: 'GET',
+        headers:{
+          "access-token": sessionStorage.getItem("access-token")
+        },
+        params: param,
+      }).then((res) => {
+        commit('GET_MY_CHALLENGES', res.data);
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
   },
   modules: {
     FadeLoader

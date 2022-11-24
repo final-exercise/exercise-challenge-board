@@ -9,9 +9,9 @@ public interface ChallengeService {
 	//챌린지 등록하기
 	public int registChallenge(ChallengeDto challengeDto) throws BaseException;
 	//참여중인 챌린지 목록 보기 + 회원이 만든 것도 가져오기 
-	public Page<ChallengeDto> getJoinedChallenges(int userSeq) throws BaseException;
+	public Page<ChallengeInfoDto> getJoinedChallenges(int userSeq) throws BaseException;
 	//현재 진행중인 챌린지 목록보기
-	public Page<ChallengeDto> getValidChallenge() throws BaseException;
+	public Page<ChallengeInfoDto> getValidChallenge() throws BaseException;
 	//챌린지 정보 가져오기 + 챌린지의 영상 + 참여중인 회원 + 지금내가참여중인지아닌지
 	public ChallengeInfoDto getChallengeInfo(int challengeSeq, int userSeq) throws BaseException;
 	//챌린지 참여하기 

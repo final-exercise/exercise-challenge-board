@@ -4,31 +4,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.ssafit.model.dao.CommentDao">
 	<resultMap type="CommentDto" id="CommentDtoMap">
-		<result column="comment_seq" property="commentSeq"/>
-		<result column="comment_content" property="commentContent"/>
-		<result column="video_seq" property="videoSeq"/>
-		<result column="coach_seq" property="coachSeq"/>
-		<result column="user_seq" property="userSeq"/>
-		<result column="comment_depth" property="commentDepth"/>
-		<result column="bundle_id" property="bundleId"/>
-		<result column="created_at" property="commentCreatedAt"/>
-		<result column="updated_at" property="commentUpdatedAt"/>
+		<result column="comment_seq" property="commentSeq" />
+		<result column="comment_content" property="commentContent" />
+		<result column="video_seq" property="videoSeq" />
+		<result column="coach_seq" property="coachSeq" />
+		<result column="user_seq" property="userSeq" />
+		<result column="comment_depth" property="commentDepth" />
+		<result column="bundle_id" property="bundleId" />
+		<result column="created_at" property="commentCreatedAt" />
+		<result column="updated_at" property="commentUpdatedAt" />
+		<result column="nickname" property="nickname" />
+		<result column="is_coach" property="isCoach" />
 	</resultMap>
 
-	<!-- public Page<CommentDto> getComments(int videoSeq); -->
-	<select id="getComments" resultMap="CommentDtoMap" parameterType="int">
-		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq, comment_depth, bundle_id, created_at, updated_at
+	<!-- public Page<CommentDto> getCommentsByVideoSeq(int videoSeq); -->
+	<select id="getCommentsByVideoSeq" resultMap="CommentDtoMap"
+		parameterType="int">
+		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq,
+		comment_depth, bundle_id, created_at, updated_at, nickname, is_coach
+		<!-- , (select user_nickname from user u where u.user_seq = c.user_seq) 
+			as user_nickname , (select coach_nickname from coach where coach_seq = c.coach_seq) 
+			as coach_nickname -->
 		FROM COMMENT
-		WHERE video_seq = #{videoSeq} AND is_valid = 1
+		WHERE video_seq = #{videoSeq} AND is_valid = 1 and
+		comment_depth = 0
+		ORDER BY bundle_id, created_at
 	</select>
-		
+
+	<!-- public Page<CommentDto> getCommentsByCommentSeq(int commentSeq); //댓글 seq에 따른 대댓글 목록 select -->
+	<select id="getCommentsByCommentSeq" resultMap="CommentDtoMap" parameterType="int">
+		SELECT comment_seq, comment_content, video_seq, coach_seq, user_seq,
+		comment_depth, bundle_id, created_at, updated_at, nickname, is_coach
+		FROM COMMENT
+		WHERE bundle_id = #{commentSeq} and is_valid = 1 and comment_depth = 1
+		ORDER BY created_at
+	</select>
+	
 	<!-- public int insertComment(CommentDto commentDto); -->
 	<insert id="insertComment" parameterType="CommentDto">
-		<!--<selectKey keyProperty="param.idx" resultType="int" order="BEFORE">
-			select max(comment_seq)+1 from comment
-		</selectKey>  -->
-		
-		INSERT INTO COMMENT (comment_content, video_seq, 
+		<!--<selectKey keyProperty="param.idx" resultType="int" order="BEFORE"> 
+			select max(comment_seq)+1 from comment </selectKey> -->
+
+		INSERT INTO COMMENT (comment_content, video_seq, nickname, is_coach,
 		<choose>
 			<when test="isCoach == 1">
 				coach_seq,
@@ -39,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 		comment_depth, bundle_id)
 		VALUES (#{commentContent}, #{videoSeq},
+		#{nickname}, #{isCoach},
 		<choose>
 			<when test="isCoach == 1">
 				#{coachSeq},
@@ -48,28 +66,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</otherwise>
 		</choose>
 		#{commentDepth}, #{bundleId})
-		
+
 		<selectKey keyProperty="commentSeq" resultType="Integer">
-			select comment_seq from comment order by created_at desc limit 1;
+			select
+			comment_seq from comment order by created_at desc limit 1;
 		</selectKey>
 	</insert>
-	
+
 	<!-- public int updateComment(CommentDto commentDto); -->
 	<update id="updateComment" parameterType="CommentDto">
 		UPDATE COMMENT
-		SET comment_content = #{commentContent}, bundle_id = #{bundleId}, comment_depth = #{commentDepth}
+		SET
+		comment_content = #{commentContent}, bundle_id = #{bundleId},
+		comment_depth = #{commentDepth}
 		WHERE comment_seq = #{commentSeq}
 	</update>
-	
+
 	<!-- public int deleteComment(int commentSeq); -->
 	<update id="deleteComment" parameterType="int">
 		UPDATE COMMENT
-		SET is_valid = false;
+		SET
+		is_valid = false
 		WHERE comment_seq = #{commentSeq}
 	</update>
-	
-	<!-- public String selectNickname(Map<String, String> map); // <"Table", "Column", "SeqColumn", "Seq"> -->
-	<select id="selectNickname" resultType="String" parameterType="Map">
+
+	<!-- public String selectNickname(Map<String, String> map); // <"Table", 
+		"Column", "SeqColumn", "Seq"> -->
+	<select id="selectNickname" resultType="String"
+		parameterType="Map">
 		SELECT ${Column}
 		FROM ${Table}
 		WHERE ${SeqColumn} = #{Seq}

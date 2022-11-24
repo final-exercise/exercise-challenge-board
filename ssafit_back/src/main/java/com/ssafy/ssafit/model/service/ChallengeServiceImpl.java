@@ -1,6 +1,7 @@
 package com.ssafy.ssafit.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,49 @@ public class ChallengeServiceImpl implements ChallengeService {
 	}
 
 	@Override
-	public Page<ChallengeDto> getJoinedChallenges(int userSeq) throws BaseException {
+	public Page<ChallengeInfoDto> getJoinedChallenges(int userSeq) throws BaseException {
+		System.out.println("서비스");
 		try {
-			return chd.selectJoinedChallenges(userSeq);
+			Page<ChallengeInfoDto> cid = new Page<>();
+			System.out.println(userSeq);//여기까지 됨
+			List<ChallengeDto> challenges = chd.selectJoinedChallenges(userSeq);
+			System.out.println(challenges.size());
+			
+			for(ChallengeDto cd : challenges) {
+				System.out.println(cd.getChallengeSeq());
+				ChallengeInfoDto temp = new ChallengeInfoDto();
+				temp.setChallengeDto(cd);
+				//영상정보 리스트가져오기
+				temp.setChallengeVideos(chd.selectChallengeVideos(cd.getChallengeSeq()));
+				System.out.println("영상정보가져옴");
+				//참여회원 리스트가져오기
+				temp.setChallengeUsers(chd.selectJoinedUsers(cd.getChallengeSeq()));
+				cid.add(temp);
+			}
+			
+			return cid;
 		} catch(Exception e) {
+			e.printStackTrace();
 			throw new BaseException(FAIL, 500, "database error");
 		}
 	}
 
 	@Override
-	public Page<ChallengeDto> getValidChallenge() throws BaseException {
+	public Page<ChallengeInfoDto> getValidChallenge() throws BaseException {
 		try {
-			return chd.selectValidChallenge();
+			Page<ChallengeInfoDto> cid = new Page<>();
+			List<ChallengeDto> challenges = chd.selectValidChallenge();
+			for(ChallengeDto cd : challenges) {
+				ChallengeInfoDto temp = new ChallengeInfoDto();
+				temp.setChallengeDto(cd);
+				//영상정보 리스트가져오기
+				temp.setChallengeVideos(chd.selectChallengeVideos(cd.getChallengeSeq()));
+				//참여회원 리스트가져오기
+				temp.setChallengeUsers(chd.selectJoinedUsers(cd.getChallengeSeq()));
+				cid.add(temp);
+			}
+			
+			return cid;
 		} catch(Exception e) {
 			throw new BaseException(FAIL, 500, "database error");
 		}

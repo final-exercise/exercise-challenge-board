@@ -35,9 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_seq" property="userSeq" />
 		<result column="created_at" property="createdAt" />
 		<result column="user_diet_seq" property="userDietSeq" />
-		<result column="diet_seq" property="dietSeq" />
+		<result column="diet_id" property="dietId" />
 		<result column="diet_name" property="dietName" />
-		<result column="diet_img_url" property="dietImgUrl" />
+		<result column="diet_maker" property="dietMaker" />
 		<result column="diet_cal" property="dietCal" />
 	</resultMap>
 	
@@ -49,13 +49,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="video_duration" property="videoDuration" />
 		<result column="video_view_cnt" property="videoViewCnt" />
 		<result column="video_cal" property="videoCal" />
+		<result column="super_type" property="superType" />
+		<result column="sub_type" property="subType" />
 	</resultMap>	
 
 	<resultMap type="UserActivityDto" id="userActivityDtoMap">
 		<result column="user_seq" property="userSeq" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="value" property="value" />
-		<result column="key" property="key" />
 	</resultMap>	
 
 
@@ -64,6 +65,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertUser" parameterType="UserDto">
 		insert into user (user_id, user_password, user_name, user_email, user_birth, user_nickname, user_gender) 
 		values (#{userId}, #{userPassword}, #{userName}, #{userEmail},  #{userBirth}, #{userNickname}, #{userGender}); 
+		
+		<selectKey keyProperty="userSeq" resultType="Integer">
+			select user_seq from user order by created_at desc limit 1;
+		</selectKey>
 	</insert>
 	
 	<!-- public UserDto getUserByUserId(String userId); -->
@@ -144,23 +149,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public int insertUserDiet(UserDietDto userDietDto); -->
 	<insert id="insertUserDiet" parameterType="userDietDto">
-		insert into user_diet(diet_seq, diet_name, diet_img_url, diet_cal, user_seq)
-		values (#{dietSeq}, #{dietName}, #{dietImgUrl}, #{dietCal}, #{userSeq});
+		insert into user_diet(diet_id, diet_name, diet_maker, diet_cal, user_seq)
+		values (#{dietId}, #{dietName}, #{dietMaker}, #{dietCal}, #{userSeq});
 	</insert>
 	
 	<!-- public Page<Video> selectWishVideo(int userSeq); -->
 	<select id="selectWishVideo" parameterType="int" resultMap="userWishVideoMap">
-		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal
+		select v.video_seq, video_id, video_title, video_channel_name,video_duration, video_view_cnt, video_cal
+				,(select workout_super_type_type 
+					from workout_super_type wsuper
+					where wsuper.workout_super_type_seq = 
+            						(select workout_super_type_seq 
+            						from video_super_type vsuper
+									where vsuper.video_seq = v.video_seq) 
+
+				) as super_type
+				, (select workout_sub_type_type 
+					from workout_sub_type wsub
+					where wsub.workout_sub_type_seq = 
+            						(select workout_sub_type_seq 
+            						from video_sub_type vsub
+									where vsub.video_seq = v.video_seq) 
+				) as sub_type
 		from video v
-		join wish w on w.video_seq = v.video_seq
+        join wish w on w.video_seq = v.video_seq
 		where w.user_seq = #{userSeq} AND w.is_valid=1
 	</select>
 	
 	<!-- public Page<UserActivityDto> selectUserActivitySort(SearchCondition searchCondition); -->
 	<select id="selectUserActivitySort" parameterType="SearchCondition" resultMap="userActivityDtoMap">
-		select user_seq, user_nickname, ${sort} as "value", #{sort} as "key"
+		select user_seq, user_nickname, ${key} as "value"
 		from user_activity
-		order by ${sort} DESC
+		order by ${key} DESC
 	</select>
 	
 	<!-- public int updateUserActivity(Map<String, Object> map); -->
@@ -169,5 +189,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set ${key1} = ${key1} + #{value}, ${key2} = ${key2} + #{value}
 		where user_seq=#{userSeq}
 	</update>
+	
+	<!-- 	public int insertUserActivity(UserDto userDto); -->
+	<insert id="insertUserActivity" parameterType="userDto">
+		insert into user_activity(user_seq, user_nickname, user_height) 
+		values(#{userSeq},#{userNickname}, #{userHeight});
+	</insert>
 	
 </mapper>

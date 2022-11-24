@@ -6,10 +6,11 @@
         <router-link :to="{name: 'challenge-create'}">나만의 챌린지 만들기</router-link>
       </button>
     </div>
-    <div class="div-my-challenge-list">
-        <challenge-my-item></challenge-my-item>
-        <challenge-my-item></challenge-my-item>
-        <challenge-my-item></challenge-my-item>
+
+    <div class="div-my-challenge-list" v-for="(challenge, index) in myChallenges" :key="index">
+        <challenge-my-item :challenge="challenge"></challenge-my-item>
+        <!-- <challenge-my-item></challenge-my-item> -->
+        <!-- <challenge-my-item></challenge-my-item> -->
     </div>
     <v-pagination
       v-model="page"
@@ -21,20 +22,33 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ChallengeMyItem from "../challenge/ChallengeMyItem.vue"
+
 export default {
+  name: "ChallengeMy",
   components:{
     ChallengeMyItem
   },
   data(){
     return{
       page: 1,
+
     }
   },
   methods:{
     inputPage(pageNum){
       console.log(pageNum);
     }
+  },
+  computed: {
+    //여기에 Page<챌린지 인포 디티오>들어있고, 그안에 챌린지디티오, 비디오리스트, 참여회원리스트 있음
+   // 새로고침 하면안됨
+    ...mapState(['myChallenges'])  
+  },
+  created() {
+    console.log('created')
+    this.$store.dispatch('getMyChallenges', this.page);
   }
 }
 </script>

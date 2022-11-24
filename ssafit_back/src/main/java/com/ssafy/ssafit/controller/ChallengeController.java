@@ -1,6 +1,5 @@
 package com.ssafy.ssafit.controller;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.ssafit.exception.BaseException;
 import com.ssafy.ssafit.model.dto.Challenge.ChallengeDto;
-import com.ssafy.ssafit.model.dto.Video.VideoDto;
 import com.ssafy.ssafit.model.service.ChallengeService;
 import com.ssafy.ssafit.model.service.ChallengeServiceImpl;
 import com.ssafy.ssafit.util.JwtUtil;
@@ -66,7 +64,16 @@ public class ChallengeController {
 
 
 			int res = chs.registChallenge(challengeDto);
+			if(res != 1) {
+				throw new BaseException(FAIL, 500, "insert new challenge fail");
+			}
+			
 			int challengeSeq = challengeDto.getChallengeSeq();
+			// challenge_join 테이블에도 넣어줘야함
+			res = chs.joinChallenge(challengeSeq, userSeq);
+			if(res != 1) {
+				throw new BaseException(FAIL, 500, "insert join challenge fail");
+			}
 			
 			String[] seqs = videoList.split(" ");
 			ArrayList<Integer> challengeVideos = new ArrayList<>();
@@ -81,9 +88,6 @@ public class ChallengeController {
 	              }
 	        }
 			
-			if(res != 1) {
-				throw new BaseException(FAIL, 500, "insert new challenge fail");
-			}
 			
 			result.put("res", res);
 			result.put("message", "insert new challenge success");
@@ -98,18 +102,23 @@ public class ChallengeController {
 		}
 	}
 
-	// 2) [GET] /challenge/{userSeq}?page={page}
-	@GetMapping("/{userSeq}")
-	public ResponseEntity<Map<String, Object>> getJoinedChallenges(@PathVariable("userSeq") int userSeq, int page) {
+	// 2) [GET] /challenge/my?page={page}
+	@GetMapping("/my")
+	public ResponseEntity<Map<String, Object>> getJoinedChallenges(int page) {
+		System.out.println("컨트롤러");
+		System.out.println(page);
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
-
 		try {
 			if (page == 0)
 				page = 1;
 			PageHelper.startPage(page, 10);
-
+			
+			int userSeq = Integer.parseInt(jwtUtil.getValueFromJwt("userSeq").toString());
+			System.out.println(userSeq);
+			
 			result.put("res", chs.getJoinedChallenges(userSeq));
+			System.out.println("여기서 안되니?");
 			result.put("message", "get joinedChallenges success");
 			result.put("isSuccess", SUCCESS);
 			status = HttpStatus.ACCEPTED;

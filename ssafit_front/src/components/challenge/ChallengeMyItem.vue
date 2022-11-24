@@ -2,19 +2,20 @@
   <div class="container-challenge-item">
     <div class="div-challenge-info">
       <div class="challenge-title">
-        <h2>12월 갓생러 챌린지</h2>
-        <button>11명</button>
+        <h2>챌린지 타이들 </h2>
+        <button>{{challenge.challengeUsers.length}}명</button>
       </div>
-      <div class="challenge-duration">2022년 11월 31일까지</div>
-      <div class="challenge-description">우리 모두 함께해요!</div>
+      
+      <div class="challenge-duration">{{challenge.challengeDto.endDate}}까지</div>
+      <div class="challenge-description">챌린지 디스크립션</div>
     </div>
     <hr>
-    <div class="div-challenge-videos">
+    <div class="div-challenge-videos"> <!--이거는 비디오리스트 포문 돌려야하고 그리고 컴포넌트에서 뽑아오기.아닌가 여기서 바로할수있음 하기-->
       <div class="div-challenge-video">
-        <h4>첫번째 영상 제목</h4>
+        <h4>{{challenge.challengeVideos[0].videoTitle|titleLength}}</h4>
       </div>
       <div class="div-challenge-video">
-        <h4>두번째 영상 제목</h4>
+        <h4>{{challenge.challengeVideos[1].videoTitle|titleLength}}</h4>
       </div>
       <div >
         <h4>...</h4>
@@ -28,6 +29,19 @@
 
 <script>
 export default {
+  name: 'ChallengeMyItem',
+  props: [
+    'challenge'
+  ],
+  filters: {
+    titleLength(value){
+      if(value.length>15){
+       return value.substring(0,15)+"...";
+      } else{
+        return value;
+      }
+    }
+  }
 
 }
 </script>

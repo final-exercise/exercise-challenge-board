@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public Page<ChallengeDto> selectJoinedChallenges(int userSeq); -->
 	<select id="selectJoinedChallenges" resultMap="ChallengeDtoMap" parameterType="int">
-		SELECT challenge_seq, user_seq, is_public, duration, created_at, updated_at
+		SELECT c.challenge_seq, c.user_seq, is_public, duration, end_date, c.created_at, c.updated_at
 		FROM CHALLENGE c
 		JOIN CHALLENGE_JOIN j ON c.challenge_seq = j.challenge_seq
 		WHERE j.user_seq = #{userSeq} and c.is_valid = 1
@@ -91,12 +91,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- public List<VideoDto> selectChallengeVideos(int challengeSeq); -->
 	<select id="selectChallengeVideos" resultMap="VideoDtoMap" parameterType="int">
-		select video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, created_at, updated_at
+		select v.video_seq, video_id, video_title, video_channel_name, video_duration, video_view_cnt, video_cal, v.created_at, v.updated_at
 			, (select count(*) from wish w where w.video_seq = v.video_seq and w.is_valid = 1) as video_wish_cnt
 			, (select count(*) from comment c where c.video_seq = v.video_seq and c.is_valid = 1) as video_comment_cnt
 		from video v
         right outer join challenge_video cv on v.video_seq = cv.video_seq
-		where v.is_valid = 1 and cv.video_seq = #{videoSeq} 
+		where v.is_valid = 1 and cv.challenge_seq = #{challengeSeq} 
 	</select>
 	
 	<!-- public List<UserDto> selectJoinedUsers(int challengeSeq); -->

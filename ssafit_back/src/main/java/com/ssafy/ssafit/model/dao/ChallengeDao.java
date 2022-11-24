@@ -12,11 +12,11 @@ public interface ChallengeDao {
 	//챌린지 생성 (삽입)
 	public int insertChallenge(ChallengeDto challengeDto);
 	//내가 참여중인 챌린지 가져오기
-	public Page<ChallengeDto> selectJoinedChallenges(int userSeq);
+	public List<ChallengeDto> selectJoinedChallenges(int userSeq);
 	//내가 만든 챌린지 가져오기
 	public ChallengeDto selectMyChallenge(int userSeq);
 	//현재 진행중인 챌린지 가져오기 -> isvalid=1 인거 가져오면되나?
-	public Page<ChallengeDto> selectValidChallenge();
+	public List<ChallengeDto> selectValidChallenge();
 	//챌린지seq의 챌린지 가져오기
 	public ChallengeDto selectChallenge(int challengeSeq);
 	//챌린지seq의 영상 목록 가져오기
