@@ -13,7 +13,7 @@
       <nav class="container-header-nav">
         <div class="dropdown">
           <button class="dropbtn" @click="dropdown">
-            <a class="a-menu dropbtn_content">운동 영상</a>
+            <a class="a-menu dropbtn_content" @click="getAllVideo">운동 영상</a>
             <span class="dropbtn_click" >&nbsp; ▼</span>
           </button>
           <div class="dropdown-content">
@@ -23,6 +23,7 @@
                 <div class="subtype" @click="getSortedVideo">전신</div>
                 <div class="subtype" @click="getSortedVideo">상체</div>
                 <div class="subtype" @click="getSortedVideo">하체</div>
+                <div class="subtype" @click="getSortedVideo">전체</div>
               </div>
             </div>
             <div class="supertype">
@@ -39,6 +40,7 @@
               <div class="dropdown-sub-content-sport">
                 <div class="subtype" @click="getSortedVideo">필라테스</div>
                 <div class="subtype" @click="getSortedVideo">골프</div>
+                <div class="subtype" @click="getSortedVideo">테니스</div>
               </div>
             </div>
           </div>
@@ -105,7 +107,13 @@ export default {
     },
     getSortedVideo(event){
       this.sub = event.target.innerHTML;
-      location.href=`/video?super=${this.super}&sub=${this.sub}`;
+      if (this.sub === '전체') {
+        this.sub = 'none';
+      }
+      location.href=`/video?superType=${this.super}&subType=${this.sub}`;
+    },
+    getAllVideo(event) {
+      location.href=`/video`;
     }
   }
 }

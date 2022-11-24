@@ -119,8 +119,8 @@ public class ChallengeController {
 		}
 	}
 
-	// 4) [GET] /challenge/{challengeSeq}
-	@GetMapping("/{challengeSeq}")
+	// 4) [GET] /challenge/detail/{challengeSeq}
+	@GetMapping("/detail/{challengeSeq}")
 	public ResponseEntity<Map<String, Object>> getChallengeInfo(@PathVariable("challengeSeq") int challengeSeq) {
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;

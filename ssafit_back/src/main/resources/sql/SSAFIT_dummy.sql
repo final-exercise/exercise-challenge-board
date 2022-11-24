@@ -88,22 +88,32 @@ insert into video_super_type (video_super_type_seq, video_seq, workout_super_typ
 insert into video_sub_type (video_sub_type_seq, video_seq, workout_sub_type_seq) values (0, 8, 4);
 
 select * from comment;
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '왜 찌는지 저는 모름니다.', '2', null, 2);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '승모근 박살내주세요', '3', null, 2);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '내 어꺠 거의 김종국', '3', null, 3);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '딱딱한 내 승모근', '4', null, 3);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '말랑말랑~', '4', null, 4);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '거북이가 나한테 와서 친구하자고 함', '5', null, 5);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '와 이거 진짜 시원하네요', '5', null, 6);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '이게 되네?', '5', null, 1);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '겨울에 살 빼는게 맛이지', '6', null, 2);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '다이어트 가보자고', '6', null, 3);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '난 찌기 싫었어', '6', null, 4);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '무.조.건. 이 아니게 만들어 드리죠', '7', null, 1);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '댄스 댄스 춤을 춰용', '7', null, 5);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '누워서 보기만 하는 것도 되나요?', '8', null, 2);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '보여줄 곳 없지만 복근. 있음 좋지', '8', null, 3);
+
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1, '싸피', false);
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '왜 찌는지 저는 모름니다.', '1', null, 2, '양싸피', false);
+update comment set bundle_id = comment_seq where comment_seq in (1,2);
+
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
+values (0, '내것도', 1, null, 2, '양싸피', false, 1, 1);
+insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
+values (0, '내뱃살도', 1, null, 3, '아몰랑', false, 1, 1);
+
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '왜 찌는지 저는 모름니다.', '2', null, 2);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '승모근 박살내주세요', '3', null, 2);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '내 어꺠 거의 김종국', '3', null, 3);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '딱딱한 내 승모근', '4', null, 3);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '말랑말랑~', '4', null, 4);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '거북이가 나한테 와서 친구하자고 함', '5', null, 5);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '와 이거 진짜 시원하네요', '5', null, 6);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '이게 되네?', '5', null, 1);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '겨울에 살 빼는게 맛이지', '6', null, 2);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '다이어트 가보자고', '6', null, 3);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '난 찌기 싫었어', '6', null, 4);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '무.조.건. 이 아니게 만들어 드리죠', '7', null, 1);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '댄스 댄스 춤을 춰용', '7', null, 5);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '누워서 보기만 하는 것도 되나요?', '8', null, 2);
+-- insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq) values (0, '보여줄 곳 없지만 복근. 있음 좋지', '8', null, 3);
 
 select * from wish;
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 1, 1);
@@ -127,32 +137,7 @@ insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 1);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 7, 5);
 insert into wish (mylist_seq, video_seq, user_seq) values (0, 8, 2);
 
-DROP TABLE IF EXISTS COMMENT;
 
-CREATE TABLE COMMENT (
-    `comment_seq`    INT    NOT NULL auto_increment primary key,
-    `comment_content`    VARCHAR(500)    NOT NULL,
-    `video_seq`    INT    NOT NULL,
-    `coach_seq`    INT    NULL,
-    `user_seq`    INT    NULL,
-    `nickname` VARCHAR(30) not NULL,
-    `is_coach` boolean not null,
-    `comment_depth`    INT    NULL default 0,
-    `bundle_id`    INT    NULL,
-    `created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `is_valid`    boolean    NOT NULL  DEFAULT true
-);
-
-
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '허벅지살 누가 가져가라 제발 죰~', '1', null, 1, '싸피', false);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach) values (0, '왜 찌는지 저는 모름니다.', '1', null, 2, '양싸피', false);
-
-update comment set bundle_id = comment_seq where comment_seq in (1,2);
-
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
-values (0, '내것도', 1, null, 2, '양싸피', false, 1, 1);
-insert into comment (comment_seq, comment_content, video_seq, coach_seq, user_seq, nickname, is_coach, bundle_id, comment_depth)
-values (0, '내뱃살도', 1, null, 3, '아몰랑', false, 1, 1);
-
-select * from coach;
+insert into wish (mylist_seq, video_seq, coach_seq) values (0, 1, 2);
+insert into wish (mylist_seq, video_seq, coach_seq) values (0, 1, 1);
+insert into wish (mylist_seq, video_seq, coach_seq) values (0, 1, 3);

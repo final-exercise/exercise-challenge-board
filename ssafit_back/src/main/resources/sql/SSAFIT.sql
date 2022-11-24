@@ -56,7 +56,8 @@ DROP TABLE IF EXISTS `WISH`;
 CREATE TABLE `WISH` (
 	`mylist_seq`	INT	NOT NULL auto_increment primary key,
 	`video_seq`	INT	NOT NULL,
-	`user_seq`	INT	NOT NULL,
+	`user_seq`	INT	NULL,
+    `coach_seq` INT NULL,
     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`is_valid`	boolean	NOT NULL  DEFAULT true
@@ -104,22 +105,6 @@ CREATE TABLE COMMENT (
 	`created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `is_valid`    boolean    NOT NULL  DEFAULT true
-);
-
-
-DROP TABLE IF EXISTS `COMMENT`;
-
-CREATE TABLE `COMMENT` (
-	`comment_seq`	INT	NOT NULL auto_increment primary key,
-	`comment_content`	VARCHAR(500)	NOT NULL,
-	`video_seq`	INT	NOT NULL,
-	`coach_seq`	INT	NULL,
-	`user_seq`	INT	NULL,
-	`comment_depth`	INT	NULL,
-	`bundle_id`	INT	NULL,
-     `created_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`updated_at`	timestamp	NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`is_valid`	boolean	NOT NULL  DEFAULT true
 );
 
 DROP TABLE IF EXISTS `CHAT_MESSAGE`;
@@ -312,6 +297,13 @@ ALTER TABLE `WISH` ADD CONSTRAINT `FK_USER_ACTIVITY_TO_WISH_1` FOREIGN KEY (
 )
 REFERENCES `USER_ACTIVITY` (
 	`user_seq`
+);
+
+ALTER TABLE `WISH` ADD CONSTRAINT `FK_COACH_TO_WISH_1` FOREIGN KEY (
+	`coach_seq`
+)
+REFERENCES `COACH` (
+	`coach_seq`
 );
 
 ALTER TABLE `USER_DIET` ADD CONSTRAINT `FK_USER_ACTIVITY_TO_USER_DIET_1` FOREIGN KEY (

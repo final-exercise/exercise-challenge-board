@@ -63,6 +63,7 @@ public class VideoController {
 		if(sc.getSortDir().length() == 0) {
 			sc.setSortDir("desc");
 		}
+		
 		HashMap<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -71,7 +72,14 @@ public class VideoController {
 			if(page == 0)
 				page = 1;
 			
-			PageHelper.startPage(page, 10);
+			if(sc.getLimit() != 0) {
+				PageHelper.startPage(page, sc.getLimit());
+			}
+			else {
+				PageHelper.startPage(page, 10);
+			}
+			
+			System.out.println("111" + sc.toString());
 			
 			Page<VideoDto> res = vs.getVideos(sc);
 			
